@@ -1,0 +1,268 @@
+@media (min-width: 428px) {
+
+    * {
+        padding: 0;
+        margin: 0;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+        font-family: "Inter", sans-serif;
+    }
+
+    .nAv {
+        padding: 5% 10% 0 10%;
+        display: flex;
+        align-items: center;
+        background-color: #F6F1FF;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        position: relative;
+    }
+
+    svg {
+        margin-right: 65%;
+    }
+
+    ul {
+        list-style: none;
+        background-color: #141B2D;
+        flex-direction: column;
+        overflow: hidden;
+        width: 100vw; 
+        position: absolute;
+        top: 100%; 
+        left: 0;
+        max-height: 0; 
+        transition: max-height 0.5s ease-out;
+        padding: 0 10%;
+    }
+
+    ul li {
+        margin: 80px 0;
+        padding: 5px 20px; 
+        text-align: left;
+    }
+
+    .seccIones {
+        font-weight: 500;
+        font-size: 20px;
+        text-decoration: none;
+        color: #fff;
+        display: block;
+    }
+
+    #meNu:checked ~ ul {
+        max-height: 500px; 
+        transition: max-height 0.5s ease-in;
+    }
+
+    #meNu {
+        display: none;
+    }
+
+    .baCk {
+        background-color: #F6F1FF;
+        padding: 20% 10% 5% 10%;
+    }
+
+    .PrinCipal {
+        flex-direction: column;
+        align-items: center;
+        display: flex;
+    }
+    
+    strong{
+        color: #FF0942;
+    }
+
+    h1 {
+        text-align: center;
+        font-weight: 700;
+        font-size: 55px;
+    }
+
+    button {
+        width: 154px;
+        height: 46px;
+        border-radius: 50px;
+        background-color: #141B2D;
+        margin-top: 15%;
+    }
+
+    .buttonContactar {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .habiliDades {
+        align-items: center;
+        margin-top: 30%;
+        display: flex;
+        gap: 3%;
+    }
+
+    .lineaVertical {
+        height: 20px;
+        background-color: #141B2D;
+        width: 2px;
+    }
+
+    h4 {
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .seccionProyectos {
+        margin-top: 10%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5% 0;
+        white-space: nowrap;
+    }
+
+    .proYectos {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10%;
+    }
+
+    .imgProyecto{
+        margin-top: 5%;
+    }
+
+    /* Pagina sobre mi */
+
+    .iconos{
+        margin-bottom: 3%;
+    }
+
+    .tituloSobreMi{
+        margin-bottom: 3%;
+    }
+
+    .sobreMi{
+        margin: 10% 10%;
+    }
+
+    .textoSobreMi{
+        font-size: 14px;
+        font-weight: 300;
+        margin-bottom: 5%;
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    /* Pagina de Precios */
+
+    .caRd{
+        margin: 8% 0;
+        border-radius: 3%;
+        padding: 5%;
+        box-shadow: 2px 2px 8px 0 rgba(20, 20, 20, 0.3)
+    }
+
+    .tituLo{
+        align-items: flex-end; 
+        gap: 15%;
+        display: flex;
+    }
+
+    .tituLo .RecomenDado{
+        font-size: 14px;
+    }
+
+    .RecomenDado{
+        color: #39BE88;
+    }
+
+    .cardDePrecios{
+        flex-direction: column;
+        margin: 10%;
+    }
+
+    .LinEas{
+        margin: 5% 0;
+        height: 1px;
+        background-color: #141B2D;
+        width: 305px;
+    }
+
+    .vaLor {
+        display: flex;
+        align-items: flex-end; 
+        height: 100%;
+        margin-bottom: 3%;
+    }
+
+    .texTo{
+        margin-bottom: 10%;
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    .vaLor p {
+        margin: 0;
+    }
+
+    .PreCio{
+        font-size: 34px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .PacK{
+        gap: 5%;
+        font-size: 14px;
+        align-items: center;
+        display: flex;
+    }
+
+    .PacK h3{
+        margin-bottom: 5%;
+    }
+
+    .PacK p{
+        margin-bottom: 5%;
+    }
+
+    /* Footer */
+
+    footer{
+        background-color: #141B2D;
+    }
+
+    .logoFooter{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    h5{
+        font-weight: 400;
+    }
+
+    .secCiones{
+        margin-bottom: 10%;
+        gap: 25px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        color: #fff;
+    }
+
+    .Redes{
+        margin-bottom: 5%;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        gap: 20px;
+    }
+
+    .derechosReservados{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 300;
+        padding: 0 0 10% 0;
+    }
+}
