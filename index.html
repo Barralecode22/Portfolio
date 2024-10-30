@@ -7,9 +7,14 @@
     <link rel="stylesheet" href="./style.css">
     <link rel="icon" href="./assets/logo-mati-png.ico" type="ima">
 </head>
-<body>
+<body onload="hideLoader()">
+    <div id="loader">
+        <div class="spinner"></div>
+        <p>Cargando...</p>
+    </div>
+    
     <header class="nAv">
-        <label class="labelMenu" for="meNu">
+        <label for="meNu">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="15" viewBox="0 0 30 15" fill="none">
                 <rect y="12.5" width="20" height="2.5" rx="1.25" fill="black"/>
                 <rect width="30" height="2.5" rx="1.25" fill="black"/>
@@ -17,16 +22,16 @@
             </svg>
         </label>
         <input type="checkbox" name="" id="meNu">
-        <img src="./assets/LOGOTIPO 1.svg" alt="Logo">
+        <img class="LogotipoNav" src="./assets/LOGOTIPO 1.svg" alt="Logo">
         <ul>
             <li>
-                <a class="seccIones" href="#">INICIO</a>
+                <a class="seccionesActiva" href="#" onclick="seleccionarSeccion(this)">Inicio</a>
             </li>
             <li>
-                <a class="seccIones" href="./pages/sobremi.html">SOBRE MI</a>
+                <a class="seccIones" href="./pages/sobremi.html" onclick="seleccionarSeccion(this)">Sobre mí</a>
             </li>
             <li>
-                <a class="seccIones" href="./pages/precios.html">PRECIOS</a>
+                <a class="seccIones" href="./pages/precios.html" onclick="seleccionarSeccion(this)">Precios</a>
             </li>
         </ul>
     </header>
@@ -35,7 +40,7 @@
         <div class="baCk">
             <div class="PrinCipal">
                 <h1>Alta <strong>calidad visual</strong> para tu sitio web</h1>
-                <button><a class="buttonContactar" href="https://ig.me/m/barrale_design" target="_blank">Contactar</a></button>
+                <button class="buttonContacto"><a class="buttonContactar" href="https://ig.me/m/barrale_design" target="_blank">Contactar</a></button>
             </div>
             <div class="habiliDades">
                 <h4>Desarrollo Web</h4>
@@ -46,7 +51,7 @@
             </div>
         </div>
 
-        <div>
+        <div class="proyectosHorizontal">
             <div class="seccionProyectos">
                 <div>
                     <div class="proYectos">
@@ -59,7 +64,7 @@
                         </div>
                     </div>
                     <div class="imgProyecto">
-                        <img src="./assets/proyecto 1.svg"> 
+                        <img class="imProyectos" src="./assets/TODO-PORTADA.jpg"> 
                     </div>
                 </div>
             </div>
@@ -75,7 +80,7 @@
                         </div>
                     </div>
                     <div class="imgProyecto">
-                        <img src="./assets/proyecto 1.svg"> 
+                        <img class="imProyectos" src="./assets/TODO-PORTADA.jpg"> 
                     </div>
                 </div>
             </div>
@@ -87,11 +92,11 @@
                         </div>
                         <div>
                             <h3>Proyectos</h3>
-                            <p>Marcas</p>
+                            <p>Motion graphic</p>
                         </div>
                     </div>
                     <div class="imgProyecto">
-                        <img src="./assets/proyecto 1.svg"> 
+                        <img class="imProyectos" src="./assets/TODO-PORTADA.jpg"> 
                     </div>
                 </div>
             </div>
@@ -103,9 +108,9 @@
             <img src="./assets/logo-mati footer.svg">
         </div>
         <div class="secCiones">
-            <h5><a>INICIO</a></h5>
-            <h5><a>SOBRE MÍ</a></h5>
-            <h5><a>PRECIOS</a></h5>
+            <h5><a class="seCciones" href="#">Inicio</a></h5>
+            <h5><a class="seCciones" href="./pages/sobremi.html">Sobre mí</a></h5>
+            <h5><a class="seCciones" href="./pages/precios.html">Precios</a></h5>
         </div>
         <div>
             <div class="Redes">
@@ -118,5 +123,7 @@
             <p class="derechosReservados">© TODO 2024. Todos los derechos reservados.</p>
         </div>
     </footer>
+
+    <script src="./script.js"></script>
 </body>
 </html>

@@ -1,17 +1,318 @@
-@media (min-width: 428px) {
 
-    * {
-        padding: 0;
-        margin: 0;
-        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-        font-family: "Inter", sans-serif;
+* {
+    padding: 0;
+    margin: 0;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+    font-family: "Inter", sans-serif;
+}
+
+/* Loading... */
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: "Inter", sans-serif;
+}
+
+#loader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    z-index: 10;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #01F593;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+
+@media (min-width: 1440px){
+    
+    body .nAv {
+        padding: 1% 3% 1% 3%;
+        border-radius: 25px;
+        margin: 2% 15%;
+        display: flex;
+        align-items: center;
+        background-color: #141B2D;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        position: relative;
     }
+
+    label{
+        display: none;
+    }
+
+    header ul {
+        padding: 0;
+        min-height:max-content;
+        overflow:visible;
+        width: auto;
+        display: flex;
+        position:static;
+        flex-direction: row;
+    }
+
+    header ul li {
+        margin: 0;
+    }
+
+    li .seccIones {
+        color: rgba(255, 255, 255, 0.5);
+        transition: color 0.3s;
+        cursor: pointer;
+        font-weight:500;
+        font-size: 16px;
+    }
+    
+    .seccionesActiva{
+        text-decoration: none;
+        color: #01F593;
+    }
+
+    li{
+        align-items: center;
+        display: flex;
+    }
+
+    .seccIones:hover{
+        color: #01F593;
+    }
+
+    .nAv .LogotipoNav{
+        height: auto;
+        width: 150px;
+        margin: 0;
+    }
+
+    main .baCk{
+        background-color: #fff;
+        padding: 10% 0 5% 0;
+    }
+
+    .PrinCipal h1{
+        font-size: 64px;
+    }
+
+    .PrinCipal .buttonContacto{
+        border: none;
+        font-weight: 500;
+        font-size: 20px;
+        width: 170px;
+        height: 60px;
+        border-radius: 50px;
+        margin-top: 5%;
+        cursor: pointer;
+    }
+
+    .buttonContacto:hover{
+        background-color: #FF0942;
+    }
+
+    .baCk .habiliDades{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10%;   
+    }
+
+    .baCk .lineaVertical{
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .habiliDades h4{
+        color: rgba(0, 0, 0, 0.4);
+        font-size: 18px;
+        font-weight: 400;
+    }
+
+    .proyectosHorizontal{
+        justify-content:space-evenly;
+        display: flex;
+    }
+
+    .proyectosHorizontal .seccionProyectos{
+        margin-top: 5%;
+    }
+
+    div .proYectos{
+        justify-content:start;
+    }
+
+    .proYectos p{
+        margin-top: 5%;
+    }
+
+    .imgProyecto .imProyectos{
+        border-radius: 10px;
+        height: auto;
+        width: 500px;
+    }
+
+    .imProyectos:hover{
+        cursor: pointer;
+        transform: scale(1.15);
+        transition: all 300ms;
+    }
+
+    /* Pagina sobre mi */
+
+    .sobreMi {
+        margin: 0 0;
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        gap: 5%;
+    }
+
+    div .imagenYo{
+        width: auto;
+        height: auto;
+        grid-column: 1/2;
+        margin-bottom: 10%;
+    }
+
+    .listadoDeConocimientos{
+        display: flex;
+    }
+
+    .quienSoy{
+        grid-column: 2/4;
+        margin-left: 10%;
+    }
+
+    .listadoDeConocimientos .conoCimientos{
+        flex-wrap: nowrap;
+        margin: 1.8%;
+        padding: 3%;
+        color: rgba(0, 0, 0, 0.4);
+        border-radius: 15px;
+        box-shadow: 2px 2px 8px 0 rgba(20, 20, 20, 0.1)
+    }
+
+    /* Pagina precios */
+
+    main .cardDePrecios{
+        align-items: center;
+        display: inline-flex;
+        flex-direction: row;
+        margin: 0 20%;
+    }
+
+    .cardDePrecios .caRd{
+        margin: 2% 0;
+        padding: 4%;
+        margin-right: 2%;
+    }
+
+    .caRd .tituLo .RecomenDado{
+        margin-left: 11%;
+    }
+
+    .caRd .LinEas{
+        width: 260px;
+        margin: 5% 0;
+    }
+
+    .caRd .vaLor{
+        align-items:start;
+        height: 0%;
+        margin-bottom: 20%;
+    }
+
+    .caRd .texTo{
+        color: rgba(0, 0, 0, 0.4);
+    }
+
+    .caRd .PacK{
+        margin-bottom:0;
+    }
+
+    .Solicitar{
+        padding: none;
+    }
+
+    .buttonSolicitar{
+        margin-top: 3%;
+        background-color: #141B2D;
+        padding: 8% 40%;
+        cursor: pointer;
+        border-radius: 10px;
+        border: none;
+    }
+
+    .buttonSolicitarinsta{
+        font-size: 16px;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .buttonSolicitar:hover{
+        background-color: #FF0942;
+    }
+
+    main .ImporTante{
+        margin: 1% 20%;
+    }
+
+    .tituloDeImportante{
+        color: #FF0942;
+        font-weight: 700;
+        margin-bottom: 0.5%;
+    }
+
+    /* footer */
+
+    footer{
+        justify-content: space-around;
+        align-items: center;
+        display: flex;
+    }
+
+    footer .secCiones{
+        font-size: 20px;
+        margin-bottom: 0;
+    }
+
+    div .Redes {
+        justify-content:start;
+    }
+
+    div .derechosReservados{
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 14px;
+        padding: 0 0 3% 0;
+    }
+
+}
+
+
+@media (min-width: 428px) {
 
     .nAv {
         padding: 5% 10% 0 10%;
         display: flex;
         align-items: center;
-        background-color: #F6F1FF;
+        background-color: #ffffff;
         justify-content: space-between;
         flex-wrap: wrap;
         position: relative;
@@ -26,7 +327,7 @@
         background-color: #141B2D;
         flex-direction: column;
         overflow: hidden;
-        width: 100vw; 
+        width: 342px; 
         position: absolute;
         top: 100%; 
         left: 0;
@@ -39,6 +340,12 @@
         margin: 80px 0;
         padding: 5px 20px; 
         text-align: left;
+    }
+
+    .LogotipoNav{
+        height: auto;
+        width: 100px;
+        margin: 10% 0;
     }
 
     .seccIones {
@@ -59,7 +366,6 @@
     }
 
     .baCk {
-        background-color: #F6F1FF;
         padding: 20% 10% 5% 10%;
     }
 
@@ -79,7 +385,7 @@
         font-size: 55px;
     }
 
-    button {
+    .buttonContacto {
         width: 154px;
         height: 46px;
         border-radius: 50px;
@@ -130,6 +436,12 @@
         margin-top: 5%;
     }
 
+    .imProyectos{
+        border-radius: 10px;
+        height: auto;
+        width: 300px;
+    }
+
     /* Pagina sobre mi */
 
     .iconos{
@@ -141,7 +453,22 @@
     }
 
     .sobreMi{
-        margin: 10% 10%;
+        margin: 5% 10%;
+    }
+
+    .listadoDeConocimientos{
+        display: flex;
+    }
+
+    .conoCimientos{
+        font-size: 10px;
+        flex-wrap: nowrap;
+        margin: 1.8%;
+        padding: 2%;
+        color: rgba(0, 0, 0, 0.4);
+        border-radius: 5px;
+        box-shadow: 2px 2px 8px 0 rgba(20, 20, 20, 0.1);
+        margin-bottom: 5%;
     }
 
     .textoSobreMi{
@@ -155,7 +482,7 @@
 
     .caRd{
         margin: 8% 0;
-        border-radius: 3%;
+        border-radius: 20px;
         padding: 5%;
         box-shadow: 2px 2px 8px 0 rgba(20, 20, 20, 0.3)
     }
@@ -167,7 +494,8 @@
     }
 
     .tituLo .RecomenDado{
-        font-size: 14px;
+        margin-left: 21%;
+        font-size: 16px;
     }
 
     .RecomenDado{
@@ -195,7 +523,7 @@
 
     .texTo{
         margin-bottom: 10%;
-        color: rgba(0, 0, 0, 0.5);
+        color: rgba(0, 0, 0, 0.7);
     }
 
     .vaLor p {
@@ -223,6 +551,16 @@
         margin-bottom: 5%;
     }
 
+    .ImporTante{
+        margin: 3% 10%;
+    }
+
+    .tituloDeImportante{
+        color: #FF0942;
+        font-weight: 700;
+        margin-bottom: 0.5%;
+    }
+
     /* Footer */
 
     footer{
@@ -245,7 +583,16 @@
         justify-content: center;
         align-items: center;
         display: flex;
-        color: #fff;
+    }
+
+    .seCciones{
+        color: rgba(255, 255, 255, 0.5);
+        transition: color 0.3s;
+        text-decoration: none;
+    }
+
+    .seCciones:hover{
+        color: #01F593;
     }
 
     .Redes{
@@ -266,3 +613,329 @@
         padding: 0 0 10% 0;
     }
 }
+
+@media (max-width: 320px) {
+    .nAv {
+        padding: 5% 10% 0 10%;
+        display: flex;
+        align-items: center;
+        background-color: #ffffff;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        position: relative;
+    }
+
+    svg {
+        margin-right: 65%;
+    }
+
+    ul {
+        list-style: none;
+        background-color: #141B2D;
+        flex-direction: column;
+        overflow: hidden;
+        width: 256px; 
+        position: absolute;
+        top: 100%; 
+        left: 0;
+        max-height: 0; 
+        transition: max-height 0.5s ease-out;
+        padding: 0 10%;
+    }
+
+    ul li {
+        margin: 80px 0;
+        padding: 5px 20px; 
+        text-align: left;
+    }
+
+    .seccIones {
+        font-weight: 500;
+        font-size: 20px;
+        text-decoration: none;
+        color: #fff;
+        display: block;
+    }
+
+    .LogotipoNav{
+        margin: 10% 0;
+        height: auto;
+        width: 100px;
+    }
+
+    #meNu:checked ~ ul {
+        max-height: 500px; 
+        transition: max-height 0.5s ease-in;
+    }
+
+    #meNu {
+        display: none;
+    }
+
+    .baCk {
+        padding: 20% 10% 5% 10%;
+    }
+
+    .PrinCipal {
+        flex-direction: column;
+        align-items: center;
+        display: flex;
+    }
+    
+    strong{
+        color: #FF0942;
+    }
+
+    h1 {
+        text-align: center;
+        font-weight: 700;
+        font-size: 45px;
+    }
+
+    button {
+        width: 154px;
+        height: 46px;
+        border-radius: 50px;
+        background-color: #141B2D;
+        margin-top: 15%;
+    }
+
+    .buttonContactar {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .habiliDades {
+        align-items: center;
+        margin-top: 30%;
+        display: flex;
+        gap: 2%;
+    }
+
+    .lineaVertical {
+        height: 20px;
+        background-color: #141B2D;
+        width: 1px;
+    }
+
+    h4 {
+        font-weight: 500;
+        font-size: 12px;
+    }
+
+    .seccionProyectos {
+        margin-top: 10%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5% 0;
+        white-space: nowrap;
+    }
+
+    .proYectos {
+        display: flex;
+        align-items: center;
+        gap: 5%;
+    }
+
+    .proYectos div img {
+        width: auto;
+        height: 30px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    p{
+        font-size: 14px;
+    }
+
+    .imgProyecto{
+        margin-top: 5%;
+    }
+
+    .imProyectos{
+        border-radius: 5px;
+        height: auto;
+        width: 250px;
+    }
+
+    /* Pagina sobre mi */
+
+    .sobreMi{
+        margin: 10% 10%;
+    }
+
+    .iconos{
+        margin-bottom: 3%;
+    }
+
+    .tituloSobreMi{
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 3%;
+    }
+
+    .quienSoy .textoSobreMi{
+        margin-bottom: 5%;
+    }
+
+    .listadoDeConocimientos{
+        display: flex;
+    }
+
+    .conoCimientos{
+        font-size: 9px;
+        flex-wrap: nowrap;
+        margin: 1.5%;
+        padding: 4%;
+        color: rgba(0, 0, 0, 0.4);
+        border-radius: 5px;
+        box-shadow: 2px 2px 8px 0 rgba(20, 20, 20, 0.1);
+        margin-bottom: 10%;
+    }
+
+    .textoSobreMi{
+        color: rgba(0, 0, 0, 0.7);
+        margin-bottom: 15%;
+    }
+
+    .imagenYo{
+        margin-bottom: 5%;
+        height: auto;
+        width: 250px;
+    }
+
+    /* Pagina de precios */
+
+    .caRd{
+        margin: 8% 0;
+        border-radius: 20px;
+        padding: 10%;
+        box-shadow: 2px 2px 8px 0 rgba(20, 20, 20, 0.3)
+    }
+
+    .tituLo{
+        align-items: flex-end; 
+        gap: 15%;
+        display: flex;
+    }
+
+    .tituloRecomendado {
+        font-size: 16px;
+    }
+    
+    .RecomenDado{
+        font-size: 14px;
+        color: #39BE88;
+    }
+
+    .cardDePrecios{
+        flex-direction: column;
+        margin: 10%;
+    }
+
+    .LinEas{
+        margin: 5% 0;
+        height: 1px;
+        background-color: #141B2D;
+        width: 205px;
+    }
+
+    .vaLor {
+        display: flex;
+        align-items: flex-end; 
+        height: 100%;
+        margin-bottom: 3%;
+    }
+
+    .texTo{
+        margin-bottom: 10%;
+        color: rgba(0, 0, 0, 0.7);
+    }
+
+    .vaLor p {
+        margin: 0;
+    }
+
+    .PreCio{
+        font-size: 34px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .PacK{
+        gap: 5%;
+        font-size: 14px;
+        align-items: flex-start;
+        display: flex;
+    }
+
+    .PacK h3{
+        margin-bottom: 15%;
+    }
+
+    .PacK p{
+        margin-bottom: 10%;
+    }
+
+    .ImporTante{
+        margin: 3% 10%;
+    }
+
+    .tituloDeImportante{
+        color: #FF0942;
+        font-weight: 700;
+        margin-bottom: 0.5%;
+    }
+
+    /* Footer */
+
+    footer{
+        background-color: #141B2D;
+    }
+
+    .logoFooter{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    h5{
+        font-size: 12px;
+        font-weight: 400;
+    }
+
+    .secCiones{
+        margin-bottom: 10%;
+        gap: 25px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+
+    .seCciones{
+        text-decoration: none;
+        color: #fff;
+    }
+
+    .Redes{
+        margin-bottom: 5%;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        gap: 20px;
+    }
+
+    .derechosReservados{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 10px;
+        font-weight: 300;
+        padding: 0 0 10% 0;
+    }
+}
+
