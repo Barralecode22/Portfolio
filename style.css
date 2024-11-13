@@ -83,11 +83,8 @@ body, html {
         cursor: pointer;
         font-weight:500;
         font-size: 16px;
-    }
-    
-    .seccionesActiva{
-        text-decoration: none;
-        color: #01F593;
+        white-space: nowrap;
+        padding: 10% 20%;
     }
 
     li{
@@ -95,8 +92,16 @@ body, html {
         display: flex;
     }
 
+    ul li .seccionesActiva{
+        font-size: 16px;
+    }
+
     .seccIones:hover{
+        border-radius: 5px;
+        background-color: #2b3d66;
         color: #01F593;
+        white-space: nowrap;
+        padding: 10% 20%;
     }
 
     .nAv .LogotipoNav{
@@ -120,13 +125,13 @@ body, html {
         font-size: 20px;
         width: 170px;
         height: 60px;
-        border-radius: 50px;
+        border-radius: 10px;
         margin-top: 5%;
         cursor: pointer;
     }
 
     .buttonContacto:hover{
-        background-color: #FF0942;
+        background-color: #2b3d66;
     }
 
     .baCk .habiliDades{
@@ -166,7 +171,8 @@ body, html {
     .imgProyecto .imProyectos{
         border-radius: 10px;
         height: auto;
-        width: 500px;
+        width: 350px;
+        cursor: pointer;
     }
 
     .imProyectos:hover{
@@ -174,6 +180,56 @@ body, html {
         transform: scale(1.15);
         transition: all 300ms;
     }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+    
+    .modal-content {
+        position: relative;
+        margin: 10% auto;
+        padding: 20px;
+        width: 80%;
+        max-width: 600px;
+        background-color: white;
+        text-align: center;
+    }
+    
+    .modal-content img {
+        width: 100%;
+        height: auto;
+        margin-bottom: 15px;
+    }
+    
+    .titleImage {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    
+    .textImage {
+        font-size: 16px;
+        color: #555;
+    }
+    
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 25px;
+        font-size: 30px;
+        font-weight: bold;
+        color: #333;
+        cursor: pointer;
+    }
+    
+    
 
     /* Pagina sobre mi */
 
@@ -267,7 +323,7 @@ body, html {
     }
 
     .buttonSolicitar:hover{
-        background-color: #FF0942;
+        background-color: #2b3d66;
     }
 
     main .ImporTante{
@@ -347,7 +403,14 @@ body, html {
         width: 100px;
         margin: 10% 0;
     }
-
+    
+    li .seccionesActiva{
+        text-decoration: none;
+        color: #01F593;
+        font-weight: 500;
+        font-size: 20px;
+    }
+    
     .seccIones {
         font-weight: 500;
         font-size: 20px;
@@ -406,14 +469,15 @@ body, html {
     }
 
     .lineaVertical {
+        color: rgba(0, 0, 0, 0.4);
         height: 20px;
-        background-color: #141B2D;
         width: 2px;
     }
 
-    h4 {
-        font-weight: 600;
-        font-size: 14px;
+    .baCk .habiliDades h4 {
+        color: rgba(0, 0, 0, 0.4);
+        font-size: 16px;
+        font-weight: 400;
     }
 
     .seccionProyectos {
@@ -523,7 +587,7 @@ body, html {
 
     .texTo{
         margin-bottom: 10%;
-        color: rgba(0, 0, 0, 0.7);
+        color: rgba(0, 0, 0, 0.4);
     }
 
     .vaLor p {
@@ -549,6 +613,25 @@ body, html {
 
     .PacK p{
         margin-bottom: 5%;
+    }
+
+    .Solicitar{
+        padding: none;
+    }
+
+    .buttonSolicitar{
+        margin-top: 3%;
+        background-color: #141B2D;
+        padding: 8% 40%;
+        cursor: pointer;
+        border-radius: 10px;
+        border: none;
+    }
+
+    .buttonSolicitarinsta{
+        font-size: 16px;
+        color: #fff;
+        text-decoration: none;
     }
 
     .ImporTante{
@@ -649,6 +732,13 @@ body, html {
         text-align: left;
     }
 
+    .seccionesActiva{
+        text-decoration: none;
+        color: #01F593;
+        font-weight: 500;
+        font-size: 20px;
+    }
+
     .seccIones {
         font-weight: 500;
         font-size: 20px;
@@ -663,13 +753,14 @@ body, html {
         width: 100px;
     }
 
-    #meNu:checked ~ ul {
-        max-height: 500px; 
-        transition: max-height 0.5s ease-in;
-    }
-
     #meNu {
         display: none;
+    }
+
+    #meNu:checked ~ ul {
+        max-height: 500px;
+        width: 650px;
+        transition: max-height 0.5s ease-in;
     }
 
     .baCk {
@@ -692,7 +783,7 @@ body, html {
         font-size: 45px;
     }
 
-    button {
+    .buttonContacto {
         width: 154px;
         height: 46px;
         border-radius: 50px;
@@ -712,15 +803,16 @@ body, html {
         gap: 2%;
     }
 
+    h4{
+        color: rgba(0, 0, 0, 0.4);
+        font-size: 12px;
+        font-weight: 400;
+    }
+
     .lineaVertical {
         height: 20px;
         background-color: #141B2D;
         width: 1px;
-    }
-
-    h4 {
-        font-weight: 500;
-        font-size: 12px;
     }
 
     .seccionProyectos {
@@ -772,8 +864,9 @@ body, html {
     }
 
     .tituloSobreMi{
+        color: #141B2D;
         font-size: 14px;
-        font-weight: 600;
+        font-weight: 700;
         margin-bottom: 3%;
     }
 
@@ -850,11 +943,6 @@ body, html {
         margin-bottom: 3%;
     }
 
-    .texTo{
-        margin-bottom: 10%;
-        color: rgba(0, 0, 0, 0.7);
-    }
-
     .vaLor p {
         margin: 0;
     }
@@ -878,6 +966,25 @@ body, html {
 
     .PacK p{
         margin-bottom: 10%;
+    }
+
+    .Solicitar{
+        padding: none;
+    }
+
+    .buttonSolicitar{
+        margin-top: 3%;
+        background-color: #141B2D;
+        padding: 8% 36%;
+        cursor: pointer;
+        border-radius: 10px;
+        border: none;
+    }
+
+    .buttonSolicitarinsta{
+        font-size: 16px;
+        color: #fff;
+        text-decoration: none;
     }
 
     .ImporTante{
@@ -907,6 +1014,13 @@ body, html {
         font-weight: 400;
     }
 
+    
+    
+    .seCcioneSActiva{
+        color: #01F593;
+        text-decoration: none;
+    }
+
     .secCiones{
         margin-bottom: 10%;
         gap: 25px;
@@ -925,7 +1039,7 @@ body, html {
         align-items: center;
         justify-content: center;
         display: flex;
-        gap: 20px;
+        gap: 10px;
     }
 
     .derechosReservados{
@@ -938,4 +1052,3 @@ body, html {
         padding: 0 0 10% 0;
     }
 }
-

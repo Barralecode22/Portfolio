@@ -25,13 +25,13 @@
         <img class="LogotipoNav" src="./assets/LOGOTIPO 1.svg" alt="Logo">
         <ul>
             <li>
-                <a class="seccionesActiva" href="#" onclick="seleccionarSeccion(this)">Inicio</a>
+                <a class="seccionesActiva" href="#">Inicio</a>
             </li>
             <li>
-                <a class="seccIones" href="./pages/sobremi.html" onclick="seleccionarSeccion(this)">Sobre mí</a>
+                <a class="seccIones" href="./pages/sobremi.html">Sobre mí</a>
             </li>
             <li>
-                <a class="seccIones" href="./pages/precios.html" onclick="seleccionarSeccion(this)">Precios</a>
+                <a class="seccIones" href="./pages/precios.html">Precios</a>
             </li>
         </ul>
     </header>
@@ -64,7 +64,10 @@
                         </div>
                     </div>
                     <div class="imgProyecto">
-                        <img class="imProyectos" src="./assets/TODO-PORTADA.jpg"> 
+                        <img class="imProyectos" src="./assets/TODO-PORTADA.jpg" 
+                            data-title="Título del Proyecto 1" 
+                            data-text="Esta es una breve descripción del proyecto 1." 
+                            alt="Proyecto 1"> 
                     </div>
                 </div>
             </div>
@@ -80,7 +83,10 @@
                         </div>
                     </div>
                     <div class="imgProyecto">
-                        <img class="imProyectos" src="./assets/TODO-PORTADA.jpg"> 
+                        <img class="imProyectos" src="./assets/TODO-PORTADA.jpg" 
+                            data-title="Título del Proyecto 1" 
+                            data-text="Esta es una breve descripción del proyecto 1." 
+                            alt="Proyecto 1"> 
                     </div>
                 </div>
             </div>
@@ -96,11 +102,25 @@
                         </div>
                     </div>
                     <div class="imgProyecto">
-                        <img class="imProyectos" src="./assets/TODO-PORTADA.jpg"> 
+                        <img class="imProyectos" src="./assets/TODO-PORTADA.jpg" 
+                            data-title="Título del Proyecto 1" 
+                            data-text="Esta es una breve descripción del proyecto 1." 
+                            alt="Proyecto 1"> 
                     </div>
                 </div>
             </div>
         </div>
+    </main>
+    
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="modalImage" src="" alt="Imagen de proyecto">
+            <h3 class="titleImage"></h3>
+            <p class="textImage"></p>
+        </div>
+    </div>
     </main>
 
     <footer>
@@ -108,19 +128,19 @@
             <img src="./assets/logo-mati footer.svg">
         </div>
         <div class="secCiones">
-            <h5><a class="seCciones" href="#">Inicio</a></h5>
+            <h5><a class="seCcioneSActiva" href="#">Inicio</a></h5>
             <h5><a class="seCciones" href="./pages/sobremi.html">Sobre mí</a></h5>
             <h5><a class="seCciones" href="./pages/precios.html">Precios</a></h5>
         </div>
         <div>
             <div class="Redes">
-                <img src="./assets/RED INSTAGRAM.svg">
-                <img src="./assets/RED BEHANCE.svg">
-                <img src="./assets/RED TIKTOK.svg">
-                <img src="./assets/RED YOUTUBE.svg">
-                <img src="./assets/RED GITHUB.svg">
+                <a href="https://www.instagram.com/barrale_design/"><img src="./assets/RED INSTAGRAM.svg"></a>
+                <a href="https://www.behance.net/matiasbarrale1"><img src="./assets/RED BEHANCE.svg"></a>
+                <a href="https://www.linkedin.com/in/matias-barrale-025a05234/"><img src="./assets/RED linkedin.png"></a>
+                <a href="https://www.youtube.com/@Elcordobes20"><img src="./assets/RED YOUTUBE.png"></a>
+                <a href="https://github.com/Barralecode22"><img src="./assets/RED GITHUB.svg"></a>
             </div>
-            <p class="derechosReservados">© TODO 2024. Todos los derechos reservados.</p>
+            <p class="derechosReservados">© Barrale Design 2024. Desarrollado por Matias Barrale</p>
         </div>
     </footer>
 
