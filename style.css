@@ -48,7 +48,7 @@ body, html {
 @media (min-width: 1440px){
     
     body .nAv {
-        padding: 1% 3% 1% 3%;
+        padding: 0.7% 3% 0.7% 3%;
         border-radius: 25px;
         margin: 2% 15%;
         display: flex;
@@ -84,25 +84,32 @@ body, html {
         font-weight:500;
         font-size: 16px;
         white-space: nowrap;
-        padding: 10% 20%;
     }
 
-    li{
+    ul li{
         align-items: center;
         display: flex;
+        padding: 10px 15px;
     }
 
     ul li .seccionesActiva{
         font-size: 16px;
     }
 
-    .seccIones:hover{
+    .paginaActiva:hover{
+        background-color: #141B2D;
+    }
+
+    li:hover{
         border-radius: 5px;
         background-color: #2b3d66;
-        color: #01F593;
-        white-space: nowrap;
-        padding: 10% 20%;
+        padding: 10px 15px;
     }
+
+    .seccIones:hover{
+    color: #01F593;
+    white-space: nowrap;
+}
 
     .nAv .LogotipoNav{
         height: auto;
@@ -111,23 +118,35 @@ body, html {
     }
 
     main .baCk{
-        background-color: #fff;
-        padding: 10% 0 5% 0;
+        padding: 2% 10% 2% 10%;
     }
 
     .PrinCipal h1{
-        font-size: 64px;
+        color: #141B2D;
+        font-weight: 700;
+        font-size: 70px;
+    }
+
+    .baCk .PrinCipal p{
+        margin-top: 2%;
+        text-align: center;
+        color: rgba(0, 0, 0, 0.4);
+        font-weight: 100;
+        font-size: 18px;
     }
 
     .PrinCipal .buttonContacto{
         border: none;
         font-weight: 500;
         font-size: 20px;
-        width: 170px;
-        height: 60px;
+        padding: 15px 30px;
         border-radius: 10px;
-        margin-top: 5%;
+        margin-top: 3%;
         cursor: pointer;
+    }
+
+    .PrinCipal .buttonContactar{
+        font-size: 20px;
     }
 
     .buttonContacto:hover{
@@ -138,26 +157,41 @@ body, html {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 10%;   
+        margin-top: 5%;
+        margin-bottom: 5% ; 
     }
 
     .baCk .lineaVertical{
         background-color: rgba(0, 0, 0, 0.4);
     }
 
-    .habiliDades h4{
+    .baCk .habiliDades h4{
         color: rgba(0, 0, 0, 0.4);
         font-size: 18px;
         font-weight: 400;
     }
 
-    .proyectosHorizontal{
-        justify-content:space-evenly;
+    .programasDeUso{
+        margin-top: 5%;
+        justify-content: center;
+        gap: 2%;
         display: flex;
     }
 
+    .programasDeUso .iconoPrograma{
+        border-radius: 10px;
+        padding: 1.7%;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    }
+
+    .proyectosHorizontal{
+        justify-content:space-evenly;
+        display: flex;
+        margin: 10%;
+    }
+
     .proyectosHorizontal .seccionProyectos{
-        margin-top: 5%;
+        margin-top: 0%;
     }
 
     div .proYectos{
@@ -173,12 +207,12 @@ body, html {
         height: auto;
         width: 350px;
         cursor: pointer;
+        transition: transform 300ms ease-in-out
     }
 
     .imProyectos:hover{
-        cursor: pointer;
-        transform: scale(1.15);
-        transition: all 300ms;
+        transform: scale(1.10);
+        transition: transform 300ms ease-in-out;
     }
 
     .modal {
@@ -192,43 +226,101 @@ body, html {
         background-color: rgba(0, 0, 0, 0.8);
     }
     
-    .modal-content {
+    .modal .modal-content {
         position: relative;
         margin: 10% auto;
         padding: 20px;
         width: 80%;
         max-width: 600px;
-        background-color: white;
-        text-align: center;
+        background-color: #141B2D;
     }
     
     .modal-content img {
+        border-radius: 10px;
         width: 100%;
         height: auto;
         margin-bottom: 15px;
     }
     
-    .titleImage {
+    .modal-content .titleImage {
         font-size: 24px;
         font-weight: bold;
-        margin-bottom: 10px;
+        margin-top: 0;
+        color: #fff;
     }
     
-    .textImage {
+    .modal-content .textImage {
         font-size: 16px;
-        color: #555;
+        color: rgba(255, 255, 255, 0.6);
+        margin: 2.5% 0;
+        
+    }
+
+    .modal-content .iconImage{
+        height: auto;
+        width: 24px;
+        margin-bottom: 0;
+        border-radius: 0;
+    }
+
+    .ConocimientosUsados{
+        align-items: center;
+        display: flex;
+        gap: 2%;
     }
     
     .close {
         position: absolute;
-        top: 10px;
         right: 25px;
         font-size: 30px;
         font-weight: bold;
         color: #333;
         cursor: pointer;
     }
+
+    .imgProyecto div{
+        margin-top: 3%;
+    }
+
+    .imgProyecto div img{
+        border-radius: 5px;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+        background-color: #fff;
+        padding: 2%;
+        height: auto;
+        width: 24px;
+    }
+
+    .daTos {
+        display: flex;
+        justify-content: center;
+        margin: 5% 0;
+        gap: 5%;
+    }
     
+    .daTos article {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 200px;
+        height: 200px;
+        text-align: center;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
+        border-radius: 5%;
+    }
+    
+    .daTos article h2 {
+        font-size: 60px;
+        font-weight: 800;
+        color: #141B2D;
+    }
+    
+    .daTos article h4 {
+        font-size: 24px;
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.3);
+    }
     
 
     /* Pagina sobre mi */
@@ -349,6 +441,14 @@ body, html {
         margin-bottom: 0;
     }
 
+    footer .seCciones{
+        font-size: 16px;
+    }
+
+    footer .seCcioneSActiva{
+        font-size: 16px;
+    }
+
     div .Redes {
         justify-content:start;
     }
@@ -376,26 +476,6 @@ body, html {
 
     svg {
         margin-right: 65%;
-    }
-
-    ul {
-        list-style: none;
-        background-color: #141B2D;
-        flex-direction: column;
-        overflow: hidden;
-        width: 342px; 
-        position: absolute;
-        top: 100%; 
-        left: 0;
-        max-height: 0; 
-        transition: max-height 0.5s ease-out;
-        padding: 0 10%;
-    }
-
-    ul li {
-        margin: 80px 0;
-        padding: 5px 20px; 
-        text-align: left;
     }
 
     .LogotipoNav{
@@ -428,10 +508,6 @@ body, html {
         display: none;
     }
 
-    .baCk {
-        padding: 20% 10% 5% 10%;
-    }
-
     .PrinCipal {
         flex-direction: column;
         align-items: center;
@@ -449,8 +525,6 @@ body, html {
     }
 
     .buttonContacto {
-        width: 154px;
-        height: 46px;
         border-radius: 50px;
         background-color: #141B2D;
         margin-top: 15%;
@@ -463,7 +537,6 @@ body, html {
 
     .habiliDades {
         align-items: center;
-        margin-top: 30%;
         display: flex;
         gap: 3%;
     }
@@ -474,18 +547,11 @@ body, html {
         width: 2px;
     }
 
-    .baCk .habiliDades h4 {
-        color: rgba(0, 0, 0, 0.4);
-        font-size: 16px;
-        font-weight: 400;
-    }
-
     .seccionProyectos {
         margin-top: 10%;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 5% 0;
         white-space: nowrap;
     }
 
@@ -697,6 +763,7 @@ body, html {
     }
 }
 
+
 @media (min-width: 320px) {
     .nAv {
         padding: 5% 10% 0 10%;
@@ -717,18 +784,17 @@ body, html {
         background-color: #141B2D;
         flex-direction: column;
         overflow: hidden;
-        width: 256px; 
+        width: 30%; 
         position: absolute;
         top: 100%; 
         left: 0;
         max-height: 0; 
         transition: max-height 0.5s ease-out;
-        padding: 0 10%;
+        padding: 0 60% 0 10%;
     }
 
     ul li {
-        margin: 80px 0;
-        padding: 5px 20px; 
+        margin: 60% 0;
         text-align: left;
     }
 
@@ -740,6 +806,7 @@ body, html {
     }
 
     .seccIones {
+        padding: 0;
         font-weight: 500;
         font-size: 20px;
         text-decoration: none;
@@ -759,12 +826,11 @@ body, html {
 
     #meNu:checked ~ ul {
         max-height: 500px;
-        width: 650px;
         transition: max-height 0.5s ease-in;
     }
 
     .baCk {
-        padding: 20% 10% 5% 10%;
+        padding: 10% 10% 5% 10%;
     }
 
     .PrinCipal {
@@ -780,15 +846,23 @@ body, html {
     h1 {
         text-align: center;
         font-weight: 700;
-        font-size: 45px;
+        font-size: 35px;
+    }
+
+    .PrinCipal p{
+        margin-top: 7%;
+        text-align: center;
+        color: rgba(0, 0, 0, 0.4);
+        font-weight: 100;
+        font-size: 15px;
     }
 
     .buttonContacto {
-        width: 154px;
-        height: 46px;
-        border-radius: 50px;
+        font-size: 18px;
+        padding: 10px;
+        border-radius: 5px;
         background-color: #141B2D;
-        margin-top: 15%;
+        margin-top: 10%;
     }
 
     .buttonContactar {
@@ -798,16 +872,17 @@ body, html {
 
     .habiliDades {
         align-items: center;
-        margin-top: 30%;
+        margin-top: 15%;
         display: flex;
         gap: 2%;
+        margin-bottom: 10%;
     }
 
-    h4{
+    .habiliDades h4{
         color: rgba(0, 0, 0, 0.4);
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 400;
-    }
+    } 
 
     .lineaVertical {
         height: 20px;
@@ -815,12 +890,17 @@ body, html {
         width: 1px;
     }
 
+    .iconoPrograma{
+        border-radius: 5px;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        padding: 5%;
+    }
+
     .seccionProyectos {
         margin-top: 10%;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 5% 0;
         white-space: nowrap;
     }
 
@@ -851,6 +931,91 @@ body, html {
         border-radius: 5px;
         height: auto;
         width: 250px;
+    }
+
+    .modal-content {
+        border-radius: 10px;
+        position: relative;
+        margin: 80% auto;
+        padding: 20px;
+        width: 80%;
+        max-width: 600px;
+        background-color: #141B2D;
+    }
+
+    .titleImage{
+        font-size: 20px;
+        margin-top: 5%;
+        color: #fff;
+    }   
+
+    .textImage{
+        color: rgba(255, 255, 255, 0.6 );
+        margin: 6% 0;
+    }
+
+    .modal-content .iconImage{
+        height: auto;
+        width: 24px;
+    }
+
+    .close {
+        position: absolute;
+        right: 30px;
+        font-size: 30px;
+        font-weight: bold;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .modal{
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .modal img{
+        height: auto;
+        width: 100%;
+    }
+
+    .imgProyecto div img{
+        height: auto;
+        width: 24px;
+    }
+
+    .daTos {
+        justify-content: center;
+        margin: 5% 20%;
+    }
+    
+    .daTos article {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 200px;
+        height: 200px;
+        text-align: center;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
+        border-radius: 5%;
+    }
+    
+    .daTos article h2 {
+        font-size: 60px;
+        font-weight: 800;
+        color: #141B2D;
+    }
+    
+    .daTos article h4 {
+        font-size: 24px;
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.3);
     }
 
     /* Pagina sobre mi */
@@ -944,6 +1109,7 @@ body, html {
     }
 
     .vaLor p {
+        align-items: flex-end;
         margin: 0;
     }
 
@@ -1014,8 +1180,6 @@ body, html {
         font-weight: 400;
     }
 
-    
-    
     .seCcioneSActiva{
         color: #01F593;
         text-decoration: none;

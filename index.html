@@ -24,7 +24,7 @@
         <input type="checkbox" name="" id="meNu">
         <img class="LogotipoNav" src="./assets/LOGOTIPO 1.svg" alt="Logo">
         <ul>
-            <li>
+            <li class="paginaActiva">
                 <a class="seccionesActiva" href="#">Inicio</a>
             </li>
             <li>
@@ -39,15 +39,26 @@
     <main>
         <div class="baCk">
             <div class="PrinCipal">
-                <h1>Alta <strong>calidad visual</strong> para tu sitio web</h1>
+                <h1>Diseño y Desarrollo<br>de tu sitio web</h1>
+                <p>Hola, me especializo en el diseño web y lo complemento con conocimientos en desarrollo web<br>utilizando HTML, CSS y JavaScript. Si necesitas alguno de mis servicios, puedes contactarme<br>haciendo clic en el botón de "Contactar", o aquí encontrarás más información sobre mí.</p>
                 <button class="buttonContacto"><a class="buttonContactar" href="https://ig.me/m/barrale_design" target="_blank">Contactar</a></button>
             </div>
             <div class="habiliDades">
-                <h4>Desarrollo Web</h4>
+                <h4>Desarrollo Front-end</h4>
                 <div class="lineaVertical"></div>
                 <h4>Diseño Gráfico</h4>
                 <div class="lineaVertical"></div>
-                <h4>Diseño Web</h4>
+                <h4>Diseño UX/UI</h4>
+            </div>
+            <div class="programasDeUso">
+                <img class="iconoPrograma" src="./assets/icono-html.png" alt="">
+                <img class="iconoPrograma" src="./assets/icono-css.png" alt="">
+                <img class="iconoPrograma" src="./assets/icono-javascript.png" alt="">
+                <img class="iconoPrograma" src="./assets/icono-figma.png" alt="">
+                <img class="iconoPrograma" src="./assets/icono-illustrator.png" alt="">
+                <img class="iconoPrograma" src="./assets/icono-after.png" alt="">
+                <img class="iconoPrograma" src="./assets/icono-photoshop.png" alt="">
+                <img class="iconoPrograma" src="./assets/icono-wordpress.png" alt="">
             </div>
         </div>
 
@@ -65,9 +76,17 @@
                     </div>
                     <div class="imgProyecto">
                         <img class="imProyectos" src="./assets/TODO-PORTADA.jpg" 
-                            data-title="Título del Proyecto 1" 
-                            data-text="Esta es una breve descripción del proyecto 1." 
-                            alt="Proyecto 1"> 
+                            data-title="class" 
+                            data-text="Proyecto diseñado en figma y desarrollado con html y css" 
+                            alt="Proyecto 1"
+                            data-icon="./assets/icono-figma.png"
+                            data-icon2="./assets/icono-html.png"
+                            data-icon3="./assets/icono-css.png">
+                            <div>
+                                <img class="" src="./assets/icono-figma.png">
+                                <img class="" src="./assets/icono-css.png">
+                                <img class="" src="./assets/icono-html.png">
+                            </div>
                     </div>
                 </div>
             </div>
@@ -83,10 +102,18 @@
                         </div>
                     </div>
                     <div class="imgProyecto">
-                        <img class="imProyectos" src="./assets/TODO-PORTADA.jpg" 
-                            data-title="Título del Proyecto 1" 
-                            data-text="Esta es una breve descripción del proyecto 1." 
-                            alt="Proyecto 1"> 
+                        <img class="imProyectos" src="./assets/Class-Portada.jpg" 
+                            data-title="Cambio" 
+                            data-text="Prototipo diseñado en Figma, para una app de clases." 
+                            alt="Proyecto 1"
+                            data-icon="./assets/icono-photoshop.png"
+                            data-icon2="./assets/icono-illustrator.png"
+                            data-icon3="./assets/icono-figma.png"> 
+                            <div>
+                                <img class="" src="./assets/icono-photoshop.png">
+                                <img class="" src="./assets/icono-illustrator.png">
+                                <img class="" src="./assets/icono-figma.png">
+                            </div>
                     </div>
                 </div>
             </div>
@@ -102,13 +129,31 @@
                         </div>
                     </div>
                     <div class="imgProyecto">
-                        <img class="imProyectos" src="./assets/TODO-PORTADA.jpg" 
-                            data-title="Título del Proyecto 1" 
-                            data-text="Esta es una breve descripción del proyecto 1." 
-                            alt="Proyecto 1"> 
+                        <img class="imProyectos" src="./assets/MIXTO-PORTADA.jpg" 
+                            data-title="Mixto" 
+                            data-text="E-commerce de un restaurante para reservar lugar y pedir comida." 
+                            alt="Proyecto 1"
+                            data-icon="./assets/icono-figma.png"
+                            data-icon2="./assets/icono-photoshop.png"
+                            data-icon3="./assets/icono-wordpress.png">
+                            <div>
+                                <img class="" src="./assets/icono-figma.png">
+                                <img class="" src="./assets/icono-photoshop.png">
+                                <img class="" src="./assets/icono-wordpress.png">
+                            </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="daTos">
+            <article>
+                <h2>+5</h2>
+                <h4>Proyectos</h4>
+            </article>
+            <article>
+                <h2>+3</h2>
+                <h4>Experiencia</h4>
+            </article>
         </div>
     </main>
     
@@ -119,6 +164,11 @@
             <img id="modalImage" src="" alt="Imagen de proyecto">
             <h3 class="titleImage"></h3>
             <p class="textImage"></p>
+            <div class="ConocimientosUsados">
+                <img id="modalIcon" class="iconImage" src="" alt="Icono del proyecto">
+                <img id="modalIcon2" class="iconImage" src="" alt="Icono del proyecto">
+                <img id="modalIcon3" class="iconImage" src="" alt="Icono del proyecto">
+            </div>
         </div>
     </div>
     </main>
