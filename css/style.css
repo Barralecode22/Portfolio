@@ -382,6 +382,7 @@ body, html {
     /* Pagina precios */
 
     main .cardDePrecios{
+        gap: 5%;
         align-items: center;
         display: inline-flex;
         flex-direction: row;
