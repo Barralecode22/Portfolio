@@ -1,0 +1,1310 @@
+
+* {
+    padding: 0;
+    margin: 0;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+    font-family: "Inter", sans-serif;
+}
+
+/* Loading... */
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: "Inter", sans-serif;
+}
+
+#loader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    z-index: 10;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #01F593;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+
+@media (min-width: 1440px){
+    
+    body .nAv {
+        padding: 0.1% 3% 0.1% 3%;
+        border-radius: 25px;
+        margin: 2% 15%;
+        display: flex;
+        align-items: center;
+        background-color: #141B2D;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        position: relative;
+    }
+
+    label{
+        display: none;
+    }
+
+    header ul {
+        padding: 0;
+        min-height:max-content;
+        overflow:visible;
+        width: auto;
+        display: flex;
+        position:static;
+        flex-direction: row;
+    }
+
+    header ul li {
+        margin: 0;
+    }
+
+    li .seccIones {
+        color: rgba(255, 255, 255, 0.5);
+        transition: color 0.3s;
+        cursor: pointer;
+        font-weight:500;
+        font-size: 16px;
+        white-space: nowrap;
+    }
+
+    ul li{
+        align-items: center;
+        display: flex;
+        padding: 10px 15px;
+    }
+
+    ul li .seccionesActiva{
+        font-size: 16px;
+    }
+
+    .paginaActiva:hover{
+        background-color: #141B2D;
+    }
+
+    li:hover{
+        border-radius: 5px;
+        background-color: #2b3d66;
+        padding: 10px 15px;
+    }
+
+    .seccIones:hover{
+    color: #01F593;
+    white-space: nowrap;
+}
+
+    .nAv .LogotipoNav{
+        height: auto;
+        width: 150px;
+        margin: 0;
+    }
+
+    main .baCk{
+        padding: 2% 10% 2% 10%;
+    }
+
+    .PrinCipal h1{
+        color: #141B2D;
+        font-weight: 700;
+        font-size: 70px;
+    }
+
+    .baCk .PrinCipal p{
+        margin-top: 2%;
+        text-align: center;
+        color: rgba(0, 0, 0, 0.4);
+        font-weight: 100;
+        font-size: 18px;
+    }
+
+    .PrinCipal .buttonContacto{
+        border: none;
+        font-weight: 500;
+        font-size: 20px;
+        padding: 15px 30px;
+        border-radius: 10px;
+        margin-top: 3%;
+        cursor: pointer;
+    }
+
+    .PrinCipal .buttonContactar{
+        font-size: 20px;
+    }
+
+    .buttonContacto:hover{
+        background-color: #2b3d66;
+    }
+
+    .baCk .habiliDades{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 5%;
+        margin-bottom: 5% ; 
+    }
+
+    .baCk .lineaVertical{
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .baCk .habiliDades h4{
+        color: rgba(0, 0, 0, 0.4);
+        font-size: 18px;
+        font-weight: 400;
+    }
+
+    .programasDeUso{
+        margin-top: 5%;
+        justify-content: center;
+        gap: 2%;
+        display: flex;
+    }
+
+    .programasDeUso .iconoPrograma{
+        border-radius: 10px;
+        padding: 1.7%;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    }
+
+    .proyectosHorizontal{
+        justify-content:space-evenly;
+        display: flex;
+        margin: 7%;
+    }
+
+    .proyectosHorizontal .seccionProyectos{
+        margin-top: 0%;
+    }
+
+    div .proYectos{
+        justify-content:start;
+    }
+
+    .proYectos p{
+        margin-top: 10%;
+    }
+
+    .imgProyecto .imProyectos{
+        border-radius: 10px;
+        height: auto;
+        width: 350px;
+        cursor: pointer;
+        transition: transform 300ms ease-in-out
+    }
+
+    .imProyectos:hover{
+        transform: scale(1.10);
+        transition: transform 300ms ease-in-out;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+    
+    body .modal .modal-content {
+        position: relative;
+        padding: 20px;
+        margin: 10% auto;
+        width: 80%;
+        max-width: 600px;
+        background-color: #141B2D;
+    }
+    
+    .modal-content img {
+        border-radius: 10px;
+        width: 100%;
+        height: auto;
+        margin-bottom: 15px;
+    }
+    
+    .modal-content .titleImage {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 0;
+        color: #fff;
+    }
+    
+    .modal-content .textImage {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.6);
+        margin: 2.5% 0;
+        
+    }
+
+    .modal-content .iconImage{
+        height: auto;
+        width: 24px;
+        margin-bottom: 0;
+        border-radius: 0;
+    }
+
+    .ConocimientosUsados{
+        align-items: center;
+        display: flex;
+        gap: 2%;
+    }
+    
+    .close {
+        position: absolute;
+        right: 25px;
+        font-size: 30px;
+        font-weight: bold;
+        color: #333;
+        cursor: pointer;
+    }
+
+    .imgProyecto div{
+        margin-top: 3%;
+    }
+
+    .imgProyecto div img{
+        border-radius: 5px;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+        background-color: #fff;
+        padding: 2%;
+        height: auto;
+        width: 24px;
+    }
+
+    .daTos {
+        display: flex;
+        justify-content: center;
+        margin: 5% 0;
+        gap: 5%;
+    }
+    
+    .daTos article {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 200px;
+        height: 200px;
+        text-align: center;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
+        border-radius: 5%;
+    }
+    
+    .daTos article h2 {
+        font-size: 60px;
+        font-weight: 800;
+        color: #141B2D;
+    }
+    
+    .daTos article h4 {
+        font-size: 24px;
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.3);
+    }
+
+    .iconRedes{
+        height: auto;
+        width: 30px;
+    }
+
+    .ConocimientosUsados .ButtonView{
+        margin-left: 76%;
+    }
+
+    .ButtonViewMore{
+        border-radius: 5PX;
+        padding: 5PX 15PX;
+        border: none;
+        background: #FF0942;
+        color: #ffffff;
+        cursor: pointer;
+    }
+
+    .ButtonViewMore:hover{
+        transition: 0.1s all ease-out;
+        scale: 1.1;
+    }
+
+    /* Pagina sobre mi */
+
+    .sobreMi {
+        margin: 0 0;
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        gap: 5%;
+    }
+
+    div .imagenYo{
+        width: auto;
+        height: auto;
+        grid-column: 1/2;
+        margin-bottom: 10%;
+    }
+
+    .listadoDeConocimientos{
+        display: flex;
+    }
+
+    .quienSoy{
+        grid-column: 2/4;
+        margin-left: 10%;
+    }
+
+    .listadoDeConocimientos .conoCimientos{
+        flex-wrap: nowrap;
+        margin: 1.8%;
+        padding: 3%;
+        color: rgba(0, 0, 0, 0.4);
+        border-radius: 15px;
+        box-shadow: 2px 2px 8px 0 rgba(20, 20, 20, 0.1)
+    }
+
+    /* Pagina precios */
+
+    main .cardDePrecios{
+        align-items: center;
+        display: inline-flex;
+        flex-direction: row;
+        margin: 0 20%;
+    }
+
+    .cardDePrecios .caRd{
+        margin: 2% 0;
+        padding: 4%;
+        margin-right: 2%;
+    }
+
+    .caRd .tituLo .RecomenDado{
+        margin-left: 11%;
+    }
+
+    .caRd .LinEas{
+        width: 260px;
+        margin: 5% 0;
+    }
+
+    .caRd .vaLor{
+        align-items:start;
+        height: 0%;
+        margin-bottom: 20%;
+    }
+
+    .caRd .texTo{
+        color: rgba(0, 0, 0, 0.4);
+    }
+
+    .caRd .PacK{
+        margin-bottom:0;
+    }
+
+    .Solicitar{
+        padding: none;
+    }
+
+    .buttonSolicitar{
+        margin-top: 3%;
+        background-color: #141B2D;
+        padding: 8% 40%;
+        cursor: pointer;
+        border-radius: 10px;
+        border: none;
+    }
+
+    .buttonSolicitarinsta{
+        font-size: 16px;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .buttonSolicitar:hover{
+        background-color: #2b3d66;
+    }
+
+    main .ImporTante{
+        margin: 1% 20%;
+    }
+
+    .tituloDeImportante{
+        color: #FF0942;
+        font-weight: 700;
+        margin-bottom: 0.5%;
+    }
+
+    /* footer */
+
+    footer{
+        justify-content: space-around;
+        align-items: center;
+        display: flex;
+    }
+
+    footer .secCiones{
+        font-size: 20px;
+        margin-bottom: 0;
+    }
+
+    footer .seCciones{
+        font-size: 16px;
+    }
+
+    footer .seCcioneSActiva{
+        font-size: 16px;
+    }
+
+    div .Redes {
+        justify-content:start;
+    }
+
+    div .derechosReservados{
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 14px;
+        padding: 0 0 3% 0;
+    }
+
+}
+
+
+@media (min-width: 428px) {
+
+    .nAv {
+        padding: 5% 10% 0 10%;
+        display: flex;
+        align-items: center;
+        background-color: #ffffff;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        position: relative;
+    }
+
+    svg {
+        margin-right: 65%;
+    }
+
+    .LogotipoNav{
+        height: auto;
+        width: 100px;
+        margin: 10% 0;
+    }
+    
+    li .seccionesActiva{
+        text-decoration: none;
+        color: #01F593;
+        font-weight: 500;
+        font-size: 20px;
+    }
+    
+    .seccIones {
+        font-weight: 500;
+        font-size: 20px;
+        text-decoration: none;
+        color: #fff;
+        display: block;
+    }
+
+    #meNu:checked ~ ul {
+        max-height: 500px; 
+        transition: max-height 0.5s ease-in;
+    }
+
+    #meNu {
+        display: none;
+    }
+
+    .PrinCipal {
+        flex-direction: column;
+        align-items: center;
+        display: flex;
+    }
+    
+    strong{
+        color: #FF0942;
+    }
+
+    h1 {
+        text-align: center;
+        font-weight: 700;
+        font-size: 55px;
+    }
+
+    .buttonContacto {
+        border-radius: 50px;
+        background-color: #141B2D;
+        margin-top: 15%;
+    }
+
+    .buttonContactar {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .habiliDades {
+        align-items: center;
+        display: flex;
+        gap: 3%;
+    }
+
+    .lineaVertical {
+        color: rgba(0, 0, 0, 0.4);
+        height: 20px;
+        width: 2px;
+    }
+
+    .seccionProyectos {
+        margin-top: 10%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        white-space: nowrap;
+    }
+
+    .proYectos {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10%;
+    }
+
+    .imgProyecto{
+        margin-top: 5%;
+    }
+
+    .imProyectos{
+        border-radius: 10px;
+        height: auto;
+        width: 300px;
+    }
+
+    .ButtonView{
+        margin-left: 76%;
+    }
+
+    .ButtonViewMore{
+        border-radius: 5PX;
+        padding: 5PX 15PX;
+        border: none;
+        background: #FF0942;
+        color: #ffffff;
+        cursor: pointer;
+    }
+
+    .modal-content .ConocimientosUsados{
+        display: flex;
+    }
+
+    .ButtonViewMore:hover{
+        transition: 0.1s all ease-out;
+        scale: 1.1;
+    }
+
+    .modal .modal-content{
+        margin: 20% auto;
+    }
+
+    /* Pagina sobre mi */
+
+    .iconos{
+        margin-bottom: 3%;
+    }
+
+    .tituloSobreMi{
+        margin-bottom: 3%;
+    }
+
+    .sobreMi{
+        margin: 5% 10%;
+    }
+
+    .listadoDeConocimientos{
+        display: flex;
+    }
+
+    .conoCimientos{
+        font-size: 10px;
+        flex-wrap: nowrap;
+        margin: 1.8%;
+        padding: 2%;
+        color: rgba(0, 0, 0, 0.4);
+        border-radius: 5px;
+        box-shadow: 2px 2px 8px 0 rgba(20, 20, 20, 0.1);
+        margin-bottom: 5%;
+    }
+
+    .textoSobreMi{
+        font-size: 14px;
+        font-weight: 300;
+        margin-bottom: 5%;
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    /* Pagina de Precios */
+
+    .caRd{
+        margin: 8% 0;
+        border-radius: 20px;
+        padding: 5%;
+        box-shadow: 2px 2px 8px 0 rgba(20, 20, 20, 0.3)
+    }
+
+    .tituLo{
+        align-items: flex-end; 
+        gap: 15%;
+        display: flex;
+    }
+
+    .tituLo .RecomenDado{
+        margin-left: 21%;
+        font-size: 16px;
+    }
+
+    .RecomenDado{
+        color: #39BE88;
+    }
+
+    .cardDePrecios{
+        flex-direction: column;
+        margin: 10%;
+    }
+
+    .LinEas{
+        margin: 5% 0;
+        height: 1px;
+        background-color: #141B2D;
+        width: 305px;
+    }
+
+    .vaLor {
+        display: flex;
+        align-items: flex-end; 
+        height: 100%;
+        margin-bottom: 3%;
+    }
+
+    .texTo{
+        margin-bottom: 10%;
+        color: rgba(0, 0, 0, 0.4);
+    }
+
+    .vaLor p {
+        margin: 0;
+    }
+
+    .PreCio{
+        font-size: 34px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .PacK{
+        gap: 5%;
+        font-size: 14px;
+        align-items: center;
+        display: flex;
+    }
+
+    .PacK h3{
+        margin-bottom: 5%;
+    }
+
+    .PacK p{
+        margin-bottom: 5%;
+    }
+
+    .Solicitar{
+        padding: none;
+    }
+
+    .buttonSolicitar{
+        margin-top: 3%;
+        background-color: #141B2D;
+        padding: 8% 40%;
+        cursor: pointer;
+        border-radius: 10px;
+        border: none;
+    }
+
+    .buttonSolicitarinsta{
+        font-size: 16px;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .ImporTante{
+        margin: 3% 10%;
+    }
+
+    .tituloDeImportante{
+        color: #FF0942;
+        font-weight: 700;
+        margin-bottom: 0.5%;
+    }
+
+    /* Footer */
+
+    footer{
+        background-color: #141B2D;
+    }
+
+    .logoFooter{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    h5{
+        font-weight: 400;
+    }
+
+    .secCiones{
+        margin-bottom: 10%;
+        gap: 25px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+
+    .seCciones{
+        color: rgba(255, 255, 255, 0.5);
+        transition: color 0.3s;
+        text-decoration: none;
+    }
+
+    .seCciones:hover{
+        color: #01F593;
+    }
+
+    .Redes{
+        margin-bottom: 5%;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        gap: 20px;
+    }
+
+    a .iconRedes{
+        height:auto ;
+        width:35px ;
+    }
+
+    .derechosReservados{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 300;
+        padding: 0 0 10% 0;
+    }
+}
+
+
+@media (min-width: 320px) {
+    .nAv {
+        padding: 5% 10% 0 10%;
+        display: flex;
+        align-items: center;
+        background-color: #ffffff;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        position: relative;
+    }
+
+    svg {
+        margin-right: 65%;
+    }
+
+    ul {
+        list-style: none;
+        background-color: #141B2D;
+        flex-direction: column;
+        overflow: hidden;
+        width: 30%; 
+        position: absolute;
+        top: 100%; 
+        left: 0;
+        max-height: 0; 
+        transition: max-height 0.5s ease-out;
+        padding: 0 60% 0 10%;
+    }
+
+    ul li {
+        margin: 60% 0;
+        text-align: left;
+    }
+
+    .seccionesActiva{
+        text-decoration: none;
+        color: #01F593;
+        font-weight: 500;
+        font-size: 20px;
+    }
+
+    .seccIones {
+        padding: 0;
+        font-weight: 500;
+        font-size: 20px;
+        text-decoration: none;
+        color: #fff;
+        display: block;
+    }
+
+    .LogotipoNav{
+        margin: 10% 0;
+        height: auto;
+        width: 100px;
+    }
+
+    #meNu {
+        display: none;
+    }
+
+    #meNu:checked ~ ul {
+        max-height: 500px;
+        transition: max-height 0.5s ease-in;
+    }
+
+    .baCk {
+        padding: 10% 10% 5% 10%;
+    }
+
+    .PrinCipal {
+        flex-direction: column;
+        align-items: center;
+        display: flex;
+    }
+    
+    strong{
+        color: #FF0942;
+    }
+
+    h1 {
+        text-align: center;
+        font-weight: 700;
+        font-size: 35px;
+    }
+
+    .PrinCipal p{
+        margin-top: 7%;
+        text-align: center;
+        color: rgba(0, 0, 0, 0.4);
+        font-weight: 100;
+        font-size: 15px;
+    }
+
+    .buttonContacto {
+        font-size: 18px;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #141B2D;
+        margin-top: 10%;
+    }
+
+    .buttonContactar {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .habiliDades {
+        align-items: center;
+        margin-top: 15%;
+        display: flex;
+        gap: 2%;
+        margin-bottom: 10%;
+    }
+
+    .habiliDades h4{
+        color: rgba(0, 0, 0, 0.4);
+        font-size: 14px;
+        font-weight: 400;
+    } 
+
+    .lineaVertical {
+        height: 20px;
+        background-color: #141B2D;
+        width: 1px;
+    }
+
+    .iconoPrograma{
+        border-radius: 5px;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        padding: 5%;
+    }
+
+    .seccionProyectos {
+        margin-top: 10%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        white-space: nowrap;
+    }
+
+    .proYectos {
+        display: flex;
+        align-items: center;
+        gap: 5%;
+    }
+
+    .proYectos div img {
+        width: auto;
+        height: 30px;
+    }
+
+    h3 {
+        font-size: 16px;
+        
+    }
+
+    .tituloProyect{
+        color: #2b3d66;
+    }
+
+    p{
+        font-size: 14px;
+    }
+
+    .areaDeDiseño{
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    .imgProyecto{
+        margin-top: 5%;
+    }
+
+    .imProyectos{
+        border-radius: 5px;
+        height: auto;
+        width: 250px;
+    }
+
+    .modal-content {
+        border-radius: 10px;
+        position: relative;
+        padding: 20px;
+        width: 80%;
+        max-width: 600px;
+        background-color: #141B2D;
+    }
+
+    .titleImage{
+        font-size: 20px;
+        margin-top: 5%;
+        color: #fff;
+    }   
+
+    .textImage{
+        color: rgba(255, 255, 255, 0.6 );
+        margin: 6% 0;
+    }
+
+    .modal-content .iconImage{
+        height: auto;
+        width: 24px;
+    }
+
+    .close {
+        position: absolute;
+        right: 30px;
+        font-size: 30px;
+        font-weight: bold;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .modal{
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .modal img{
+        height: auto;
+        width: 100%;
+    }
+
+    .imgProyecto div img{
+        height: auto;
+        width: 24px;
+    }
+
+    .daTos {
+        justify-content: center;
+        margin: 5% 20%;
+    }
+    
+    .daTos article {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 200px;
+        height: 200px;
+        text-align: center;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
+        border-radius: 5%;
+    }
+    
+    .daTos article h2 {
+        font-size: 60px;
+        font-weight: 800;
+        color: #141B2D;
+    }
+    
+    .daTos article h4 {
+        font-size: 24px;
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.3);
+    }
+
+    .ButtonView{
+        margin-left: 48%;
+    }
+
+    .ButtonViewMore{
+        border-radius: 5PX;
+        padding: 5PX 15PX;
+        border: none;
+        background: #FF0942;
+        color: #ffffff;
+        cursor: pointer;
+    }
+
+    .modal-content .ConocimientosUsados{
+        display: flex;
+    }
+
+    .ButtonViewMore:hover{
+        transition: 0.1s all ease-out;
+        scale: 1.1;
+    }
+
+    .modal-content{
+        margin: 60% auto;
+    }
+
+    /* Pagina sobre mi */
+
+    .sobreMi{
+        margin: 5% 10% 5% 10%;
+    }
+
+    .iconos{
+        margin-bottom: 3%;
+    }
+
+    .tituloSobreMi{
+        color: #141B2D;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 3%;
+    }
+
+    .quienSoy .textoSobreMi{
+        margin-bottom: 5%;
+    }
+
+    .listadoDeConocimientos{
+        display: flex;
+    }
+
+    .conoCimientos{
+        font-size: 9px;
+        flex-wrap: nowrap;
+        margin: 1.5%;
+        padding: 4%;
+        color: rgba(0, 0, 0, 0.4);
+        border-radius: 5px;
+        box-shadow: 2px 2px 8px 0 rgba(20, 20, 20, 0.1);
+        margin-bottom: 10%;
+    }
+
+    .textoSobreMi{
+        color: rgba(0, 0, 0, 0.7);
+        margin-bottom: 15%;
+    }
+
+    .imagenYo{
+        margin-bottom: 5%;
+        height: auto;
+        width: 250px;
+    }
+
+    /* Pagina de precios */
+
+    .caRd{
+        margin: 8% 0;
+        border-radius: 20px;
+        padding: 10%;
+        box-shadow: 2px 2px 8px 0 rgba(20, 20, 20, 0.3)
+    }
+
+    .tituLo{
+        align-items: flex-end; 
+        gap: 15%;
+        display: flex;
+    }
+
+    .tituloRecomendado {
+        font-size: 16px;
+    }
+    
+    .RecomenDado{
+        font-size: 14px;
+        color: #39BE88;
+    }
+
+    .cardDePrecios{
+        flex-direction: column;
+        margin: 10%;
+    }
+
+    .LinEas{
+        margin: 5% 0;
+        height: 1px;
+        background-color: #141B2D;
+        width: 205px;
+    }
+
+    .vaLor {
+        display: flex;
+        align-items: flex-end; 
+        height: 100%;
+        margin-bottom: 3%;
+    }
+
+    .vaLor p {
+        align-items: flex-end;
+        margin: 0;
+    }
+
+    .PreCio{
+        font-size: 34px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .PacK{
+        gap: 5%;
+        font-size: 14px;
+        align-items: flex-start;
+        display: flex;
+    }
+
+    .PacK h3{
+        margin-bottom: 15%;
+    }
+
+    .PacK p{
+        margin-bottom: 10%;
+    }
+
+    .Solicitar{
+        padding: none;
+    }
+
+    .buttonSolicitar{
+        margin-top: 3%;
+        background-color: #141B2D;
+        padding: 8% 36%;
+        cursor: pointer;
+        border-radius: 10px;
+        border: none;
+    }
+
+    .buttonSolicitarinsta{
+        font-size: 16px;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .ImporTante{
+        margin: 3% 10%;
+    }
+
+    .tituloDeImportante{
+        color: #FF0942;
+        font-weight: 700;
+        margin-bottom: 0.5%;
+    }
+
+    /* Footer */
+
+    footer{
+        background-color: #141B2D;
+    }
+
+    .logoFooter{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    h5{
+        font-size: 12px;
+        font-weight: 400;
+    }
+
+    .seCcioneSActiva{
+        color: #01F593;
+        text-decoration: none;
+    }
+
+    .secCiones{
+        margin-bottom: 10%;
+        gap: 25px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+
+    .seCciones{
+        text-decoration: none;
+        color: #fff;
+    }
+
+    .Redes{
+        margin-bottom: 5%;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        gap: 10px;
+    }
+
+    .iconRedes{
+        height:auto ;
+        width:25px ;
+    }
+
+    .derechosReservados{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 10px;
+        font-weight: 300;
+        padding: 0 0 10% 0;
+    }
+}
