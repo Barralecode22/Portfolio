@@ -291,14 +291,14 @@ body, html {
         width: 24px;
     }
 
-    .daTos {
+    main .daTos {
         display: flex;
         justify-content: center;
         margin: 5% 0;
         gap: 5%;
     }
     
-    .daTos article {
+    main .daTos article {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -310,13 +310,13 @@ body, html {
         border-radius: 5%;
     }
     
-    .daTos article h2 {
+    main .daTos article h2 {
         font-size: 60px;
         font-weight: 800;
         color: #141B2D;
     }
     
-    .daTos article h4 {
+    main .daTos article h4 {
         font-size: 24px;
         font-weight: 500;
         color: rgba(0, 0, 0, 0.3);
@@ -407,7 +407,7 @@ body, html {
     .caRd .vaLor{
         align-items:start;
         height: 0%;
-        margin-bottom: 20%;
+        margin-bottom: 10%;
     }
 
     .caRd .texTo{
@@ -906,9 +906,9 @@ body, html {
     .PrinCipal p{
         margin-top: 7%;
         text-align: center;
-        color: rgba(0, 0, 0, 0.4);
+        color: rgba(0, 0, 0, 0.6);
         font-weight: 100;
-        font-size: 15px;
+        font-size: 14px;
     }
 
     .buttonContacto {
@@ -1052,8 +1052,10 @@ body, html {
     }
 
     .daTos {
+        display: flex;
         justify-content: center;
         margin: 5% 20%;
+        gap: 5%;
     }
     
     .daTos article {
@@ -1061,21 +1063,21 @@ body, html {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        width: 200px;
-        height: 200px;
+        width: 100px;
+        height: 100px;
         text-align: center;
         box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
         border-radius: 5%;
     }
     
     .daTos article h2 {
-        font-size: 60px;
+        font-size: 24px;
         font-weight: 800;
         color: #141B2D;
     }
     
     .daTos article h4 {
-        font-size: 24px;
+        font-size: 12px;
         font-weight: 500;
         color: rgba(0, 0, 0, 0.3);
     }
@@ -1207,6 +1209,10 @@ body, html {
         margin: 0;
     }
 
+    .caRd .texTo{
+        color: rgba(0, 0, 0, 0.6);
+    }
+
     .PacK{
         gap: 5%;
         font-size: 14px;
@@ -1243,6 +1249,10 @@ body, html {
 
     .ImporTante{
         margin: 3% 10%;
+    }
+
+    .ImporTante .texTo{
+        color: rgba(0, 0, 0, 0.6);
     }
 
     .tituloDeImportante{
