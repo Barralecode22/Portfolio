@@ -12,7 +12,7 @@ body, html {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: "Inter", sans-serif;
+    
 }
 
 #loader {
@@ -161,12 +161,24 @@ body, html {
         margin-bottom: 5% ; 
     }
 
+    .ServiciosDesign{
+        color: rgba(0, 0, 0, 0.4);
+        border-radius: 10px;
+        padding: 1%;
+        background-color: #fff;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    }
+
+    .ServiciosDesign:hover{
+        background-color: #2b3d66;
+        color: #01F593;
+    }
+
     .baCk .lineaVertical{
         background-color: rgba(0, 0, 0, 0.4);
     }
 
     .baCk .habiliDades h4{
-        color: rgba(0, 0, 0, 0.4);
         font-size: 18px;
         font-weight: 400;
     }
@@ -347,36 +359,90 @@ body, html {
 
     /* Pagina sobre mi */
 
-    .sobreMi {
-        margin: 0 0;
+    .textoSobreMi {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.1rem;
+        font-weight: 400;
+        line-height: 1.6;
+        color: #333;
+        text-align: justify;
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        border-left: 4px solid #009688;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+    }
+
+    body .sobreMi{
+        margin: 5% 1% 5% 1%;
         display: grid;
-        grid-template-columns: repeat(4,1fr);
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(1, 1fr);
         gap: 5%;
     }
 
-    div .imagenYo{
-        width: auto;
-        height: auto;
-        grid-column: 1/2;
-        margin-bottom: 10%;
+    .CircleSkills{
+        display: flex;
+        gap: 1%;
     }
 
-    .listadoDeConocimientos{
+    .SkillsElements{
+        align-items: center;
         display: flex;
+        border-radius: 15px;
+        padding: 5%;
+        background-color: white;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+        gap: 7%;
+        margin-bottom: 5%;
+    }
+
+    .SkillsElements2{
+        align-items: center;
+        display: flex;
+        border-radius: 15px;
+        padding: 5%;
+        background-color: white;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+        gap: 7%;
+        margin-bottom: 5%;
+    }
+
+    .SkillsLeft{
+        grid-column: 2/5;
+    }
+
+    .SkillsRight{
+        grid-column: 9/12;
+    }
+
+    .Circle{
+        border-radius: 150px;
+        height: 15px;
+        width: 15px;
+        background-color: #2b3d6646;
+    }
+    .CircleColor{
+        border-radius: 150px;
+        height: 15px;
+        width: 15px;
+        background-color: #01F593;
     }
 
     .quienSoy{
-        grid-column: 2/4;
-        margin-left: 10%;
+        grid-column: 5/9;
+        grid-row: 1/2;
     }
 
-    .listadoDeConocimientos .conoCimientos{
-        flex-wrap: nowrap;
-        margin: 1.8%;
-        padding: 3%;
-        color: rgba(0, 0, 0, 0.4);
-        border-radius: 15px;
-        box-shadow: 2px 2px 8px 0 rgba(20, 20, 20, 0.1)
+    .titleAboutMe{
+        align-items: center;
+        display: flex;
+        gap: 4%;
+    }
+
+    .TotalSkills{
+        color: #2b3d6646;
     }
 
     /* Pagina precios */
@@ -443,6 +509,15 @@ body, html {
 
     main .ImporTante{
         margin: 1% 20%;
+    }
+
+    .TituloDePrecios{
+        color: #2b3d66;
+        margin: 4% 20% 1% 20%;
+    }
+
+    .texTo2{
+        color: rgba(0, 0, 0, 0.6);
     }
 
     .tituloDeImportante{
@@ -564,6 +639,20 @@ body, html {
         gap: 3%;
     }
 
+    .ServiciosDesign{
+        color: rgba(0, 0, 0, 0.4);
+        border-radius: 10px;
+        padding: 1%;
+        background-color: #fff;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    }
+
+    .baCk .programasDeUso{
+        margin-top: 5%;
+        justify-content: center;
+        gap: 2%;
+    }
+
     .lineaVertical {
         color: rgba(0, 0, 0, 0.4);
         height: 20px;
@@ -623,38 +712,99 @@ body, html {
 
     /* Pagina sobre mi */
 
-    .iconos{
-        margin-bottom: 3%;
-    }
-
-    .tituloSobreMi{
-        margin-bottom: 3%;
-    }
-
-    .sobreMi{
-        margin: 5% 10%;
-    }
-
-    .listadoDeConocimientos{
-        display: flex;
-    }
-
-    .conoCimientos{
-        font-size: 10px;
-        flex-wrap: nowrap;
-        margin: 1.8%;
-        padding: 2%;
-        color: rgba(0, 0, 0, 0.4);
-        border-radius: 5px;
-        box-shadow: 2px 2px 8px 0 rgba(20, 20, 20, 0.1);
-        margin-bottom: 5%;
-    }
-
-    .textoSobreMi{
+    .sobreMi .quienSoy .textoSobreMi {
+        font-family: 'Poppins', sans-serif;
         font-size: 14px;
-        font-weight: 300;
+        font-weight: 400;
+        line-height: 1.6;
+        color: #333;
+        text-align: justify;
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        border-left: 4px solid #009688;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+    }
+
+    .sobreMi .SkillsLeft .SkillsElements{
+        align-items: center;
+        display: flex;
+        border-radius: 15px;
+        padding: 5%;
+        background-color: white;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+        gap: 7%;
         margin-bottom: 5%;
-        color: rgba(0, 0, 0, 0.5);
+    }
+
+    .sobreMi .SkillsRight.SkillsElements2{
+        align-items: center;
+        display: flex;
+        border-radius: 15px;
+        padding: 5%;
+        background-color: white;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+        gap: 7%;
+        margin-bottom: 5%;
+    }
+
+    .SkillsLeft .SkillsElements .CircleSkills{
+        display: flex;
+        gap: 1%;
+    }
+
+    .SkillsRight .SkillsElements2 .CircleSkills{
+        display: flex;
+        gap: 1%;
+    }
+
+    .sobreMi .SkillsLeft .SkillsElements img{
+        height: auto;
+        width: 40px;
+    }
+
+    .sobreMi .SkillsRight .SkillsElements2 img{
+        height: auto;
+        width: 40px;
+    }
+
+    .SkillsElements .CircleSkills .Circle{
+        border-radius: 150px;
+        height: 15px;
+        width: 15px;
+        background-color: #2b3d6646;
+    }
+
+    .SkillsElements2 .CircleSkills .Circle{
+        border-radius: 150px;
+        height: 15px;
+        width: 15px;
+        background-color: #2b3d6646;
+    }
+
+    .SkillsElements2 .CircleSkills .CircleColor{
+        border-radius: 150px;
+        height: 15px;
+        width: 15px;
+        background-color: #01F593;
+    }
+
+    .SkillsElements .CircleSkills .CircleColor{
+        border-radius: 150px;
+        height: 15px;
+        width: 15px;
+        background-color: #01F593;
+    }
+
+    .SkillsLeft .SkillsElements .TotalSkills{
+        font-size: 16px;
+        color: #2b3d6646;
+    }
+
+    .SkillsRight .SkillsElements2 .TotalSkills{
+        font-size: 16px;
+        color: #2b3d6646;
     }
 
     /* Pagina de Precios */
@@ -906,7 +1056,7 @@ body, html {
     .PrinCipal p{
         margin-top: 7%;
         text-align: center;
-        color: rgba(0, 0, 0, 0.6);
+        color: rgba(0, 0, 0, 0.8);
         font-weight: 100;
         font-size: 14px;
     }
@@ -937,6 +1087,14 @@ body, html {
         font-size: 14px;
         font-weight: 400;
     } 
+
+    .ServiciosDesign{
+        color: rgba(0, 0, 0, 0.4);
+        border-radius: 10px;
+        padding: 1%;
+        background-color: #fff;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    }
 
     .lineaVertical {
         height: 20px;
@@ -1113,46 +1271,107 @@ body, html {
     .sobreMi{
         margin: 5% 10% 5% 10%;
     }
-
-    .iconos{
-        margin-bottom: 3%;
+    
+    .sobreMi .quienSoy{
+        margin: 10% 0;
     }
 
-    .tituloSobreMi{
-        color: #141B2D;
-        font-size: 14px;
-        font-weight: 700;
-        margin-bottom: 3%;
-    }
-
-    .quienSoy .textoSobreMi{
-        margin-bottom: 5%;
-    }
-
-    .listadoDeConocimientos{
+    .quienSoy .titleAboutMe{
+        align-items: center;
         display: flex;
-    }
-
-    .conoCimientos{
-        font-size: 9px;
-        flex-wrap: nowrap;
-        margin: 1.5%;
-        padding: 4%;
-        color: rgba(0, 0, 0, 0.4);
-        border-radius: 5px;
-        box-shadow: 2px 2px 8px 0 rgba(20, 20, 20, 0.1);
-        margin-bottom: 10%;
-    }
-
-    .textoSobreMi{
-        color: rgba(0, 0, 0, 0.7);
-        margin-bottom: 15%;
-    }
-
-    .imagenYo{
+        gap: 4%;
         margin-bottom: 5%;
+    }
+
+    .titleAboutMe .iconos{
         height: auto;
-        width: 250px;
+        width: 40px;
+    }
+
+    .titleAboutMe .tituloSobreMi{
+        font-size: 16px;
+        color: #333;
+        font-weight: 700;
+    }
+
+    .quienSoy .textoSobreMi {
+        font-family: 'Poppins', sans-serif;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 1.6;
+        color: #333;
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 10px 20px;
+        border-left: 4px solid #009688;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+    }
+
+    .SkillsLeft .SkillsElements{
+        align-items: center;
+        display: flex;
+        border-radius: 15px;
+        padding: 5%;
+        background-color: white;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+        gap: 7%;
+        margin-bottom: 5%;
+        justify-content: center;
+    }
+
+    .SkillsLeft .SkillsElements img{
+        height: auto;
+        width: 24px;
+    }
+
+    .SkillsRight .SkillsElements2 img{
+        height: auto;
+        width: 24px;
+    }
+
+    .SkillsRight .SkillsElements2{
+        align-items: center;
+        display: flex;
+        border-radius: 15px;
+        padding: 5%;
+        background-color: white;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+        gap: 7%;
+        margin-bottom: 5%;
+        justify-content: center;
+    }
+
+    .SkillsElements2 .CircleSkills{
+        display: flex;
+        gap: 1%;
+    }
+    .SkillsElements .CircleSkills{
+        display: flex;
+        gap: 1%;
+    }
+
+    .CircleSkills .Circle{
+        border-radius: 150px;
+        height: 12px;
+        width: 12px;
+        background-color: #2b3d6646;
+    }
+    .CircleSkills .CircleColor{
+        border-radius: 150px;
+        height: 12px;
+        width: 12px;
+        background-color: #01F593;
+    }
+
+    .SkillsElements .TotalSkills{
+        font-size: 12px;
+        color: #2b3d6646;
+    }
+
+    .SkillsElements2 .TotalSkills{
+        font-size: 12px;
+        color: #2b3d6646;
     }
 
     /* Pagina de precios */
@@ -1259,6 +1478,15 @@ body, html {
         color: #FF0942;
         font-weight: 700;
         margin-bottom: 0.5%;
+    }
+
+    main .ImporTante{
+        margin: 5% 10%;
+    }
+
+    main .TituloDePrecios{
+        color: #2b3d66;
+        margin: 25% 10% 1% 10%;
     }
 
     /* Footer */
