@@ -127,11 +127,11 @@ body, html {
         font-size: 70px;
     }
 
-    .baCk .PrinCipal p{
+    .baCk .PrinCipal .TextoAboutMe{
         margin-top: 2%;
         text-align: center;
         color: rgba(0, 0, 0, 0.4);
-        font-weight: 100;
+        font-weight: 400;
         font-size: 18px;
     }
 
@@ -1053,12 +1053,12 @@ body, html {
         font-size: 35px;
     }
 
-    .PrinCipal p{
+    .TextoAboutMe{
         margin-top: 7%;
         text-align: center;
-        color: rgba(0, 0, 0, 0.8);
-        font-weight: 100;
-        font-size: 14px;
+        color: rgba(0, 0, 0, 0.4);
+        font-weight: 400;
+        font-size: 13px;
     }
 
     .buttonContacto {
