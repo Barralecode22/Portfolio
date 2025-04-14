@@ -278,7 +278,7 @@ body, html {
     .ConocimientosUsados{
         align-items: center;
         display: flex;
-        gap: 2%;
+        gap: 1%;
     }
     
     .close {
