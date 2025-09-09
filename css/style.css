@@ -145,7 +145,7 @@ body, html {
         font-weight: 700;
         font-size: 25px;
     }
-    
+
     strong{
         color: #FF0942;
     }
@@ -657,6 +657,11 @@ body, html {
         color: #2b3d66;
         margin: 25% 10% 1% 10%;
     }
+    
+    .logoFooter img{
+        height: auto;
+        width: 300px;
+    }
 }
 
 @media (min-width: 428px) {
@@ -771,13 +776,15 @@ body, html {
     .PacK p{
         margin-bottom: 5%;
     }
+
+    
 }
 
 @media (min-width: 1024px) {
     body .nAv {
         padding: 0.1% 3% 0.1% 3%;
         border-radius: 25px;
-        margin: 2% 10%;
+        margin: 1% 10%;
         display: flex;
         align-items: center;
         background-color: #141B2D;
@@ -917,6 +924,20 @@ body, html {
         display: flex;
     }
 
+    .proYectos div h3{
+        font-size: 24px;
+    }
+
+    .imgProyecto{
+        margin-top: 1.5%;
+    }
+
+    .imgProyecto div img{
+        height: auto;
+        width: 24px;
+        padding: 1%;
+    }
+
     .iconoPrograma{
         border-radius: 10px;
         padding: 1.7%;
@@ -925,12 +946,21 @@ body, html {
 
     .proyectosHorizontal{
         justify-content:space-evenly;
-        display: flex;
-        margin: 7%;
+        margin-top: 7%;
     }
 
     .proyectosHorizontal .seccionProyectos{
-        margin-top: 0%;
+        margin-top: 0;
+        margin-bottom: 5%;
+    }
+
+    .proYectos div h3{
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .proYectos div .areaDeDiseño{
+        font-size: 16px;
     }
 
     div .proYectos{
@@ -944,13 +974,13 @@ body, html {
     .imProyectos{
         border-radius: 10px;
         height: auto;
-        width: 280px;
+        width: 1024px;
         cursor: pointer;
         transition: transform 300ms ease-in-out
     }
 
     .imProyectos:hover{
-        transform: scale(1.10);
+        transform: scale(1.05);
         transition: transform 300ms ease-in-out;
     }
 
@@ -1018,14 +1048,14 @@ body, html {
     }
 
     .imgProyecto div{
-        margin-top: 3%;
+        margin-top: 1%;
     }
 
     .imgProyecto div img{
         border-radius: 5px;
         box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
         background-color: #fff;
-        padding: 2%;
+        padding: 1%;
         height: auto;
         width: 24px;
     }
@@ -1063,7 +1093,7 @@ body, html {
 
     .iconRedes{
         height: auto;
-        width: 30px;
+        width: 24px;
     }
 
     .ConocimientosUsados .ButtonView{
@@ -1316,10 +1346,7 @@ body, html {
 @media (min-width: 1920px) {
 
     /* Pagina de inicio */
-
-    .imProyectos {
-        width: 350px;
-    }
+    
 
     .buttonContacto{
         margin-top: 3%;
