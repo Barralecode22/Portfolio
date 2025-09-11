@@ -352,9 +352,7 @@ body, html {
         color: rgba(0, 0, 0, 0.3);
     }
 
-    .ButtonView{
-        margin-left: 48%;
-    }
+    
 
     .ButtonViewMore{
         border-radius: 5PX;
@@ -367,6 +365,7 @@ body, html {
 
     .modal-content .ConocimientosUsados{
         display: flex;
+        justify-content: space-between;
     }
 
     .ButtonViewMore:hover{
@@ -375,7 +374,7 @@ body, html {
     }
 
     .modal-content{
-        margin: 60% auto;
+        margin: 300px auto;
     }
 
     /* Footer */
@@ -753,9 +752,7 @@ body, html {
         font-size: 16px;
     }
 
-    .modal-content {
-        margin: 20% auto;
-    }
+    
 
     /* Pagina sobre mi */
 
@@ -998,7 +995,6 @@ body, html {
     .modal-content {
         position: relative;
         padding: 20px;
-        margin: 15% auto;
         width: 80%;
         max-width: 600px;
         background-color: #141B2D;
@@ -1359,10 +1355,6 @@ body, html {
     .habiliDades{
         margin-top: 5%;
         margin-bottom: 5%;
-    }
-
-    .modal-content {
-        margin: 10% auto;
     }
 
     /* Pagina sobre mi */
