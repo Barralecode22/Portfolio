@@ -1060,3 +1060,12 @@
                 text-align: center;
             }
         }
+
+        @media (max-width: 500px) {
+            .hero-subtitle{
+                font-size: 1rem;
+            }
+            .hero-description{
+                font-size: 14px;
+            }
+        }
