@@ -1068,4 +1068,17 @@
             .hero-description{
                 font-size: 14px;
             }
+            .tools-grid{
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
+            }
+        }
+
+            @media (max-width: 320px) {
+            .hero-subtitle{
+                font-size: 1rem;
+            }
+            .hero-description{
+                font-size: 14px;
+            }
         }
