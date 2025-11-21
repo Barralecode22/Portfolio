@@ -194,21 +194,21 @@
         const pricing = [
             {
                 name: 'Básico',
-                price: '150',
+                price: '100',
                 description: 'Ideal para presentar tu proyecto online',
                 link: 'https://ig.me/m/barrale_design',
                 features: [
                     'Landing Page responsive',
                     'Diseño personalizado',
                     'Optimización móvil',
-                    'Formulario de contacto',
+                    'Integración redes sociales',
                     '2 revisiones',
                     'Entrega en 5 días'
                 ]
             },
             {
                 name: 'Estándar',
-                price: '500',
+                price: '230',
                 description: 'Perfecto para negocios que inician',
                 link: 'https://ig.me/m/barrale_design',
                 features: [
@@ -223,12 +223,12 @@
             },
             {
                 name: 'Profesional',
-                price: '800',
+                price: '380',
                 description: 'Sitio completo en WordPress',
                 link: 'https://ig.me/m/barrale_design',
                 features: [
-                    'Web de 3 páginas en WordPress',
-                    'Panel de administración',
+                    'Web de 5 páginas',
+                    'Animaciones',
                     'Diseño personalizado',
                     'Blog integrado',
                     'Optimización SEO',
@@ -240,7 +240,7 @@
             },
             {
                 name: 'E-Commerce',
-                price: '1300',
+                price: '600',
                 description: 'Tienda online completa',
                 link: 'https://ig.me/m/barrale_design',
                 features: [
@@ -249,8 +249,8 @@
                     'Pasarela de pago integrada',
                     'Panel de gestión completo',
                     'Diseño responsive premium',
-                    'Optimización SEO avanzada',
-                    'Revisiones ilimitadas',
+                    'Diseño personalizado de tienda',
+                    '8 revisiones',
                     'Soporte por 90 días',
                     'Entrega en 20 días'
                 ]

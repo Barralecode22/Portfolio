@@ -2,7 +2,20 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            max-width: 100%;
+            box-sizing: border-box;
         }
+
+        /* Previene scroll lateral */
+        body, html {
+        overflow-x: hidden !important;
+        }
+
+        img {
+        max-width: 100%;
+        height: auto;
+        }
+
 
         :root {
             --bg-primary: #141B2D;
@@ -475,6 +488,11 @@
             transition: all 0.3s ease;
             cursor: pointer;
             aspect-ratio: 1;
+        }
+
+        body.light-mode .tool-card {
+            background-color: #f7f7f7;
+            color: #000;
         }
 
         .tool-card:hover {
@@ -1070,7 +1088,6 @@
             }
             .tools-grid{
                 grid-template-columns: repeat(3, 1fr);
-                gap: 1rem;
             }
         }
 
@@ -1080,5 +1097,8 @@
             }
             .hero-description{
                 font-size: 14px;
+            }
+            .tools-grid{
+                grid-template-columns: repeat(2, 1fr);
             }
         }
