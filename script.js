@@ -194,7 +194,7 @@
         const pricing = [
             {
                 name: 'Básico',
-                price: '100',
+                price: '100 USD',
                 description: 'Ideal para presentar tu proyecto online',
                 link: 'https://ig.me/m/barrale_design',
                 features: [
@@ -208,7 +208,7 @@
             },
             {
                 name: 'Estándar',
-                price: '230',
+                price: '230 USD',
                 description: 'Perfecto para negocios que inician',
                 link: 'https://ig.me/m/barrale_design',
                 features: [
@@ -223,7 +223,7 @@
             },
             {
                 name: 'Profesional',
-                price: '380',
+                price: '380 USD',
                 description: 'Sitio completo en WordPress',
                 link: 'https://ig.me/m/barrale_design',
                 features: [
@@ -240,7 +240,7 @@
             },
             {
                 name: 'E-Commerce',
-                price: '600',
+                price: '600 USD',
                 description: 'Tienda online completa',
                 link: 'https://ig.me/m/barrale_design',
                 features: [
