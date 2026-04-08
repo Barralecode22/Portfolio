@@ -187,6 +187,14 @@
                 tools: ['Illustrator', 'Photoshop', 'indesign'],
                 link: 'https://www.behance.net/gallery/196466261/Plataform-Revista-sobre-Steam',
                 linkText: 'Ver en Behance'
+            },
+            {
+                title: 'AOA Chile tv',
+                description: 'Un rediseño de landing para una agencia audiovisual debe priorizar impacto visual inmediato, mostrando trabajos reales y un mensaje claro con llamado a la acción.',
+                image: './src/frame 21.png',
+                tools: ['Figma', 'Photoshop', 'Wordpress'],
+                link: 'https://www.behance.net/gallery/247261557/AOA-CHILE-TV-Website',
+                linkText: 'Ver en Behance'
             }
         ];
 
@@ -219,7 +227,8 @@
                     '4 revisiones',
                     'Soporte por 30 días',
                     'Entrega en 10 días'
-                ]
+                ],
+                featured: true
             },
             {
                 name: 'Profesional',
@@ -235,8 +244,7 @@
                     '5 revisiones',
                     'Soporte por 60 días',
                     'Entrega en 12 días'
-                ],
-                featured: true
+                ]
             },
             {
                 name: 'E-Commerce',
