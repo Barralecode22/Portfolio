@@ -143,7 +143,7 @@
             {
                 title: 'FroshFeel',
                 description: 'Prototipo completo de una e-commerce con páginas de productos, carrito, favoritos y sistema de ubicación para ofrecer una experiencia de compra fluida.',
-                image: './src/FroshFeel-portada.jpg',
+                images: ['./src/FroshFeel-portada.jpg','./src/fros2.png','./src/fros3.png'],
                 tools: ['Figma', 'Photoshop', 'Illustrator'],
                 link: 'https://www.behance.net/gallery/235600881/FroshFeel-web-design-ecoomerce',
                 linkText: 'Ver en Behance'
@@ -151,7 +151,7 @@
             {
                 title: 'Mixto',
                 description: 'E-commerce online para restaurante con sistema de compras web y reserva de mesas, brindando una experiencia organizada, rápida y accesible para los usuarios.',
-                image: './src/Mixto-Portada.jpg',
+                images: ['./src/Mixto-Portada.jpg','./src/mix1.png','./src/mix2.png','./src/mix3.png'],
                 tools: ['Figma', 'Wordpress'],
                 link: 'https://www.behance.net/gallery/220909617/Mixto-Proyecto-web-Web-Design',
                 linkText: 'Ver Proyecto'
@@ -159,7 +159,7 @@
             {
                 title: 'Todo',
                 description: 'Diseño visual de una web para supermercado destacando productos clave para compras online y facilitando una experiencia más clara y eficiente de uso.',
-                image: './src/Todo-Portada.jpg',
+                images: ['./src/Todo-Portada.jpg','./src/todo1.png','./src/todo2.png','./src/todo3.png'],
                 tools: ['Figma', 'Illustrator', 'Photoshop'],
                 link: 'https://www.behance.net/gallery/237840385/TODO-Web-de-supermercado-en-html-y-css',
                 linkText: 'Ver en Behance'
@@ -167,7 +167,7 @@
             {
                 title: 'Cambioo',
                 description: 'Prototipo de una app inspirada en Mercado Libre y Amazon, brindando una experiencia de compra más segura y mejor adaptada a tus necesidades.',
-                image: './src/Cambio-Portada.jpg',
+                images: ['./src/Cambio-Portada.jpg','./src/camb1.png','./src/camb2.png'],
                 tools: ['Figma'],
                 link: 'https://www.behance.net/gallery/140718557/Cambioo-App-de-ventas-(diseno-uxui)',
                 linkText: 'Ver en Behance'
@@ -175,7 +175,7 @@
             {
                 title: 'Class',
                 description: 'Prototipo de una aplicación inspirada en Classroom con comentarios integrados, publicación de contenido y clases grabadas accesibles para todos.',
-                image: './src/Class-Portada.jpg',
+                images: ['./src/Class-Portada.jpg','./src/clas1.png','./src/clas2.png','./src/clas3.png'],
                 tools: ['Figma', 'Adobe XD'],
                 link: 'https://www.behance.net/gallery/195365343/Class-App-proyecto-UXUI',
                 linkText: 'Ver en Behance'
@@ -183,7 +183,7 @@
             {
                 title: 'Plataform',
                 description: 'Revista Platform lanza su edición gamer centrada en Steam, explorando características clave, tutoriales útiles, beneficios destacados y mucho contenido exclusivo adicional más.',
-                image: './src/Plataform-Portada.jpg',
+                images: ['./src/Plataform-Portada.jpg','./src/plata1.png','./src/plata2.png'],
                 tools: ['Illustrator', 'Photoshop', 'indesign'],
                 link: 'https://www.behance.net/gallery/196466261/Plataform-Revista-sobre-Steam',
                 linkText: 'Ver en Behance'
@@ -191,9 +191,17 @@
             {
                 title: 'AOA Chile tv',
                 description: 'Un rediseño de landing para una agencia audiovisual debe priorizar impacto visual inmediato, mostrando trabajos reales y un mensaje claro con llamado a la acción.',
-                image: './src/frame 21.png',
+                images: ['./src/frame 21.png','./src/aoa1.png','./src/aoa2.png','./src/aoa3.png'],
                 tools: ['Figma', 'Photoshop', 'Wordpress'],
                 link: 'https://www.behance.net/gallery/247261557/AOA-CHILE-TV-Website',
+                linkText: 'Ver en Behance'
+            },
+            {
+                title: 'Manos Caseras Vol. 1',
+                description: 'Un proyecto gastronómico casero que reúne recetas dulces, saladas y proteicas, destacando lo artesanal, nutritivo y accesible para el día a día.',
+                images: ['./src/unnamed.jpg','./src/manos1.png','./src/manos2.png','./src/manos3.png'],
+                tools: ['Indesign', 'Photoshop', 'illustrator'],
+                link: 'https://www.behance.net/gallery/249438661/Manos-Caseras-Vol-1-Diseno-de-Libro-de-Cocina',
                 linkText: 'Ver en Behance'
             }
         ];
@@ -279,33 +287,71 @@
             });
         }
 
-        // Render Projects
         function renderProjects() {
-            const projectsGrid = document.getElementById('projectsGrid');
-            projects.forEach(project => {
-                const card = document.createElement('div');
-                card.className = 'project-card';
-                card.innerHTML = `
-                    <div class="project-image" style="background-image: url('${project.image}'); background-size: cover; background-position: center;"></div>
-                    <div class="project-content">
-                        <h3>${project.title}</h3>
-                        <p>${project.description}</p>
-                        <div class="project-footer">
-                            <div class="tool-icons">
-                                ${project.tools.map(toolName => {
-                                    const tool = tools.find(t => t.name === toolName);
-                                    return tool ? `<div class="tool-icon2" title="${toolName}">${tool.svg}</div>` : '';
-                                }).join('')}
-                            </div>
-                            <a href="${project.link}" target="_blank" class="project-link">
-                                ${project.linkText} →
-                            </a>
-                        </div>
+    const projectsGrid = document.getElementById('projectsGrid');
+    projects.forEach(project => {
+        const card = document.createElement('div');
+        card.className = 'project-card';
+
+        // Usar la primera imagen como portada
+        const firstImage = project.images ? project.images[0] : project.image;
+
+        card.innerHTML = `
+            <div class="project-image" style="background-image: url('${firstImage}'); background-size: cover; background-position: center;"></div>
+            <div class="project-content">
+                <h3>${project.title}</h3>
+                <p>${project.description}</p>
+                <div class="project-footer">
+                    <div class="tool-icons">
+                        ${project.tools.map(toolName => {
+                            const tool = tools.find(t => t.name === toolName);
+                            return tool ? `<div class="tool-icon2" title="${toolName}">${tool.svg}</div>` : '';
+                        }).join('')}
                     </div>
-                `;
-                projectsGrid.appendChild(card);
-            });
-        }
+                    <a href="${project.link}" target="_blank" class="project-link">
+                        ${project.linkText} →
+                    </a>
+                </div>
+            </div>
+        `;
+        projectsGrid.appendChild(card);
+    });
+}
+
+        // Hover preview automático en cards de proyectos
+function addProjectHoverPreview() {
+    const projectCards = document.querySelectorAll('.project-card');
+
+    projectCards.forEach((card, index) => {
+        const imageDiv = card.querySelector('.project-image');
+
+        const previews = projects[index].images || [projects[index].image];
+
+        let current = 0;
+        let interval;
+
+        card.addEventListener('mouseenter', () => {
+            interval = setInterval(() => {
+                current = (current + 1) % previews.length;
+                imageDiv.style.backgroundImage = `url('${previews[current]}')`;
+            }, 400); // velocidad del cambio
+        });
+
+        card.addEventListener('mouseleave', () => {
+
+    clearInterval(interval);
+
+    current = 0;
+
+    const firstImage = projects[index].images
+        ? projects[index].images[0]
+        : projects[index].image;
+
+    imageDiv.style.backgroundImage = `url('${firstImage}')`;
+
+});
+    });
+}
 
         // Render Pricing
 function renderPricing() {
@@ -396,4 +442,86 @@ function renderPricing() {
             renderProjects();
             renderPricing();
             createParticles();
+            addProjectHoverPreview();
         });
+
+
+
+        /* =========================
+   3D COVERFLOW ROTATION
+========================= */
+
+const items = document.querySelectorAll('.coverflow-item');
+
+const positions = [
+    'left-3',
+    'left-2',
+    'left-1',
+    'active',
+    'right-1',
+    'right-2',
+    'right-3'
+];
+
+function rotateCoverflow(){
+
+    const current = [];
+
+    items.forEach(item => {
+
+        positions.forEach(pos => {
+
+            if(item.classList.contains(pos)){
+                current.push(pos);
+            }
+
+        });
+
+    });
+
+    current.unshift(current.pop());
+
+    items.forEach((item, index) => {
+
+        positions.forEach(pos => item.classList.remove(pos));
+
+        item.classList.add(current[index]);
+
+    });
+
+}
+
+setInterval(rotateCoverflow, 2500);
+
+
+
+
+
+const buttons = document.querySelectorAll(".category-btn");
+const grids = document.querySelectorAll(".videos-grid");
+
+buttons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        // ACTIVE BUTTON
+        buttons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+
+        // CATEGORY
+        const category = button.dataset.category;
+
+        // SHOW GRID
+        grids.forEach(grid => {
+
+            grid.classList.remove("active-grid");
+
+            if(grid.dataset.category === category){
+                grid.classList.add("active-grid");
+            }
+
+        });
+
+    });
+
+});
