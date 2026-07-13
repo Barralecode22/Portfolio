@@ -422,6 +422,7 @@ function addProjectHoverPreview() {
 }
 
         // Render Pricing
+// Render Pricing
 function renderPricing(category = 'web') {
     const pricingGrid = document.getElementById('pricingGrid');
     if (!pricingGrid) return;
@@ -439,6 +440,10 @@ function renderPricing(category = 'web') {
     data.forEach(plan => {
         const card = document.createElement('div');
         card.className = `price-card ${plan.featured ? 'featured' : ''}`;
+        
+        // CORRECCIÓN AQUÍ: Escapamos de forma segura el string para el atributo onclick HTML
+        const planNameSafe = plan.name.replace(/'/g, "\\'");
+
         card.innerHTML = `
             ${plan.featured ? '<div class="featured-badge">Más Popular</div>' : ''}
             <div class="price-header">
@@ -449,7 +454,7 @@ function renderPricing(category = 'web') {
             <ul class="price-features">
                 ${plan.features.map(feature => `<li><span class="check-icon">✓</span><span>${feature}</span></li>`).join('')}
             </ul>
-            <a href="javascript:void(0)" class="btn" onclick="seleccionarPlan('${plan.name}')" style="width: 100%; display:block; text-align:center; ${plan.featured ? '' : 'background: var(--bg-secondary); color: var(--text-primary);'}">
+            <a href="javascript:void(0)" class="btn" onclick="seleccionarPlan('${planNameSafe}')" style="width: 100%; display:block; text-align:center; ${plan.featured ? '' : 'background: var(--bg-secondary); color: var(--text-primary);'}">
                 Seleccionar Plan
             </a>
         `;
