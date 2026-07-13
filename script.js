@@ -1,3 +1,46 @@
+        // ==========================================
+// CONFIGURACIÓN E INICIALIZACIÓN DE FIREBASE
+// ==========================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+import { 
+    getFirestore, 
+    collection, 
+    addDoc, 
+    doc,        
+    setDoc,     
+    query, 
+    orderBy, 
+    limit, 
+    onSnapshot, 
+    serverTimestamp,
+    deleteDoc // <--- AGREGÁ ESTA FUNCIÓN ACÁ
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAuGvpVGinoycXN0N52yisDX1WvWYxUygE",
+  authDomain: "portfolio-7d3b4.firebaseapp.com",
+  projectId: "portfolio-7d3b4",
+  storageBucket: "portfolio-7d3b4.firebasestorage.app",
+  messagingSenderId: "478745682924",
+  appId: "1:478745682924:web:02c247756be99f5439d6c9",
+  measurementId: "G-0521JMV1YP"
+};
+
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const db = getFirestore(app);
+
+console.log("¡Firebase conectado!");
+        
+        
+        
+        
+        
+        
+        
+        
         // Theme Toggle
         function toggleTheme() {
             const body = document.body;
@@ -207,7 +250,7 @@
         ];
 
         // Pricing Data
-        const pricing = [
+        const pricingWeb = [
             {
                 name: 'Básico',
                 price: '25 USD',
@@ -272,6 +315,31 @@
                 ]
             }
         ];
+
+        const pricingMotion = [
+    {
+        name: 'Edición Básica',
+        price: '25 USD',
+        description: 'Ideal para creadores de contenido y redes sociales',
+        link: 'https://ig.me/m/barrale_design',
+        features: ['Hasta 1 minuto de duración', 'Cortes precisos', 'pack de 3 videos', 'Subtítulos dinámicos', '2 revisiones']
+    },
+    {
+        name: 'Promocional Pro',
+        price: '50 USD',
+        description: 'Videos comerciales de alto impacto',
+        link: 'https://ig.me/m/barrale_design',
+        features: ['Hasta 3 minutos', 'Animación de textos', 'Cortes precisos', 'pack de 3 videos', '4 revisiones'],
+        featured: true
+    },
+    {
+        name: 'Identidad Animada',
+        price: '75 USD',
+        description: 'Branding en movimiento para tu marca',
+        link: 'https://ig.me/m/barrale_design',
+        features: ['Hasta 4 minutos', 'Animación de Logotipo', 'Intros y Outros', 'Lower Thirds', 'Archivos finales .AE']
+    }
+];
 
         // Render Tools
         function renderTools() {
@@ -354,9 +422,21 @@ function addProjectHoverPreview() {
 }
 
         // Render Pricing
-function renderPricing() {
+function renderPricing(category = 'web') {
     const pricingGrid = document.getElementById('pricingGrid');
-    pricing.forEach(plan => {
+    if (!pricingGrid) return;
+    pricingGrid.innerHTML = '';
+    
+    const data = category === 'web' ? pricingWeb : pricingMotion;
+    const clarifications = document.getElementById('pricingClarifications');
+    
+    // Al alternar el switch, esto controla que abajo solo aparezca en 'web'
+    if (clarifications) {
+        clarifications.style.display = category === 'web' ? 'block' : 'none';
+    }
+
+    // Mapeo e inyección de las cards
+    data.forEach(plan => {
         const card = document.createElement('div');
         card.className = `price-card ${plan.featured ? 'featured' : ''}`;
         card.innerHTML = `
@@ -367,16 +447,9 @@ function renderPricing() {
                 <p class="price-description">${plan.description}</p>
             </div>
             <ul class="price-features">
-                ${plan.features.map(feature => `
-                    <li>
-                        <span class="check-icon">✓</span>
-                        <span>${feature}</span>
-                    </li>
-                `).join('')}
+                ${plan.features.map(feature => `<li><span class="check-icon">✓</span><span>${feature}</span></li>`).join('')}
             </ul>
-
-            <a href="${plan.link}" class="btn"
-               style="width: 100%; display:block; text-align:center; ${plan.featured ? '' : 'background: var(--bg-secondary); color: var(--text-primary);'}">
+            <a href="javascript:void(0)" class="btn" onclick="seleccionarPlan('${plan.name}')" style="width: 100%; display:block; text-align:center; ${plan.featured ? '' : 'background: var(--bg-secondary); color: var(--text-primary);'}">
                 Seleccionar Plan
             </a>
         `;
@@ -384,6 +457,28 @@ function renderPricing() {
     });
 }
 
+function changePricingCategory(category) {
+    const btnWeb = document.getElementById('btn-web');
+    const btnMotion = document.getElementById('btn-motion');
+
+    if (category === 'web') {
+        btnWeb.classList.add('active');
+        btnMotion.classList.remove('active');
+    } else {
+        btnWeb.classList.remove('active');
+        btnMotion.classList.add('active');
+    }
+    
+    renderPricing(category);
+}
+
+window.changePricingCategory = changePricingCategory;
+
+// Modificá tu inicialización del DOM para cargar 'web' por defecto:
+document.addEventListener('DOMContentLoaded', () => {
+    // ... otros renders
+    renderPricing('web');
+});
 
         // Create Animated Particles - Estilo Figma Exacto
         function createParticles() {
@@ -525,3 +620,366 @@ buttons.forEach(button => {
     });
 
 });
+
+
+
+
+// ==========================================
+// CREDENCIALES Y LOGICA INTERNA DEL CHAT
+// ==========================================
+import { 
+    getAuth, 
+    signInWithEmailAndPassword, 
+    signOut, 
+    onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const auth = getAuth(app); // Inicializamos Auth con tu app de Firebase
+
+// ID único de sesión del visitante anónimo
+let currentChatId = localStorage.getItem('chat_session_id');
+if (!currentChatId) {
+    currentChatId = 'user_' + Math.random().toString(36).substring(2, 11);
+    localStorage.setItem('chat_session_id', currentChatId);
+}
+
+let isAdminLoggedIn = false;
+let adminSelectedChatId = null;
+let unsubscribeMessages = null;
+
+// Observador para mantener el estado de sesión de Firebase de forma segura
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        isAdminLoggedIn = true;
+        // Si se recarga la página y estabas logueado, mantiene la interfaz admin
+        const loginView = document.getElementById('adminLoginView');
+        if (loginView && !loginView.classList.contains('d-none')) {
+            showThreadsList();
+        }
+    } else {
+        isAdminLoggedIn = false;
+        adminSelectedChatId = null;
+    }
+});
+
+// Escuchar el formulario del chat cuando cargue el DOM
+window.addEventListener('DOMContentLoaded', () => {
+    const chatForm = document.getElementById('chatForm');
+    const chatInput = document.getElementById('chatInput');
+
+    if (chatForm) {
+        listenToMessages(currentChatId);
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            const targetChatId = isAdminLoggedIn ? adminSelectedChatId : currentChatId;
+            if (!targetChatId) {
+                alert("Por favor, selecciona una conversación primero.");
+                return;
+            }
+
+            try {
+                await addDoc(collection(db, "chats", targetChatId, "mensajes"), {
+                    text: text,
+                    sender: isAdminLoggedIn ? "admin" : "user",
+                    createdAt: serverTimestamp()
+                });
+
+                await setDoc(doc(db, "chat_threads", targetChatId), {
+                    chatId: targetChatId,
+                    lastMessage: text,
+                    updatedAt: serverTimestamp()
+                }, { merge: true });
+
+                chatInput.value = '';
+            } catch (error) {
+                console.error("Error al enviar mensaje:", error);
+            }
+        });
+    }
+});
+
+// Escuchar mensajes en tiempo real
+// Escuchar mensajes en tiempo real
+function listenToMessages(chatId) {
+    if (unsubscribeMessages) unsubscribeMessages();
+
+    const chatMessages = document.getElementById('chatMessages');
+    if (!chatMessages) return;
+
+    const q = query(collection(db, "chats", chatId, "mensajes"), orderBy("createdAt", "asc"), limit(50));
+
+    unsubscribeMessages = onSnapshot(q, (snapshot) => {
+        chatMessages.innerHTML = '';
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            const msgEl = document.createElement('div');
+            
+            msgEl.className = `chat-message ${data.sender}`;
+            
+            // 🚀 CAMBIO CLAVE AQUÍ: Procesamos el texto para detectar links y usar innerHTML de forma segura
+            msgEl.innerHTML = renderizarTextoConEnlaces(data.text);
+
+            if (data.sender === "user") {
+                msgEl.style.backgroundColor = "#ff003c"; 
+                msgEl.style.color = "#ffffff";
+            } else if (data.sender === "admin") {
+                msgEl.style.backgroundColor = "#1e1e24"; 
+                msgEl.style.color = "#ffffff";
+            }
+
+            chatMessages.appendChild(msgEl);
+        });
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
+}
+
+// Alternar vistas del chat (Mensajes / Login Admin / Hilos Admin)
+function toggleAdminView() {
+    const loginView = document.getElementById('adminLoginView');
+    const threadsView = document.getElementById('adminThreadsView');
+    const chatBodyView = document.getElementById('chatBodyView');
+    const title = document.getElementById('chatHeaderTitle');
+    const subtitle = document.getElementById('chatHeaderSubtitle');
+
+    if (!loginView || !threadsView || !chatBodyView) return;
+
+    if (isAdminLoggedIn) {
+        if (threadsView.classList.contains('d-none')) {
+            showThreadsList();
+        } else {
+            threadsView.classList.add('d-none');
+            chatBodyView.classList.remove('d-none');
+            title.textContent = adminSelectedChatId ? `Chat: ${adminSelectedChatId}` : "Panel Soporte";
+        }
+        return;
+    }
+
+    if (loginView.classList.contains('d-none')) {
+        chatBodyView.classList.add('d-none');
+        threadsView.classList.add('d-none');
+        loginView.classList.remove('d-none');
+        title.textContent = "Área de Soporte";
+        subtitle.textContent = "Por favor identifícate";
+    } else {
+        loginView.classList.add('d-none');
+        chatBodyView.classList.remove('d-none');
+        title.textContent = "Soporte Barrale Design 💬";
+        subtitle.textContent = "Dejá tu consulta en tiempo real";
+        listenToMessages(currentChatId);
+    }
+}
+
+// Función para prevenir XSS sanitizando texto plano
+function escapeHTML(text) {
+    if (!text) return '';
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+// Loguear al administrador usando Firebase Auth de forma segura
+async function loginAdmin() {
+    const email = document.getElementById('adminUser').value.trim(); // Ahora pasás el mail configurado
+    const pass = document.getElementById('adminPass').value.trim();
+
+    try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        document.getElementById('adminLoginView').classList.add('d-none');
+        showThreadsList();
+    } catch (error) {
+        console.error("Error en login:", error);
+        alert("Credenciales incorrectas o error de conexión.");
+    }
+}
+
+// Mostrar hilos activos en el panel del administrador
+function showThreadsList() {
+    const threadsView = document.getElementById('adminThreadsView');
+    const chatBodyView = document.getElementById('chatBodyView');
+    const threadsList = document.getElementById('threadsList');
+    const title = document.getElementById('chatHeaderTitle');
+    const subtitle = document.getElementById('chatHeaderSubtitle');
+
+    chatBodyView.classList.add('d-none');
+    threadsView.classList.remove('d-none');
+    title.textContent = "Panel de Control Admin";
+    subtitle.textContent = "Selecciona un chat para responder";
+
+    const q = query(collection(db, "chat_threads"), orderBy("updatedAt", "desc"), limit(20));
+    
+    onSnapshot(q, (snapshot) => {
+        threadsList.innerHTML = '';
+        snapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            const item = document.createElement('div');
+            item.className = 'thread-item';
+            item.style.display = 'flex';
+            item.style.justifyContent = 'space-between';
+            item.style.alignItems = 'center';
+            item.style.padding = '10px';
+            item.style.borderBottom = '1px solid rgba(0,0,0,0.1)';
+            
+            // Sanitizamos el último mensaje para prevenir XSS
+            const safeLastMessage = data.lastMessage ? escapeHTML(data.lastMessage) : 'Nuevo chat iniciado';
+            
+            item.innerHTML = `
+                <div class="thread-info" style="cursor: pointer; flex-grow: 1; min-width: 0; word-break: break-word; overflow-wrap: break-word; padding-right: 10px;">
+                    <strong>ID: ${escapeHTML(data.chatId)}</strong><br>
+                    <small style="display: block; color: rgba(255,255,255,0.8); line-height: 1.3;">${safeLastMessage}</small>
+                </div>
+                <button class="btn-delete-thread" data-id="${data.chatId}" style="background: #ff4d4d; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 55px;">
+                    <span>🗑️</span>
+                    <span style="font-size: 0.7rem; font-weight: bold;">Borrar</span>
+                </button>
+            `;
+            
+            item.querySelector('.thread-info').onclick = () => {
+                adminSelectedChatId = data.chatId;
+                threadsView.classList.add('d-none');
+                chatBodyView.classList.remove('d-none');
+                title.textContent = `Chat: ${data.chatId}`;
+                subtitle.textContent = "Respondiendo en tiempo real...";
+                listenToMessages(adminSelectedChatId);
+            };
+
+            item.querySelector('.btn-delete-thread').onclick = async (e) => {
+                e.stopPropagation();
+                
+                if (confirm(`¿Estás seguro de que querés borrar permanentemente el chat ${data.chatId}?`)) {
+                    try {
+                        await deleteDoc(doc(db, "chat_threads", data.chatId));
+                        if (adminSelectedChatId === data.chatId) {
+                            adminSelectedChatId = null;
+                            const chatMessages = document.getElementById('chatMessages');
+                            if (chatMessages) chatMessages.innerHTML = '';
+                        }
+                        alert("Chat eliminado correctamente.");
+                    } catch (error) {
+                        console.error("Error al eliminar el chat: ", error);
+                        alert("No se pudo eliminar el chat.");
+                    }
+                }
+            };
+
+            threadsList.appendChild(item);
+        });
+
+        if(snapshot.empty) {
+            threadsList.innerHTML = '<p style="font-size:0.8rem;opacity:0.6;padding:10px;">No hay chats activos.</p>';
+        }
+    });
+}
+
+function toggleChat() {
+    const chatContainer = document.getElementById('chatContainer');
+    if (chatContainer) {
+        chatContainer.classList.toggle('active');
+        if (chatContainer.classList.contains('active')) {
+            const chatMessages = document.getElementById('chatMessages');
+            if (chatMessages) {
+                setTimeout(() => { chatMessages.scrollTop = chatMessages.scrollHeight; }, 50);
+            }
+        }
+    }
+}
+
+// Opcional: Función para cerrar sesión si lo necesitás en el futuro
+async function logoutAdmin() {
+    await signOut(auth);
+    alert("Sesión cerrada.");
+    location.reload();
+}
+
+// ==========================================
+// VINCULACIÓN AL CONTEXTO WINDOW (GLOBAL)
+// ==========================================
+window.toggleTheme = toggleTheme;
+window.toggleMobileMenu = toggleMobileMenu;
+window.scrollToSection = scrollToSection;
+window.toggleChat = toggleChat;
+window.toggleAdminView = toggleAdminView;
+window.loginAdmin = loginAdmin;
+window.logoutAdmin = logoutAdmin;
+
+
+
+// ============================================================
+// FUNCIÓN PARA SELECCIÓN DE PLANES CON ENVÍO AUTOMÁTICO
+// ============================================================
+// ============================================================
+// FUNCIÓN PARA SELECCIÓN DE PLANES CON ENVÍO AUTOMÁTICO
+// ============================================================
+function seleccionarPlan(nombrePlan) {
+    // 1. Abre tu burbuja de chat
+    toggleChat(); 
+    
+    // 2. Busca el input de texto del chat
+    const chatInput = document.getElementById('chatInput');
+    const chatForm = document.getElementById('chatForm');
+    
+    if (chatInput && chatForm) {
+        // 3. Escribe el mensaje automático del usuario
+        chatInput.value = `¡Hola! Me interesa contratar el plan [${nombrePlan}]. ¿Cómo podemos iniciar?`;
+        
+        // 4. Dispara automáticamente el envío a Firebase
+        chatForm.requestSubmit();
+
+        // 5. RESPUESTA AUTOMÁTICA CON EL LINK DE GOOGLE DOCS
+        // Usamos un pequeño delay de 800ms para que se envíe justo después
+        setTimeout(async () => {
+            const targetChatId = isAdminLoggedIn ? adminSelectedChatId : currentChatId;
+            if (!targetChatId) return;
+
+            // Cambiá acá abajo REEMPLAZA_ESTE_LINK por tu enlace real de Google Docs
+            const urlGoogleDocs = "https://forms.gle/oeG9JzHaVYuSsLfA6";
+            const textoRespuesta = `¡Excelente elección! Para conocer más sobre tu empresa o emprendimiento y empezar a trabajar, por favor completa este formulario: ${urlGoogleDocs}`;
+
+            try {
+                // Guardamos el mensaje automático como remitente "admin" para que aparezca del lado izquierdo
+                await addDoc(collection(db, "chats", targetChatId, "mensajes"), {
+                    text: textoRespuesta,
+                    sender: "admin", 
+                    createdAt: serverTimestamp()
+                });
+
+                // Actualizamos el último mensaje en la lista de hilos
+                await setDoc(doc(db, "chat_threads", targetChatId), {
+                    chatId: targetChatId,
+                    lastMessage: textoRespuesta,
+                    updatedAt: serverTimestamp()
+                }, { merge: true });
+
+            } catch (error) {
+                console.error("Error al enviar el link automático:", error);
+            }
+        }, 800);
+    }
+}
+
+// Lo mantenemos global para el HTML
+window.seleccionarPlan = seleccionarPlan;
+
+// Función para transformar texto con links en enlaces cliqueables
+function linkify(text) {
+    const urlPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    return text.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener noreferrer" style="color: #00bcd4; text-decoration: underline;">$1</a>');
+}
+function renderizarTextoConEnlaces(texto) {
+    // Expresión regular para detectar links (http, https, etc.)
+    const expresionUrl = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    
+    // Primero convertimos a texto plano seguro para evitar vulnerabilidades XSS
+    let divAuxiliar = document.createElement('div');
+    divAuxiliar.textContent = texto;
+    let textoSeguro = divAuxiliar.innerHTML;
+
+    // Reemplazamos los links por etiquetas <a> estilizadas
+    return textoSeguro.replace(expresionUrl, '<a href="$1" target="_blank" rel="noopener noreferrer" style="color: #00bcd4; text-decoration: underline; font-weight: bold;">$1</a>');
+}

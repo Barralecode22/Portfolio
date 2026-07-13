@@ -1703,5 +1703,225 @@
 }
 
 
+/* ==========================================
+   CHAT FLOTANTE PREMIUM
+   ========================================== */
+/* 1. Contenedor en el vértice absoluto */
+/* ==========================================
+   CHAT FLOTANTE PRIVADO CON PANEL ADMIN
+   ========================================== */
+.chat-floating-container {
+    position: fixed !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    margin: 0 !important;
+    transform: none !important;
+    z-index: 999999 !important;
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+/* Burbuja Flotante Agrandada con margen de la esquina */
+.chat-bubble {
+    width: 70px !important;
+    height: 70px !important;
+    margin-bottom: 20px !important;
+    margin-right: 20px !important;
+    border-radius: 50% !important;
+    background: var(--accent, #FF0942);
+    border: none;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.chat-bubble:hover { transform: scale(1.06); }
+.chat-bubble .chat-icon { font-size: 32px; display: block; }
+.chat-bubble .chat-close-icon { font-size: 24px; color: white; display: none; }
+
+/* Ventana del Chat */
+.chat-window {
+    width: 360px;
+    height: 500px;
+    background: #141B2D;
+    border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+    border-radius: 16px;
+    box-shadow: -5px 5px 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-bottom: 15px;
+    margin-right: 20px;
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chat-floating-container.active .chat-window {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.chat-floating-container.active .chat-bubble { background: #232d42; }
+.chat-floating-container.active .chat-icon { display: none; }
+.chat-floating-container.active .chat-close-icon { display: block; }
+
+/* Encabezado */
+.chat-window-header {
+    background: linear-gradient(135deg, var(--accent, #FF0942), #ff4757);
+    padding: 1rem;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.chat-window-header h3 { margin: 0; font-size: 0.95rem; font-weight: 600; }
+.chat-window-header p { margin: 2px 0 0 0; font-size: 0.75rem; opacity: 0.85; }
+
+.admin-toggle-btn {
+    background: none; border: none; cursor: pointer; font-size: 1.1rem; filter: grayscale(1); transition: transform 0.2s;
+}
+.admin-toggle-btn:hover { transform: rotate(45deg); filter: grayscale(0); }
+
+/* Vistas de Contenido */
+.chat-body-view { display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
+.chat-messages { flex-grow: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.6rem; background: rgba(0, 0, 0, 0.2); }
+
+/* Globos de Mensaje tipo Whatsapp */
+.chat-message {
+    padding: 0.6rem 0.8rem; border-radius: 12px; max-width: 80%; width: fit-content; font-size: 0.85rem; line-height: 1.3;
+    animation: chatMsgAppear 0.2s ease forwards; word-break: break-word;
+}
+.chat-message.user { background: #232d42; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+.chat-message.admin { background: var(--accent, #FF0942); color: white; align-self: flex-start; border-bottom-left-radius: 2px; }
+
+/* Formulario */
+.chat-form { display: flex; gap: 6px; padding: 10px; background: #0f1524; border-top: 1px solid var(--border, rgba(255, 255, 255, 0.1)); }
+.chat-form input { flex-grow: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border, rgba(255, 255, 255, 0.1)); padding: 10px; border-radius: 8px; color: white; font-size: 0.85rem; outline: none; }
+.chat-form input:focus { border-color: var(--accent, #FF0942); }
+.chat-submit-btn { background: var(--accent, #FF0942); border: none; padding: 0 14px; border-radius: 8px; cursor: pointer; }
+
+/* Sección Login Admin */
+.chat-admin-login { padding: 1.5rem; display: flex; flex-direction: column; gap: 10px; color: white; background: #141B2D; flex-grow: 1; }
+.chat-admin-login input { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 8px; color: white; }
+.btn-primary-chat { background: var(--accent, #FF0942); border: none; color: white; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+/* Lista de hilos para Admin */
+.chat-admin-threads { padding: 1rem; color: white; overflow-y: auto; flex-grow: 1; background: #141B2D; }
+.threads-list { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.thread-item { padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.85rem; transition: background 0.2s; }
+.thread-item:hover { background: rgba(255, 255, 255, 0.12); border-color: var(--accent, #FF0942); }
+
+/* Clases de Control */
+.d-none { display: none !important; }
+
+@keyframes chatMsgAppear { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 480px) { .chat-window { width: calc(100vw - 20px); height: 70vh; margin-right: 10px; } }
+
+/* Contenedor del Switch de Precios */
+.pricing-toggle-container {
+    display: flex;
+    justify-content: center;
+    background: var(--bg-secondary, rgba(255, 255, 255, 0.05));
+    border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+    padding: 6px;
+    border-radius: 30px;
+    max-width: 320px;
+    margin: 2rem auto;
+}
+
+/* Botones del Switch */
+.pricing-toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary, rgba(255, 255, 255, 0.7));
+    padding: 10px 22px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    white-space: nowrap;
+}
+
+/* Botón Activo */
+.pricing-toggle-btn.active {
+    background: var(--accent, #FF0942);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(255, 9, 66, 0.3);
+}
+
+/* Caja de Aclaraciones Estilizada */
+.pricing-clarifications {
+    max-width: 850px;
+    margin: 0 auto 2.5rem auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+    border-radius: 16px;
+    text-align: left;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.pricing-clarifications p {
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.pricing-clarifications ul {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pricing-clarifications li {
+    position: relative;
+    padding-left: 20px;
+}
+
+.pricing-clarifications li::before {
+    content: "•";
+    color: var(--accent, #FF0942);
+    font-weight: bold;
+    font-size: 1.2rem;
+    position: absolute;
+    left: 5px;
+    top: -2px;
+}
+
+.pricing-grid {
+    display: grid;
+    /* CAMBIA ESTA LÍNEA: Forzaría a que se creen 4 columnas iguales en pantallas grandes */
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 2rem;
+    width: 100%;
+    margin-bottom: 2rem;
+}
 
 
+@media (min-width: 1200px) {
+    /* Amplía el ancho máximo solo para la sección de precios */
+    #precios .container {
+        max-width: 1440px; /* O podés probar con 100% si querés que ocupe casi toda la pantalla */
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    /* Asegura que la grilla distribuya las 4 tarjetas con un buen espacio entre ellas */
+    .pricing-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem; /* Espaciado generoso entre tarjetas */
+    }
+}

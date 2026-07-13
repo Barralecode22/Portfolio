@@ -77,7 +77,7 @@
                 <div class="tools-grid" id="toolsGrid"></div>
             </div>
 
-            <a target="_blank" href="https://ig.me/m/barrale_design" class="btn">Trabajemos Juntos 🚀</a>
+            <a href="javascript:void(0)" class="btn" onclick="toggleChat()">Trabajemos Juntos 🚀</a>
 
             <div class="hero-stats">
                 <div class="hero-stat">
@@ -146,16 +146,37 @@
     </section>
 
     <!-- Pricing Section -->
-    <section id="precios" class="section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Planes y Precios</h2>
-                <p>Elige el plan que mejor se adapte a tus necesidades. Todos los planes incluyen mi compromiso con la excelencia.</p>
-            </div>
-
-            <div class="pricing-grid" id="pricingGrid"></div>
+    <!-- Pricing Section -->
+<!-- Pricing Section -->
+<section id="precios" class="section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Planes y Precios</h2>
+            <p>Elige el plan que mejor se adapte a tus necesidades.</p>
         </div>
-    </section>
+
+        <!-- El switch se queda arriba de las cards -->
+        <div class="pricing-toggle-container">
+            <button class="pricing-toggle-btn active" id="btn-web" onclick="changePricingCategory('web')">Desarrollo Web</button>
+            <button class="pricing-toggle-btn" id="btn-motion" onclick="changePricingCategory('motion')">Motion Graphics</button>
+        </div>
+
+        <!-- 1. CONTENEDOR DE TARJETAS: Debe cerrarse limpio en esta misma línea -->
+        <div class="pricing-grid" id="pricingGrid"></div>
+
+        <!-- 2. LAS ACLARACIONES: Van completamente AFUERA y ABAJO de la grilla -->
+        <div class="pricing-clarifications" id="pricingClarifications" style="margin-top: 3rem;">
+            <p>⚠️ <strong>Información importante sobre los planes de Desarrollo Web:</strong></p>
+            <ul>
+                <li>El <strong>hosting es gratuito durante el primer mes</strong>. A partir del segundo mes, tiene un costo de <strong>10 USD por mes</strong> para mantener la página web en funcionamiento.</li>
+
+<li>El servicio de <strong>soporte técnico</strong> es opcional y tiene un costo de <strong>10 USD por mes</strong>. El soporte comienza a cobrarse <strong>a partir del segundo mes o una vez alcanzado el límite de cambios incluidos</strong>. El plan de soporte incluye <strong>hasta 3 cambios por mes</strong>.</li>
+
+<li>Durante el primer mes puedes contratar un <strong>dominio personalizado</strong>. Si decides hacerlo, el costo es de <strong>5 USD por mes</strong>. En caso contrario, el sitio utilizará un subdominio hasta que adquieras el dominio personalizado.</li>
+            </ul>
+        </div>
+    </div>
+</section>
 
     <!-- Footer -->
     <footer class="footer">
@@ -200,9 +221,47 @@
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; 2025 Portfolio. Todos los derechos reservados.</p>
+            <p>&copy; 2026 Barrale Design. Todos los derechos reservados.</p>
         </div>
     </footer>
-    <script src="./script.js"></script>
+    
+    <div class="chat-floating-container" id="chatContainer">
+        <div class="chat-window">
+            <div class="chat-window-header">
+                <div>
+                    <h3 id="chatHeaderTitle">Soporte Barrale Design 💬</h3>
+                    <p id="chatHeaderSubtitle">Dejá tu consulta en tiempo real</p>
+                </div>
+                <button class="admin-toggle-btn" id="adminToggleBtn" onclick="toggleAdminView()" title="Acceso Admin">⚙️</button>
+            </div>
+            
+            <div class="chat-admin-login d-none" id="adminLoginView">
+                <h4>Ingreso Administrador</h4>
+                <input type="email" id="adminUser" placeholder="Correo electrónico"> <!-- Cambiado de text a email y placeholder actualizado -->
+                <input type="password" id="adminPass" placeholder="Contraseña">
+                <button class="btn-primary-chat" onclick="loginAdmin()">Ingresar</button>
+            </div>
+
+            <div class="chat-admin-threads d-none" id="adminThreadsView">
+                <h4>Conversaciones activas:</h4>
+                <div class="threads-list" id="threadsList"></div>
+            </div>
+
+            <div class="chat-body-view" id="chatBodyView">
+                <div class="chat-messages" id="chatMessages"></div>
+                <form class="chat-form" id="chatForm">
+                    <input type="text" id="chatInput" placeholder="Escribe un mensaje..." required maxlength="250" autocomplete="off">
+                    <button type="submit" class="chat-submit-btn">🚀</button>
+                </form>
+            </div>
+        </div>
+
+        <button class="chat-bubble" id="chatBubble" onclick="toggleChat()">
+            <span class="chat-icon">💬</span>
+            <span class="chat-close-icon">✕</span>
+        </button>
+    </div>
+
+    <script type="module" src="./script.js"></script>
 </body>
 </html>

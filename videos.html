@@ -427,10 +427,47 @@
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; 2025 Portfolio. Todos los derechos reservados.</p>
+            <p>&copy; 2026 Barrale Design. Todos los derechos reservados.</p>
         </div>
     </footer>
+    
+    <div class="chat-floating-container" id="chatContainer">
+        <div class="chat-window">
+            <div class="chat-window-header">
+                <div>
+                    <h3 id="chatHeaderTitle">Soporte Barrale Design 💬</h3>
+                    <p id="chatHeaderSubtitle">Dejá tu consulta en tiempo real</p>
+                </div>
+                <button class="admin-toggle-btn" id="adminToggleBtn" onclick="toggleAdminView()" title="Acceso Admin">⚙️</button>
+            </div>
+            
+            <div class="chat-admin-login d-none" id="adminLoginView">
+                <h4>Ingreso Administrador</h4>
+                <input type="email" id="adminUser" placeholder="Correo electrónico"> <!-- Cambiado de text a email y placeholder actualizado -->
+                <input type="password" id="adminPass" placeholder="Contraseña">
+                <button class="btn-primary-chat" onclick="loginAdmin()">Ingresar</button>
+            </div>
 
-<script src="./script.js"></script>
+            <div class="chat-admin-threads d-none" id="adminThreadsView">
+                <h4>Conversaciones activas:</h4>
+                <div class="threads-list" id="threadsList"></div>
+            </div>
+
+            <div class="chat-body-view" id="chatBodyView">
+                <div class="chat-messages" id="chatMessages"></div>
+                <form class="chat-form" id="chatForm">
+                    <input type="text" id="chatInput" placeholder="Escribe un mensaje..." required maxlength="250" autocomplete="off">
+                    <button type="submit" class="chat-submit-btn">🚀</button>
+                </form>
+            </div>
+        </div>
+
+        <button class="chat-bubble" id="chatBubble" onclick="toggleChat()">
+            <span class="chat-icon">💬</span>
+            <span class="chat-close-icon">✕</span>
+        </button>
+    </div>
+
+    <script type="module" src="./script.js"></script>
 </body>
 </html>
