@@ -14,7 +14,8 @@ import {
     limit, 
     onSnapshot, 
     serverTimestamp,
-    deleteDoc // <--- AGREGÁ ESTA FUNCIÓN ACÁ
+    deleteDoc,
+    getDocs // <--- AGREGÁ ESTA FUNCIÓN ACÁ
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 
@@ -805,6 +806,7 @@ async function loginAdmin() {
 }
 
 // Mostrar hilos activos en el panel del administrador
+// Mostrar hilos activos en el panel del administrador
 function showThreadsList() {
     const threadsView = document.getElementById('adminThreadsView');
     const chatBodyView = document.getElementById('chatBodyView');
@@ -839,10 +841,18 @@ function showThreadsList() {
                     <strong>ID: ${escapeHTML(data.chatId)}</strong><br>
                     <small style="display: block; color: rgba(255,255,255,0.8); line-height: 1.3;">${safeLastMessage}</small>
                 </div>
-                <button class="btn-delete-thread" data-id="${data.chatId}" style="background: #ff4d4d; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 55px;">
-                    <span>🗑️</span>
-                    <span style="font-size: 0.7rem; font-weight: bold;">Borrar</span>
-                </button>
+                <div class="thread-actions" style="display: flex; gap: 6px; flex-shrink: 0;">
+                    <!-- 🧹 BOTÓN PARA LIMPIAR HISTORIAL -->
+                    <button class="btn-clear-messages" data-id="${data.chatId}" style="background: #f1c40f; color: #1e1e24; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 55px; font-weight: bold;">
+                        <span>🧹</span>
+                        <span style="font-size: 0.7rem;">Vaciar</span>
+                    </button>
+                    <!-- 🗑️ BOTÓN DE BORRADO TOTAL -->
+                    <button class="btn-delete-thread" data-id="${data.chatId}" style="background: #ff4d4d; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 55px;">
+                        <span>🗑️</span>
+                        <span style="font-size: 0.7rem; font-weight: bold;">Borrar</span>
+                    </button>
+                </div>
             `;
             
             item.querySelector('.thread-info').onclick = () => {
@@ -852,6 +862,40 @@ function showThreadsList() {
                 title.textContent = `Chat: ${data.chatId}`;
                 subtitle.textContent = "Respondiendo en tiempo real...";
                 listenToMessages(adminSelectedChatId);
+            };
+
+            // 🧹 Lógica de vaciado nativa y limpia usando getDocs
+            item.querySelector('.btn-clear-messages').onclick = async (e) => {
+                e.stopPropagation();
+                
+                if (confirm(`¿Querés vaciar el historial de mensajes del chat ${data.chatId}? Ambos lados quedarán en blanco.`)) {
+                    try {
+                        // Traemos de forma directa todos los mensajes del sub-colección
+                        const mensajesRef = collection(db, "chats", data.chatId, "mensajes");
+                        const querySnapshot = await getDocs(mensajesRef);
+                        
+                        // Recorremos la foto estática y borramos uno por uno
+                        const promises = [];
+                        querySnapshot.forEach((messageDoc) => {
+                            const docParaBorrar = doc(db, "chats", data.chatId, "mensajes", messageDoc.id);
+                            promises.push(deleteDoc(docParaBorrar));
+                        });
+                        
+                        // Esperamos que terminen de borrarse todos en paralelo
+                        await Promise.all(promises);
+
+                        // Reseteamos el preview en la lista general de hilos
+                        await setDoc(doc(db, "chat_threads", data.chatId), {
+                            lastMessage: "Historial vaciado por el administrador.",
+                            updatedAt: serverTimestamp()
+                        }, { merge: true });
+
+                        alert("Historial de chat vaciado con éxito.");
+                    } catch (error) {
+                        console.error("Error al vaciar mensajes: ", error);
+                        alert("Hubo un problema al vaciar los mensajes.");
+                    }
+                }
             };
 
             item.querySelector('.btn-delete-thread').onclick = async (e) => {
