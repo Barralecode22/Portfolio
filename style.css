@@ -1925,3 +1925,79 @@
         gap: 2rem; /* Espaciado generoso entre tarjetas */
     }
 }
+
+/* ============================================================
+   MEJORAS DE RESPONSIVE MANTENIENDO TU ESTRUCTURA ACTUAL
+   ============================================================ */
+
+/* 1. Ajuste general para evitar desbordes de layouts flex o grid */
+.container, .hero-content, .about-grid, .footer-content {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* 2. Optimización de la grilla de Herramientas (Previene que se rompa en 320px/500px) */
+@media (max-width: 768px) {
+    .tools-grid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)) !important;
+        gap: 0.75rem !important;
+    }
+    .tool-card {
+        padding: 1rem 0.5rem !important;
+    }
+    .tool-logo {
+        width: 40px !important;
+        height: 40px !important;
+    }
+}
+
+/* 3. Corrección del 3D Coverflow para pantallas chicas */
+@media (max-width: 1400px) {
+    .coverflow-track {
+        width: 100% !important;
+        max-width: 100vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .coverflow-track {
+        height: 450px !important;
+        transform: scale(0.65) !important;
+    }
+    .coverflow-item {
+        width: 280px !important;
+        height: 450px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .coverflow-track {
+        transform: scale(0.48) !important;
+    }
+}
+
+/* 4. Adaptación de la Grilla de Precios */
+@media (max-width: 768px) {
+    .pricing-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
+}
+
+/* 5. Optimización del Chat Flotante en Móviles */
+@media (max-width: 480px) {
+    .chat-window {
+        width: calc(100vw - 40px) !important;
+        height: 70vh !important;
+        right: 0 !important;
+        margin-right: 20px !important;
+    }
+    .chat-bubble {
+        width: 60px !important;
+        height: 60px !important;
+    }
+    .chat-bubble .chat-icon {
+        font-size: 26px !important;
+    }
+}
