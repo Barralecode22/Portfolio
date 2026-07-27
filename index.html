@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
     content="Diseñador gráfico, UX/UI y desarrollador web en Córdoba, Argentina. Creo sitios web modernos, tiendas online y landing pages optimizadas para SEO.">
-    <meta name="keywords"content="diseñador web, desarrollo web, UX UI, diseñador gráfico, páginas web, Córdoba, Argentina, freelance">
+    <meta name="keywords" content="diseñador web, desarrollo web, UX UI, diseñador gráfico, páginas web, Córdoba, Argentina, freelance">
     <meta name="author" content="Matías Barrale">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="es_AR">
-    <meta property="og:image"content="./src/web-preview.png">
-    <meta property="og:url"content="https://barraledesign.netlify.app">
+    <meta property="og:image" content="./src/web-preview.png">
+    <meta property="og:url" content="https://barraledesign.netlify.app">
+    
+    <!-- CDN de Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
     <link rel="icon" href="./src/logo-mati.svg" type="image/svg+xml">
     <link rel="stylesheet" href="./style.css">
     <title>Barrale Design</title>
@@ -19,7 +23,7 @@
     <!-- Navigation -->
     <nav class="nav">
         <div class="nav-container">
-            <div class="nav-logo"><img src="./src/LOGOTIPO 1.svg"></div>
+            <div class="nav-logo"><img src="./src/LOGOTIPO 1.svg" alt="Barrale Design Logo"></div>
             
             <ul class="nav-links">
                 <li><a onclick="scrollToSection('home')">Home</a></li>
@@ -35,7 +39,9 @@
                 </li>
             </ul>
 
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menú">
+                <i data-lucide="menu"></i>
+            </button>
         </div>
         
         <div class="mobile-nav" id="mobileNav">
@@ -44,7 +50,7 @@
             <a onclick="scrollToSection('sobre-mi')">Sobre Mí</a>
             <a onclick="scrollToSection('precios')">Precios</a>
             <a href="./videos.html">Videos</a>
-            <div> <!-- style="padding: 1rem;" -->
+            <div>
                 <label class="theme-switch">
                     <input type="checkbox" id="mobileThemeToggle" onchange="toggleTheme()">
                     <span class="slider"></span>
@@ -70,14 +76,16 @@
 
             <h1>Diseñador & Desarrollador Web</h1>
             <p class="hero-subtitle">Proyectos digitales y editorial para emprendedores y empresas</p>
-            <p class="hero-description">Diseñador gráfico y desarrollador web especializado en diseño digital, creo propuestas claras y dinamicas que conectan con tu audiencia y ayudan a impulsar tu negocio hoy.</p>
+            <p class="hero-description">Diseñador gráfico y desarrollador web especializado en diseño digital, creo propuestas claras y dinámicas que conectan con tu audiencia y ayudan a impulsar tu negocio hoy.</p>
 
             <div class="tools-section">
                 <p class="tools-title">Herramientas que utilizo</p>
                 <div class="tools-grid" id="toolsGrid"></div>
             </div>
 
-            <a href="javascript:void(0)" class="btn" onclick="toggleChat()">Trabajemos Juntos 🚀</a>
+            <a href="javascript:void(0)" class="btn" onclick="toggleChat()">
+                Trabajemos Juntos <i data-lucide="arrow-right" style="margin-left: 6px;"></i>
+            </a>
 
             <div class="hero-stats">
                 <div class="hero-stat">
@@ -146,43 +154,36 @@
     </section>
 
     <!-- Pricing Section -->
-    <!-- Pricing Section -->
-<!-- Pricing Section -->
-<section id="precios" class="section">
-    <div class="container">
-        <div class="section-header">
-            <h2>Planes y Precios</h2>
-            <p>Elige el plan que mejor se adapte a tus necesidades.</p>
+    <section id="precios" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Planes y Precios</h2>
+                <p>Elige el plan que mejor se adapte a tus necesidades.</p>
+            </div>
+
+            <div class="pricing-toggle-container">
+                <button class="pricing-toggle-btn active" id="btn-web" onclick="changePricingCategory('web')">Desarrollo Web</button>
+                <button class="pricing-toggle-btn" id="btn-motion" onclick="changePricingCategory('motion')">Motion Graphics</button>
+            </div>
+
+            <div class="pricing-grid" id="pricingGrid"></div>
+
+            <div class="pricing-clarifications" id="pricingClarifications" style="margin-top: 3rem;">
+                <p><i data-lucide="alert-triangle" style="color: #eab308; margin-right: 6px;"></i> <strong>Información importante sobre los planes de Desarrollo Web:</strong></p>
+                <ul>
+                    <li>El <strong>hosting es gratuito durante el primer mes</strong>. A partir del segundo mes, tiene un costo de <strong>10 USD por mes</strong> para mantener la página web en funcionamiento.</li>
+                    <li>El servicio de <strong>soporte técnico</strong> es opcional y tiene un costo de <strong>10 USD por mes</strong>. El soporte comienza a cobrarse <strong>a partir del segundo mes o una vez alcanzado el límite de cambios incluidos</strong>. El plan de soporte incluye <strong>hasta 3 cambios por mes</strong>.</li>
+                    <li>Durante el primer mes puedes contratar un <strong>dominio personalizado</strong>. Si decides hacerlo, el costo es de <strong>5 USD por mes</strong>. En caso contrario, el sitio utilizará un subdominio hasta que adquieras el dominio personalizado.</li>
+                </ul>
+            </div>
         </div>
-
-        <!-- El switch se queda arriba de las cards -->
-        <div class="pricing-toggle-container">
-            <button class="pricing-toggle-btn active" id="btn-web" onclick="changePricingCategory('web')">Desarrollo Web</button>
-            <button class="pricing-toggle-btn" id="btn-motion" onclick="changePricingCategory('motion')">Motion Graphics</button>
-        </div>
-
-        <!-- 1. CONTENEDOR DE TARJETAS: Debe cerrarse limpio en esta misma línea -->
-        <div class="pricing-grid" id="pricingGrid"></div>
-
-        <!-- 2. LAS ACLARACIONES: Van completamente AFUERA y ABAJO de la grilla -->
-        <div class="pricing-clarifications" id="pricingClarifications" style="margin-top: 3rem;">
-            <p>⚠️ <strong>Información importante sobre los planes de Desarrollo Web:</strong></p>
-            <ul>
-                <li>El <strong>hosting es gratuito durante el primer mes</strong>. A partir del segundo mes, tiene un costo de <strong>10 USD por mes</strong> para mantener la página web en funcionamiento.</li>
-
-<li>El servicio de <strong>soporte técnico</strong> es opcional y tiene un costo de <strong>10 USD por mes</strong>. El soporte comienza a cobrarse <strong>a partir del segundo mes o una vez alcanzado el límite de cambios incluidos</strong>. El plan de soporte incluye <strong>hasta 3 cambios por mes</strong>.</li>
-
-<li>Durante el primer mes puedes contratar un <strong>dominio personalizado</strong>. Si decides hacerlo, el costo es de <strong>5 USD por mes</strong>. En caso contrario, el sitio utilizará un subdominio hasta que adquieras el dominio personalizado.</li>
-            </ul>
-        </div>
-    </div>
-</section>
+    </section>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-left">
-                <div class="footer-logo"><img src="./src/LOGOTIPO 1.svg"></div>
+                <div class="footer-logo"><img src="./src/LOGOTIPO 1.svg" alt="Barrale Design Logo"></div>
                 <p class="footer-tagline">Diseñador & Desarrollador Creativo</p>
                 <p class="footer-text">
                     ¿Tienes un proyecto en mente?<br>
@@ -225,19 +226,22 @@
         </div>
     </footer>
     
+    <!-- Floating Chat Widget -->
     <div class="chat-floating-container" id="chatContainer">
         <div class="chat-window">
             <div class="chat-window-header">
                 <div>
-                    <h3 id="chatHeaderTitle">Soporte Barrale Design 💬</h3>
+                    <h3 id="chatHeaderTitle">Soporte Barrale Design <i data-lucide="message-square" class="chat-icon"></i></h3>
                     <p id="chatHeaderSubtitle">Dejá tu consulta en tiempo real</p>
                 </div>
-                <button class="admin-toggle-btn" id="adminToggleBtn" onclick="toggleAdminView()" title="Acceso Admin">⚙️</button>
+                <button class="admin-toggle-btn" id="adminToggleBtn" onclick="toggleAdminView()" title="Acceso Admin">
+                    <i data-lucide="settings"></i>
+                </button>
             </div>
             
             <div class="chat-admin-login d-none" id="adminLoginView">
                 <h4>Ingreso Administrador</h4>
-                <input type="email" id="adminUser" placeholder="Correo electrónico"> <!-- Cambiado de text a email y placeholder actualizado -->
+                <input type="email" id="adminUser" placeholder="Correo electrónico">
                 <input type="password" id="adminPass" placeholder="Contraseña">
                 <button class="btn-primary-chat" onclick="loginAdmin()">Ingresar</button>
             </div>
@@ -251,18 +255,25 @@
                 <div class="chat-messages" id="chatMessages"></div>
                 <form class="chat-form" id="chatForm">
                     <input type="text" id="chatInput" placeholder="Escribe un mensaje..." required maxlength="250" autocomplete="off">
-                    <button type="submit" class="chat-submit-btn">🚀</button>
+                    <button type="submit" class="chat-submit-btn">
+                        <i data-lucide="send"></i>
+                    </button>
                 </form>
             </div>
         </div>
 
-        <button class="chat-bubble" id="chatBubble" onclick="toggleChat()">
-            <span class="chat-icon">💬</span>
-            <span class="chat-close-icon">✕</span>
+        <button class="chat-bubble" id="chatBubble" onclick="toggleChat()" aria-label="Abrir Chat">
+            <i data-lucide="message-square" class="chat-icon"></i>
+            <i data-lucide="x" class="chat-close-icon"></i>
         </button>
     </div>
 
+    <!-- Main JS Module -->
     <script type="module" src="./script.js"></script>
-    
+
+    <!-- Inicialización de Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>

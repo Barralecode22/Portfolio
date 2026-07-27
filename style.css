@@ -1433,3 +1433,18 @@ body.light-mode .tool-card {
     .hero-subtitle { font-size: 1rem; }
     .hero-description { font-size: 14px; }
 }
+
+/* Ajuste global para iconos SVG de Lucide */
+[data-lucide] {
+    width: 1.25em;
+    height: 1.25em;
+    stroke-width: 1.75px; /* Línea fina y minimalista */
+    vertical-align: middle;
+}
+
+/* Para el icono del chat flotante */
+.chat-bubble [data-lucide] {
+    width: 28px;
+    height: 28px;
+    color: #ffffff;
+}
