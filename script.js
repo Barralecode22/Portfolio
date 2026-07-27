@@ -69,11 +69,13 @@ console.log("¡Firebase conectado!");
 
         // Mobile Menu Toggle
         function toggleMobileMenu() {
-            const mobileNav = document.getElementById('mobileNav');
-            const btn = document.querySelector('.mobile-menu-btn');
-            mobileNav.classList.toggle('active');
-            btn.textContent = mobileNav.classList.contains('active') ? '✕' : '☰';
-        }
+    const mobileNav = document.getElementById('mobileNav');
+    const btn = document.querySelector('.mobile-menu-btn');
+    if (!mobileNav || !btn) return;
+    
+    mobileNav.classList.toggle('active');
+    btn.textContent = mobileNav.classList.contains('active') ? '✕' : '☰';
+}
 
         // Scroll to Section
         function scrollToSection(id) {
@@ -432,17 +434,15 @@ function renderPricing(category = 'web') {
     const data = category === 'web' ? pricingWeb : pricingMotion;
     const clarifications = document.getElementById('pricingClarifications');
     
-    // Al alternar el switch, esto controla que abajo solo aparezca en 'web'
     if (clarifications) {
         clarifications.style.display = category === 'web' ? 'block' : 'none';
     }
 
-    // Mapeo e inyección de las cards
     data.forEach(plan => {
         const card = document.createElement('div');
         card.className = `price-card ${plan.featured ? 'featured' : ''}`;
         
-        // CORRECCIÓN AQUÍ: Escapamos de forma segura el string para el atributo onclick HTML
+        // Escapado seguro de comillas
         const planNameSafe = plan.name.replace(/'/g, "\\'");
 
         card.innerHTML = `
@@ -455,10 +455,19 @@ function renderPricing(category = 'web') {
             <ul class="price-features">
                 ${plan.features.map(feature => `<li><span class="check-icon">✓</span><span>${feature}</span></li>`).join('')}
             </ul>
-            <a href="javascript:void(0)" class="btn" onclick="seleccionarPlan('${planNameSafe}')" style="width: 100%; display:block; text-align:center; ${plan.featured ? '' : 'background: var(--bg-secondary); color: var(--text-primary);'}">
+            <button type="button" class="btn btn-select-plan" style="width: 100%; text-align:center; ${plan.featured ? '' : 'background: var(--bg-secondary); color: var(--text-primary);'}">
                 Seleccionar Plan
-            </a>
+            </button>
         `;
+
+        // Asignación directa del evento click para evitar fallos de ejecución en móviles
+        const selectBtn = card.querySelector('.btn-select-plan');
+        if (selectBtn) {
+            selectBtn.addEventListener('click', () => {
+                seleccionarPlan(planNameSafe);
+            });
+        }
+
         pricingGrid.appendChild(card);
     });
 }
