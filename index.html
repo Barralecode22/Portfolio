@@ -31,6 +31,15 @@
                 <li><a onclick="scrollToSection('sobre-mi')">Sobre Mí</a></li>
                 <li><a onclick="scrollToSection('precios')">Precios</a></li>
                 <li><a href="./videos.html">Videos</a></li>
+
+                <li class="currency-switch-container">
+                    <!-- Selector de Moneda para Escritorio -->
+                    <select id="currencyToggle" class="currency-select" onchange="toggleCurrency(this.value)">
+                        <option value="USD">USD ($)</option>
+                        <option value="ARS">ARS ($)</option>
+                    </select>
+                </li>
+
                 <li>
                     <label class="theme-switch">
                         <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
@@ -50,6 +59,12 @@
             <a onclick="scrollToSection('sobre-mi')">Sobre Mí</a>
             <a onclick="scrollToSection('precios')">Precios</a>
             <a href="./videos.html">Videos</a>
+
+            <select id="mobileCurrencyToggle" class="currency-select" onchange="toggleCurrency(this.value)">
+                <option value="USD">USD ($)</option>
+                <option value="ARS">ARS ($)</option>
+            </select>
+
             <div>
                 <label class="theme-switch">
                     <input type="checkbox" id="mobileThemeToggle" onchange="toggleTheme()">
@@ -76,7 +91,7 @@
 
             <h1>Diseñador & Desarrollador Web</h1>
             <p class="hero-subtitle">Proyectos digitales y editorial para emprendedores y empresas</p>
-            <p class="hero-description">Diseñador gráfico y desarrollador web especializado en diseño digital, creo propuestas claras y dinámicas que conectan con tu audiencia y ayudan a impulsar tu negocio hoy.</p>
+            <p class="hero-description">Diseñador gráfico y desarrollador web especializado en diseño digital. Creo soluciones claras que conectan con las necesidades de tu negocio o audiencia.</p>
 
             <div class="tools-section">
                 <p class="tools-title">Herramientas que utilizo</p>

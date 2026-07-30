@@ -1448,3 +1448,26 @@ body.light-mode .tool-card {
     height: 28px;
     color: #ffffff;
 }
+
+/* Selector de Moneda en el Nav */
+.currency-select {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.currency-select:hover {
+    border-color: var(--accent);
+}
+
+.currency-select option {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}

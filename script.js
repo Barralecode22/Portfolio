@@ -32,6 +32,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
+const EXCHANGE_RATE_ARS = 1200; 
+let currentCurrency = localStorage.getItem('currency') || 'USD';
 
 console.log("¡Firebase conectado!");
         
@@ -249,87 +251,61 @@ console.log("¡Firebase conectado!");
                 tools: ['Indesign', 'Photoshop', 'illustrator'],
                 link: 'https://www.behance.net/gallery/249438661/Manos-Caseras-Vol-1-Diseno-de-Libro-de-Cocina',
                 linkText: 'Ver en Behance'
+            },
+            {
+                title: 'Jcs Electrica',
+                description: 'Un sitio web para un local de electricidad, con herramientas, materiales y accesorios para todo tipo de instalaciones.',
+                images: ['./src/jcselectrica.png','./src/jcselectrica2.png','./src/jcselectrica3.png'],
+                tools: ['Html', 'Css', 'Javascript'],
+                link: 'https://jcselectrica.netlify.app/',
+                linkText: 'Ver website'
             }
         ];
 
         // Pricing Data
         const pricingWeb = [
-            {
-                name: 'Básico',
-                price: '25 USD',
-                description: 'Ideal para presentar tu proyecto online',
-                link: 'https://ig.me/m/barrale_design',
-                features: [
-                    'Landing Page responsive',
-                    'Diseño personalizado',
-                    'Optimización móvil',
-                    'Integración redes sociales',
-                    '2 revisiones',
-                    'Entrega en 5 días'
-                ]
-            },
-            {
-                name: 'Estándar',
-                price: '75 USD',
-                description: 'Perfecto para negocios que inician',
-                link: 'https://ig.me/m/barrale_design',
-                features: [
-                    'Web de 3 páginas',
-                    'Diseño responsive',
-                    'Optimización SEO básica',
-                    'Integración redes sociales',
-                    '4 revisiones',
-                    'Soporte por 30 días',
-                    'Entrega en 10 días'
-                ],
-                featured: true
-            },
-            {
-                name: 'Profesional',
-                price: '120 USD',
-                description: 'Sitio completo en WordPress',
-                link: 'https://ig.me/m/barrale_design',
-                features: [
-                    'Web de 5 páginas',
-                    'Animaciones',
-                    'Diseño personalizado',
-                    'Blog integrado',
-                    'Optimización SEO',
-                    '5 revisiones',
-                    'Soporte por 60 días',
-                    'Entrega en 12 días'
-                ]
-            },
-            {
-                name: 'E-Commerce',
-                price: '300 USD',
-                description: 'Tienda online completa',
-                link: 'https://ig.me/m/barrale_design',
-                features: [
-                    'E-commerce en WordPress + WooCommerce',
-                    'Catálogo de productos ilimitado',
-                    'Pasarela de pago integrada',
-                    'Panel de gestión completo',
-                    'Diseño responsive premium',
-                    'Diseño personalizado de tienda',
-                    '8 revisiones',
-                    'Soporte por 90 días',
-                    'Entrega en 20 días'
-                ]
-            }
-        ];
+    {
+        name: 'Básico',
+        priceUSD: 25,
+        description: 'Ideal para presentar tu proyecto online',
+        link: 'https://ig.me/m/barrale_design',
+        features: ['Landing Page responsive', 'Diseño personalizado', 'Optimización móvil', 'Integración redes sociales', '2 revisiones', 'Entrega en 5 días']
+    },
+    {
+        name: 'Estándar',
+        priceUSD: 75,
+        description: 'Perfecto para negocios que inician',
+        link: 'https://ig.me/m/barrale_design',
+        features: ['Web de 3 páginas', 'Diseño responsive', 'Optimización SEO básica', 'Integración redes sociales', '4 revisiones', 'Soporte por 30 días', 'Entrega en 10 días'],
+        featured: true
+    },
+    {
+        name: 'Profesional',
+        priceUSD: 120,
+        description: 'Sitio completo en WordPress',
+        link: 'https://ig.me/m/barrale_design',
+        features: ['Web de 5 páginas', 'Animaciones', 'Diseño personalizado', 'Blog integrado', 'Optimización SEO', '5 revisiones', 'Soporte por 60 días', 'Entrega en 12 días']
+    },
+    {
+        name: 'E-Commerce',
+        priceUSD: 300,
+        description: 'Tienda online completa',
+        link: 'https://ig.me/m/barrale_design',
+        features: ['E-commerce en WordPress + WooCommerce', 'Catálogo de productos ilimitado', 'Pasarela de pago integrada', 'Panel de gestión completo', 'Diseño responsive premium', 'Diseño personalizado de tienda', '8 revisiones', 'Soporte por 90 días', 'Entrega en 20 días']
+    }
+];
 
-        const pricingMotion = [
+const pricingMotion = [
     {
         name: 'Edición Básica',
-        price: '25 USD',
+        priceUSD: 25,
         description: 'Ideal para creadores de contenido y redes sociales',
         link: 'https://ig.me/m/barrale_design',
         features: ['Hasta 1 minuto de duración', 'Cortes precisos', 'pack de 3 videos', 'Subtítulos dinámicos', '2 revisiones']
     },
     {
         name: 'Promocional Pro',
-        price: '50 USD',
+        priceUSD: 50,
         description: 'Videos comerciales de alto impacto',
         link: 'https://ig.me/m/barrale_design',
         features: ['Hasta 3 minutos', 'Animación de textos', 'Cortes precisos', 'pack de 3 videos', '4 revisiones'],
@@ -337,7 +313,7 @@ console.log("¡Firebase conectado!");
     },
     {
         name: 'Identidad Animada',
-        price: '75 USD',
+        priceUSD: 75,
         description: 'Branding en movimiento para tu marca',
         link: 'https://ig.me/m/barrale_design',
         features: ['Hasta 4 minutos', 'Animación de Logotipo', 'Intros y Outros', 'Lower Thirds', 'Archivos finales .AE']
@@ -424,9 +400,26 @@ function addProjectHoverPreview() {
     });
 }
 
+let currentPricingCategory = 'web';
+
+function toggleCurrency(selectedCurrency) {
+    currentCurrency = selectedCurrency;
+    localStorage.setItem('currency', currentCurrency);
+    
+    // Sincronizar selectores en la interfaz
+    const desktopToggle = document.getElementById('currencyToggle');
+    const mobileToggle = document.getElementById('mobileCurrencyToggle');
+    if (desktopToggle) desktopToggle.value = currentCurrency;
+    if (mobileToggle) mobileToggle.value = currentCurrency;
+
+    // Volver a renderizar los precios en la moneda correspondiente
+    renderPricing(currentPricingCategory);
+}
+
         // Render Pricing
 // Render Pricing
 function renderPricing(category = 'web') {
+    currentPricingCategory = category;
     const pricingGrid = document.getElementById('pricingGrid');
     if (!pricingGrid) return;
     pricingGrid.innerHTML = '';
@@ -441,15 +434,22 @@ function renderPricing(category = 'web') {
     data.forEach(plan => {
         const card = document.createElement('div');
         card.className = `price-card ${plan.featured ? 'featured' : ''}`;
-        
-        // Escapado seguro de comillas
         const planNameSafe = plan.name.replace(/'/g, "\\'");
+
+        // Formateo del precio según la moneda elegida
+        let formattedPrice = '';
+        if (currentCurrency === 'ARS') {
+            const priceInARS = plan.priceUSD * EXCHANGE_RATE_ARS;
+            formattedPrice = `$${priceInARS.toLocaleString('es-AR')} ARS`;
+        } else {
+            formattedPrice = `$${plan.priceUSD} USD`;
+        }
 
         card.innerHTML = `
             ${plan.featured ? '<div class="featured-badge">Más Popular</div>' : ''}
             <div class="price-header">
                 <div class="price-name">${plan.name}</div>
-                <div class="price-amount"><span class="currency">$</span>${plan.price}</div>
+                <div class="price-amount">${formattedPrice}</div>
                 <p class="price-description">${plan.description}</p>
             </div>
             <ul class="price-features">
@@ -460,7 +460,6 @@ function renderPricing(category = 'web') {
             </button>
         `;
 
-        // Asignación directa del evento click para evitar fallos de ejecución en móviles
         const selectBtn = card.querySelector('.btn-select-plan');
         if (selectBtn) {
             selectBtn.addEventListener('click', () => {
@@ -491,8 +490,16 @@ window.changePricingCategory = changePricingCategory;
 
 // Modificá tu inicialización del DOM para cargar 'web' por defecto:
 document.addEventListener('DOMContentLoaded', () => {
-    // ... otros renders
-    renderPricing('web');
+    // 1. Cargar moneda guardada
+    const savedCurrency = localStorage.getItem('currency') || 'USD';
+    toggleCurrency(savedCurrency);
+
+    // 2. Renderizar componentes
+    renderTools();
+    renderProjects();
+    renderPricing('web'); // Categoría por defecto
+    createParticles();
+    addProjectHoverPreview();
 });
 
         // Create Animated Particles - Estilo Figma Exacto
@@ -545,15 +552,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 container.appendChild(particle);
             });
         }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            renderTools();
-            renderProjects();
-            renderPricing();
-            createParticles();
-            addProjectHoverPreview();
-        });
 
 
 
@@ -1041,3 +1039,5 @@ function renderizarTextoConEnlaces(texto) {
     // Reemplazamos los links por etiquetas <a> estilizadas
     return textoSeguro.replace(expresionUrl, '<a href="$1" target="_blank" rel="noopener noreferrer" style="color: #00bcd4; text-decoration: underline; font-weight: bold;">$1</a>');
 }
+
+window.toggleCurrency = toggleCurrency;
