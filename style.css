@@ -1470,4 +1470,13 @@ body.light-mode .tool-card {
 .currency-select option {
     background: var(--bg-primary);
     color: var(--text-primary);
+}   
+
+.mobile-menu-btn svg,
+.chat-bubble svg,
+.chat-submit-btn svg {
+    width: 24px;
+    height: 24px;
+    stroke: currentColor;
+    display: block;
 }

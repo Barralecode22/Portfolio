@@ -287,8 +287,13 @@
     <script type="module" src="./script.js"></script>
 
     <!-- Inicialización de Lucide Icons -->
+    <!-- En tu index.html, reemplaza al final: -->
     <script>
-        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
     </script>
 </body>
 </html>

@@ -76,7 +76,15 @@ console.log("¡Firebase conectado!");
     if (!mobileNav || !btn) return;
     
     mobileNav.classList.toggle('active');
-    btn.textContent = mobileNav.classList.contains('active') ? '✕' : '☰';
+    
+    // Cambiar icono dinámicamente manteniendo la compatibilidad con Lucide
+    const isOpened = mobileNav.classList.contains('active');
+    btn.innerHTML = isOpened ? '<i data-lucide="x"></i>' : '<i data-lucide="menu"></i>';
+    
+    // Volver a renderizar el icono
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
 }
 
         // Scroll to Section
@@ -937,6 +945,12 @@ function toggleChat() {
     const chatContainer = document.getElementById('chatContainer');
     if (chatContainer) {
         chatContainer.classList.toggle('active');
+        
+        // Refrescar iconos al abrir
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+
         if (chatContainer.classList.contains('active')) {
             const chatMessages = document.getElementById('chatMessages');
             if (chatMessages) {
