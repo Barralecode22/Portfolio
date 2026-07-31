@@ -49,8 +49,12 @@
                 </li>
             </ul>
 
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menú">
-                <i data-lucide="menu"></i>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Abrir menú">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="4" x2="20" y1="12" y2="12"></line>
+                    <line x1="4" x2="20" y1="6" y2="6"></line>
+                    <line x1="4" x2="20" y1="18" y2="18"></line>
+                </svg>
             </button>
         </div>
         
@@ -278,26 +282,16 @@
             </div>
         </div>
 
-        <button class="chat-bubble" id="chatBubble" onclick="toggleChat()" aria-label="Abrir Chat">
-            <i data-lucide="message-square" class="chat-icon"></i>
-            <i data-lucide="x" class="chat-close-icon"></i>
+        <button class="chat-bubble" onclick="toggleChat()" aria-label="Abrir chat">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path>
+            </svg>
         </button>
     </div>
 
-<!-- Script local de Lucide (evita el bloqueo de la CSP) -->
-    <script src="./lucide.min.js"></script>
+<!-- Tu módulo principal -->
+<script type="module" src="./script.js"></script>
 
-    <!-- Tu módulo principal -->
-    <script type="module" src="./script.js"></script>
-
-    <!-- Inicialización de iconos -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-        });
-    </script>
 </body>
 </body>
 </html>
