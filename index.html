@@ -254,8 +254,8 @@
                     <h3 id="chatHeaderTitle">Soporte Barrale Design <i data-lucide="message-square" class="chat-icon"></i></h3>
                     <p id="chatHeaderSubtitle">Dejá tu consulta en tiempo real</p>
                 </div>
-                <button class="admin-toggle-btn" id="adminToggleBtn" onclick="toggleAdminView()" title="Acceso Admin">
-                    <i data-lucide="settings"></i>
+                <button type="button" class="admin-toggle-btn" onclick="toggleAdminView()" title="Acceso Admin">
+                    ⚙️
                 </button>
             </div>
             
@@ -275,8 +275,11 @@
                 <div class="chat-messages" id="chatMessages"></div>
                 <form class="chat-form" id="chatForm">
                     <input type="text" id="chatInput" placeholder="Escribe un mensaje..." required maxlength="250" autocomplete="off">
-                    <button type="submit" class="chat-submit-btn">
-                        <i data-lucide="send"></i>
+                    <button type="submit" class="chat-submit-btn" aria-label="Enviar mensaje">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
                     </button>
                 </form>
             </div>
