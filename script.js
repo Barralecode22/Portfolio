@@ -70,21 +70,31 @@ console.log("¡Firebase conectado!");
         });
 
         // Mobile Menu Toggle
-        function toggleMobileMenu() {
+// Mobile Menu Toggle
+function toggleMobileMenu() {
     const mobileNav = document.getElementById('mobileNav');
     const btn = document.querySelector('.mobile-menu-btn');
     if (!mobileNav || !btn) return;
     
     mobileNav.classList.toggle('active');
     
-    // Cambiar icono dinámicamente manteniendo la compatibilidad con Lucide
     const isOpened = mobileNav.classList.contains('active');
-    btn.innerHTML = isOpened ? '<i data-lucide="x"></i>' : '<i data-lucide="menu"></i>';
     
-    // Volver a renderizar el icono
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
+    // Iconos SVG directos para evitar fallos de renderizado con Lucide
+    const menuIcon = `
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" x2="20" y1="12" y2="12"></line>
+            <line x1="4" x2="20" y1="6" y2="6"></line>
+            <line x1="4" x2="20" y1="18" y2="18"></line>
+        </svg>`;
+
+    const closeIcon = `
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>`;
+
+    btn.innerHTML = isOpened ? closeIcon : menuIcon;
 }
 
         // Scroll to Section
