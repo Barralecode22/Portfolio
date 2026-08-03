@@ -1480,3 +1480,32 @@ body.light-mode .tool-card {
     stroke: currentColor;
     display: block;
 }
+
+.price-amount{
+    justify-content:center;
+    align-items:flex-end;
+    gap:.3rem;
+    font-weight:700;
+}
+
+.currency-symbol{
+    font-size:2rem;
+    opacity:.8;
+    margin-bottom:.35rem;
+}
+
+.currency-text{
+    font-size:2rem;
+    opacity:.7;
+    margin-bottom:.25rem;
+}
+
+.price-number.usd{
+    font-size:3.8rem;
+    line-height:1;
+}
+
+.price-number.ars{
+    font-size:2.4rem;
+    line-height:1;
+}

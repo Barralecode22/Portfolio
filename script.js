@@ -281,35 +281,84 @@ function toggleMobileMenu() {
         ];
 
         // Pricing Data
-        const pricingWeb = [
+const pricingWeb = [
     {
         name: 'Básico',
         priceUSD: 25,
-        description: 'Ideal para presentar tu proyecto online',
+        description: 'Ideal para emprendedores',
         link: 'https://ig.me/m/barrale_design',
-        features: ['Landing Page responsive', 'Diseño personalizado', 'Optimización móvil', 'Integración redes sociales', '2 revisiones', 'Entrega en 5 días']
+        features: [
+            'Landing Page responsive',
+            'UX básico',
+            'Animaciones de entrada (fade, slide y hover)',
+            'Optimización móvil',
+            'Integración con redes sociales',
+            '2 revisiones',
+            'Entrega en 5 días'
+        ]
     },
     {
         name: 'Estándar',
         priceUSD: 75,
-        description: 'Perfecto para negocios que inician',
+        description: 'Perfecto para pequeñas empresas',
         link: 'https://ig.me/m/barrale_design',
-        features: ['Web de 3 páginas', 'Diseño responsive', 'Optimización SEO básica', 'Integración redes sociales', '4 revisiones', 'Soporte por 30 días', 'Entrega en 10 días'],
+        features: [
+            'Web de 3 páginas',
+            'Diseño responsive',
+            'UX avanzado',
+            'Animaciones al hacer scroll y de entrada (fade, slide y hover)',
+            'Optimización SEO básica',
+            'Optimización de velocidad',
+            'Optimización de imágenes',
+            'Integración con redes sociales',
+            '4 revisiones',
+            'Soporte por 30 días',
+            'Entrega en 10 días'
+        ],
         featured: true
     },
     {
-        name: 'Profesional',
+        name: 'Premium',
         priceUSD: 120,
-        description: 'Sitio completo en WordPress',
+        description: 'Pensado para empresas y marcas',
         link: 'https://ig.me/m/barrale_design',
-        features: ['Web de 5 páginas', 'Animaciones', 'Diseño personalizado', 'Blog integrado', 'Optimización SEO', '5 revisiones', 'Soporte por 60 días', 'Entrega en 12 días']
+        features: [
+            'Web de 5 páginas',
+            'UX/UI avanzado',
+            'Animaciones premium y microinteracciones',
+            'Optimización SEO',
+            'Optimización de velocidad',
+            'Optimización de imágenes',
+            'Compatibilidad con todos los navegadores',
+            'Seguridad SSL (HTTPS)',
+            'Formulario de contacto avanzado',
+            '5 revisiones',
+            'Soporte por 60 días',
+            'Entrega en 12 días'
+        ]
     },
     {
         name: 'E-Commerce',
         priceUSD: 300,
-        description: 'Tienda online completa',
+        description: 'Tienda online lista para vender',
         link: 'https://ig.me/m/barrale_design',
-        features: ['E-commerce en WordPress + WooCommerce', 'Catálogo de productos ilimitado', 'Pasarela de pago integrada', 'Panel de gestión completo', 'Diseño responsive premium', 'Diseño personalizado de tienda', '8 revisiones', 'Soporte por 90 días', 'Entrega en 20 días']
+        features: [
+            'E-commerce en WordPress + WooCommerce',
+            'UX/UI avanzado',
+            'Animaciones premium para tienda online',
+            'Catálogo de Hasta 50 productos cargados',
+            'Pasarela de pago integrada',
+            'Panel de gestión completo',
+            'Optimización de velocidad',
+            'Optimización de imágenes',
+            'Compatibilidad con todos los navegadores',
+            'Seguridad SSL (HTTPS)',
+            'Formulario de contacto avanzado',
+            'Diseño responsive premium',
+            '6 revisiones',
+            'Soporte por 90 días',
+            'Entrega en 20 días'
+        ]
     }
 ];
 
@@ -456,12 +505,22 @@ function renderPricing(category = 'web') {
 
         // Formateo del precio según la moneda elegida
         let formattedPrice = '';
-        if (currentCurrency === 'ARS') {
-            const priceInARS = plan.priceUSD * EXCHANGE_RATE_ARS;
-            formattedPrice = `$${priceInARS.toLocaleString('es-AR')} ARS`;
-        } else {
-            formattedPrice = `$${plan.priceUSD} USD`;
-        }
+
+if (currentCurrency === 'ARS') {
+    const priceInARS = plan.priceUSD * EXCHANGE_RATE_ARS;
+
+    formattedPrice = `
+        <span class="currency-symbol">$</span>
+        <span class="price-number ars">${priceInARS.toLocaleString('es-AR')}</span>
+        <span class="currency-text">ARS</span>
+    `;
+} else {
+    formattedPrice = `
+        <span class="currency-symbol">$</span>
+        <span class="price-number usd">${plan.priceUSD}</span>
+        <span class="currency-text">USD</span>
+    `;
+}
 
         card.innerHTML = `
             ${plan.featured ? '<div class="featured-badge">Más Popular</div>' : ''}
