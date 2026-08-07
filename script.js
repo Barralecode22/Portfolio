@@ -311,6 +311,7 @@ const pricingWeb = [
             'Optimización de velocidad',
             'Optimización de imágenes',
             'Integración con redes sociales',
+            'Contenido autoadministrable (servicios, proyectos, precios, etc.)',
             '4 revisiones',
             'Soporte por 30 días',
             'Entrega en 10 días'
@@ -330,6 +331,7 @@ const pricingWeb = [
             'Optimización de velocidad',
             'Optimización de imágenes',
             'Compatibilidad con todos los navegadores',
+            'Contenido autoadministrable (servicios, proyectos, precios, etc.)',
             'Seguridad SSL (HTTPS)',
             'Formulario de contacto avanzado',
             '5 revisiones',
