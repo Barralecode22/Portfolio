@@ -289,7 +289,7 @@ const pricingWeb = [
         link: 'https://ig.me/m/barrale_design',
         features: [
             'Landing Page responsive',
-            'UX básico',
+            'UX/UI básico',
             'Animaciones de entrada (fade, slide y hover)',
             'Optimización móvil',
             'Integración con redes sociales',
@@ -299,13 +299,13 @@ const pricingWeb = [
     },
     {
         name: 'Estándar',
-        priceUSD: 75,
+        priceUSD: 50,
         description: 'Perfecto para pequeñas empresas',
         link: 'https://ig.me/m/barrale_design',
         features: [
             'Web de 3 páginas',
             'Diseño responsive',
-            'UX avanzado',
+            'UX/UI avanzado',
             'Animaciones al hacer scroll y de entrada (fade, slide y hover)',
             'Optimización SEO básica',
             'Optimización de velocidad',
@@ -319,7 +319,7 @@ const pricingWeb = [
     },
     {
         name: 'Premium',
-        priceUSD: 120,
+        priceUSD: 75,
         description: 'Pensado para empresas y marcas',
         link: 'https://ig.me/m/barrale_design',
         features: [
@@ -339,7 +339,7 @@ const pricingWeb = [
     },
     {
         name: 'E-Commerce',
-        priceUSD: 300,
+        priceUSD: 200,
         description: 'Tienda online lista para vender',
         link: 'https://ig.me/m/barrale_design',
         features: [
