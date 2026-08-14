@@ -267,7 +267,7 @@ function toggleMobileMenu() {
                 description: 'Un proyecto gastronómico casero que reúne recetas dulces, saladas y proteicas, destacando lo artesanal, nutritivo y accesible para el día a día.',
                 images: ['./src/unnamed.jpg','./src/manos1.png','./src/manos2.png','./src/manos3.png'],
                 tools: ['Indesign', 'Photoshop', 'illustrator'],
-                link: 'https://www.behance.net/gallery/249438661/Manos-Caseras-Vol-1-Diseno-de-Libro-de-Cocina',
+                link: 'https://www.behance.net/gallery/249725335/Manos-Caseras-Vol-1-Diseno-de-Libro-de-Cocina',
                 linkText: 'Ver en Behance'
             },
             {
