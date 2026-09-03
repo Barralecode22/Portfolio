@@ -497,9 +497,6 @@ function updateHeroUI(idx) {
   void bar.offsetWidth;
   bar.style.animation = 'progressBar 5s linear forwards';
 
-  document.getElementById('hero-bg-number').textContent = String(idx + 1).padStart(2, '0');
-  document.getElementById('hero-bg-number').style.webkitTextStroke = '1px ' + p.color + '20';
-
   syncProjectCards();
 }
 
