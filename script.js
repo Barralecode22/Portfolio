@@ -1,23 +1,19 @@
-        // ==========================================
-// CONFIGURACIÓN E INICIALIZACIÓN DE FIREBASE
-// ==========================================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-import { 
-    getFirestore, 
-    collection, 
-    addDoc, 
-    doc,        
-    setDoc,     
-    query, 
-    orderBy, 
-    limit, 
-    onSnapshot, 
-    serverTimestamp,
-    deleteDoc,
-    getDocs // <--- AGREGÁ ESTA FUNCIÓN ACÁ
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  doc,
+  setDoc,
+  query,
+  orderBy,
+  limit,
+  onSnapshot,
+  serverTimestamp,
+  deleteDoc,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyAuGvpVGinoycXN0N52yisDX1WvWYxUygE",
@@ -32,1097 +28,623 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
-const EXCHANGE_RATE_ARS = 1200; 
+const PROJECTS_COLLECTION = 'portfolioProjects';
+const PROJECT_ORDER_KEY = 'portfolioProjectOrder';
+const EXCHANGE_RATE_ARS = 1200;
 let currentCurrency = localStorage.getItem('currency') || 'USD';
 
-console.log("¡Firebase conectado!");
-        
-        
-        
-        
-        
-        
-        
-        
-        // Theme Toggle
-        function toggleTheme() {
-            const body = document.body;
-            const themeToggle = document.getElementById('themeToggle');
-            const mobileThemeToggle = document.getElementById('mobileThemeToggle');
-            
-            body.classList.toggle('light-mode');
-            
-            const isLight = body.classList.contains('light-mode');
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-            
-            themeToggle.checked = isLight;
-            mobileThemeToggle.checked = isLight;
-        }
+console.log('¡Firebase conectado!');
 
-        // Load saved theme
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-mode');
-                document.getElementById('themeToggle').checked = true;
-                document.getElementById('mobileThemeToggle').checked = true;
-            }
-        });
+/* let projects = [
+  {
+    title: 'Wavelength',
+    subtitle: 'Plataforma de descubrimiento musical',
+    category: 'diseno-web',
+    description: 'Una experiencia musical curada según el estado de ánimo y el contexto, con una interfaz inmersiva de ondas de audio.',
+    tech: ['React', 'Node.js', 'Spotify API', 'WebAudio API'],
+    color: '#b8f552',
+    bgFrom: '#0a1400', bgTo: '#0f1f00',
+    year: '2024', role: 'Desarrollo full-stack',
+    image: 'https://images.unsplash.com/photo-1720962158813-29b66b8e23e1?w=1800&h=1000&fit=crop&auto=format',
+    screenLines: [['9px','#ffffff66','JetBrains Mono','Reproduciendo'], ['13px','#f0ebe3','Outfit','The Midnight — Crystalline'], ['10px','#f0ebe3','JetBrains Mono','▶ ████████░░ 3:42']],
+    screenBars: [60,80,40,90,55,70,85,45,95,65],
+  },
+  {
+    title: 'Arkive',
+    subtitle: 'Gestor de recursos de diseño',
+    category: 'ux-ui',
+    description: 'Gestor local de recursos de diseño para equipos. Organiza, etiqueta y encuentra miles de archivos rápidamente.',
+    tech: ['Electron', 'SQLite', 'TypeScript', 'Tailwind CSS'],
+    color: '#fb923c',
+    bgFrom: '#1a0800', bgTo: '#200d00',
+    year: '2024', role: 'Diseño de producto + Ingeniería',
+    image: 'https://images.unsplash.com/photo-1520583457224-aee11bad5112?w=1800&h=1000&fit=crop&auto=format',
+    screenLines: [['9px','#ffffff66','JetBrains Mono','Recursos'], ['13px','#f0ebe3','Outfit','1.204 archivos sincronizados'], ['10px','#f0ebe3','JetBrains Mono','Actualizado ahora']],
+    screenBars: [90,55,75,40,85,60,70,95,50,80],
+  },
+  {
+    title: 'Kinetic Brand',
+    subtitle: 'Showreel de motion 3D',
+    category: 'motion-graphics',
+    description: 'Pieza de animación 3D y diseño en movimiento orientada a la identidad dinámica de marcas en plataformas digitales.',
+    tech: ['After Effects', 'Cinema 4D', 'Octane'],
+    color: '#818cf8',
+    bgFrom: '#06000f', bgTo: '#0a0018',
+    year: '2024', role: 'Diseño de movimiento',
+    image: 'https://images.unsplash.com/photo-1599837565318-67429bde7162?w=1800&h=1000&fit=crop&auto=format',
+    screenLines: [['9px','#ffffff66','JetBrains Mono','Cola de render'], ['13px','#f0ebe3','Outfit','1080p 60fps'], ['10px','#f0ebe3','JetBrains Mono','✦ Completo']],
+    screenBars: [70,85,50,95,60,80,45,90,65,75],
+  },
+  {
+    title: 'Studio Identity',
+    subtitle: 'Branding y diseño gráfico',
+    category: 'diseno-grafico',
+    description: 'Sistema completo de identidad gráfica, tipografía custom y manual de marca para estudio creativo.',
+    tech: ['Illustrator', 'Photoshop', 'InDesign'],
+    color: '#f472b6',
+    bgFrom: '#150008', bgTo: '#1c000f',
+    year: '2023', role: 'Diseño gráfico',
+    image: 'https://images.unsplash.com/photo-1650661926447-9efb2610f64c?w=1800&h=1000&fit=crop&auto=format',
+    screenLines: [['9px','#ffffff66','JetBrains Mono','Sistema de marca'], ['13px','#f0ebe3','Outfit','Recursos vectoriales'], ['10px','#f0ebe3','JetBrains Mono','↗ Exportado']],
+    screenBars: [50,90,65,80,40,95,55,75,85,60],
+  },
+  {
+    title: 'Noma Market',
+    subtitle: 'Experiencia de comercio electrónico',
+    category: 'diseno-web',
+    description: 'Tienda online de productos de autor con una experiencia de compra editorial, simple y enfocada en el detalle.',
+    tech: ['Next.js', 'Stripe', 'Sanity', 'GSAP'],
+    color: '#38bdf8',
+    bgFrom: '#00131f', bgTo: '#002236',
+    year: '2024', role: 'Diseño web + Desarrollo',
+    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1800&h=1000&fit=crop&auto=format',
+    screenLines: [['9px','#ffffff66','JetBrains Mono','Resumen del pedido'], ['13px','#f0ebe3','Outfit','Carrito listo para enviar'], ['10px','#f0ebe3','JetBrains Mono','$ 248,00 total']],
+    screenBars: [80,45,65,90,55,75,95,50,85,70],
+  },
+  {
+    title: 'Lumen Health',
+    subtitle: 'App y panel de bienestar',
+    category: 'ux-ui',
+    description: 'Producto digital para registrar hábitos y convertir datos cotidianos en decisiones de bienestar más claras.',
+    tech: ['Figma', 'React Native', 'Firebase', 'D3.js'],
+    color: '#34d399',
+    bgFrom: '#001a12', bgTo: '#003326',
+    year: '2023', role: 'Diseño de producto',
+    image: 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=1800&h=1000&fit=crop&auto=format',
+    screenLines: [['9px','#ffffff66','JetBrains Mono','Resumen diario'], ['13px','#f0ebe3','Outfit','Tu ritmo es constante'], ['10px','#f0ebe3','JetBrains Mono','Racha de 7 días']],
+    screenBars: [55,70,85,60,90,75,50,80,65,95],
+  },
+  {
+    title: 'Echoes Festival',
+    subtitle: 'Identidad para evento cultural',
+    category: 'diseno-grafico',
+    description: 'Identidad visual flexible para un festival de música independiente, desde el sistema gráfico hasta sus piezas digitales.',
+    tech: ['Illustrator', 'InDesign', 'Figma', 'Art Direction'],
+    color: '#facc15',
+    bgFrom: '#1c1500', bgTo: '#302400',
+    year: '2023', role: 'Dirección de arte + Branding',
+    image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1800&h=1000&fit=crop&auto=format',
+    screenLines: [['9px','#ffffff66','JetBrains Mono','Escenario principal'], ['13px','#f0ebe3','Outfit','Echoes — Día 02'], ['10px','#f0ebe3','JetBrains Mono','Puertas abiertas 19:00']],
+    screenBars: [95,60,80,45,70,90,55,85,65,75],
+  },
+  {
+    title: 'Orbit Finance',
+    subtitle: 'Sistema de producto fintech',
+    category: 'ux-ui',
+    description: 'Sistema de producto financiero que ordena operaciones, reportes y decisiones para equipos en crecimiento.',
+    tech: ['TypeScript', 'Figma', 'Storybook', 'Charts'],
+    color: '#fb7185',
+    bgFrom: '#1b050b', bgTo: '#320914',
+    year: '2022', role: 'UX/UI + Sistema de diseño',
+    image: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1800&h=1000&fit=crop&auto=format',
+    screenLines: [['9px','#ffffff66','JetBrains Mono','Informe mensual'], ['13px','#f0ebe3','Outfit','Los ingresos subieron 18,4%'], ['10px','#f0ebe3','JetBrains Mono','Actualizado hace 2 min']],
+    screenBars: [65,85,45,75,95,55,80,60,90,70],
+  },
+  {
+    title: 'Forma Objects',
+    subtitle: 'Motion para lanzamiento de producto',
+    category: 'motion-graphics',
+    description: 'Lanzamiento audiovisual para una colección de objetos cotidianos, con foco en materiales, ritmo y formas.',
+    tech: ['Cinema 4D', 'After Effects', 'Octane', 'Sound Design'],
+    color: '#c084fc',
+    bgFrom: '#10051c', bgTo: '#1d0a32',
+    year: '2022', role: 'Diseño de movimiento',
+    image: 'https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?w=1800&h=1000&fit=crop&auto=format',
+    screenLines: [['9px','#ffffff66','JetBrains Mono','Secuencia 04'], ['13px','#f0ebe3','Outfit','Estudio de material y luz'], ['10px','#f0ebe3','JetBrains Mono','Render completo']],
+    screenBars: [45,75,90,55,85,65,95,50,80,60],
+  },
+  {
+    title: 'Casa Norte',
+    subtitle: 'Portfolio de arquitectura',
+    category: 'diseno-web',
+    description: 'Portfolio digital para un estudio de arquitectura que combina documentación de obra, narrativa y exploración visual.',
+    tech: ['Webflow', 'GSAP', 'CMS', 'Art Direction'],
+    color: '#fb923c',
+    bgFrom: '#1d0d00', bgTo: '#301900',
+    year: '2021', role: 'Diseño web + Dirección',
+    image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1800&h=1000&fit=crop&auto=format',
+    screenLines: [['9px','#ffffff66','JetBrains Mono','Proyecto 07'], ['13px','#f0ebe3','Outfit','Luz, volumen, espacio'], ['10px','#f0ebe3','JetBrains Mono','Ver caso de estudio ↗']],
+    screenBars: [75,50,90,65,80,45,85,70,95,55],
+  },
+]; */
 
-        // Mobile Menu Toggle
-// Mobile Menu Toggle
-function toggleMobileMenu() {
-    const mobileNav = document.getElementById('mobileNav');
-    const btn = document.querySelector('.mobile-menu-btn');
-    if (!mobileNav || !btn) return;
-    
-    mobileNav.classList.toggle('active');
-    
-    const isOpened = mobileNav.classList.contains('active');
-    
-    // Iconos SVG directos para evitar fallos de renderizado con Lucide
-    const menuIcon = `
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="4" x2="20" y1="12" y2="12"></line>
-            <line x1="4" x2="20" y1="6" y2="6"></line>
-            <line x1="4" x2="20" y1="18" y2="18"></line>
-        </svg>`;
+let projects = [];
+const baseProjects = projects;
 
-    const closeIcon = `
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>`;
-
-    btn.innerHTML = isOpened ? closeIcon : menuIcon;
+function deduplicateProjects(projectList) {
+  const uniqueProjects = new Map();
+  projectList.forEach(project => {
+    const key = project.title?.trim().toLowerCase() || project.id;
+    if (key) uniqueProjects.set(key, project);
+  });
+  return [...uniqueProjects.values()];
 }
 
-        // Scroll to Section
-        function scrollToSection(id) {
-            const element = document.getElementById(id);
-            if (element) {
-                const navHeight = 64;
-                const targetPosition = element.offsetTop - navHeight;
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-                
-                const mobileNav = document.getElementById('mobileNav');
-                mobileNav.classList.remove('active');
-                document.querySelector('.mobile-menu-btn').textContent = '☰';
-            }
-        }
+function sortProjectsByPosition(projectList) {
+  let savedOrder = [];
+  try {
+    savedOrder = JSON.parse(localStorage.getItem(PROJECT_ORDER_KEY)) || [];
+  } catch (error) {
+    savedOrder = [];
+  }
 
-        // Tools Data with Official Logos
-        const tools = [
-    { 
-        name: 'Illustrator', 
-        svg: '<img src="./src/icono-illustrator.png" alt="Illustrator">'
-    },
-    { 
-        name: 'Photoshop', 
-        svg: '<img src="./src/icono-photoshop.png" alt="Photoshop">' 
-    },
-    { 
-        name: 'After', 
-        svg: '<img src="./src/icono-after.png" alt="After">' 
-    },
-    { 
-        name: 'Premiere', 
-        svg: '<img src="./src/icono-premiere.png" alt="premiere">' 
-    },
-    { 
-        name: 'Indesign', 
-        svg: '<img src="./src/icono-indesign.png" alt="indesign">' 
-    },
-    { 
-        name: 'Blender', 
-        svg: '<img src="./src/icono-blender.png" alt="blender">' 
-    },
-    { 
-        name: 'Figma', 
-        svg: '<img src="./src/icono-Figma.png" alt="Figma">' 
-    },
-    { 
-        name: 'Weflow', 
-        svg: '<img src="./src/icono-webflow.png" alt="webflow">' 
-    },
-    { 
-        name: 'Framer', 
-        svg: '<img src="./src/icono-framer.png" alt="framer">' 
-    },
-    { 
-        name: 'Wordpress', 
-        svg: '<img src="./src/icono-wordpress.png" alt="wordpress">' 
-    },
-    { 
-        name: 'Elementor', 
-        svg: '<img src="./src/icono-elementor.png" alt="elementor">' 
-    },
-    { 
-        name: 'Divi', 
-        svg: '<img src="./src/icono-divi.png" alt="divi">' 
-    },
-    { 
-        name: 'Visualstudiocode', 
-        svg: '<img src="./src/icono-visualstudiocode.png" alt="visualstudiocode">' 
-    },
-    { 
-        name: 'Html', 
-        svg: '<img src="./src/icono-html.png" alt="html">' 
-    },
-    { 
-        name: 'Css', 
-        svg: '<img src="./src/icono-css.png" alt="css">' 
-    },
-    { 
-        name: 'Javascript', 
-        svg: '<img src="./src/icono-javascript.png" alt="Javascript">' 
-    },
-    { 
-        name: 'React', 
-        svg: '<img src="./src/icono-react.png" alt="react">' 
-    },
-    { 
-        name: 'Bootstrap', 
-        svg: '<img src="./src/icono-bootstrap.png" alt="bootstrap">' 
-    },
-    { 
-        name: 'Github', 
-        svg: '<img src="./src/icono-github.png" alt="github">' 
-    },
-    { 
-        name: 'Gitbash', 
-        svg: '<img src="./src/icono-Gitbash.png" alt="Gitbash">' 
-    },
-    { 
-        name: 'Chatgpt', 
-        svg: '<img src="./src/icono-chatgpt.png" alt="chatgpt">' 
-    }
-];
+  const orderMap = new Map(savedOrder.map((key, index) => [key, index]));
+  return [...projectList].sort((first, second) => {
+    const firstPosition = first.position ?? orderMap.get(first.id || first.title);
+    const secondPosition = second.position ?? orderMap.get(second.id || second.title);
+    if (firstPosition === undefined && secondPosition === undefined) return 0;
+    if (firstPosition === undefined) return 1;
+    if (secondPosition === undefined) return -1;
+    return firstPosition - secondPosition;
+  });
+}
 
+function normalizeProject(project, fallbackTitle = 'Proyecto personalizado') {
+  const categoryNames = {
+    'motion-graphics': 'Motion Graphic',
+    'diseno-grafico': 'Diseño Gráfico',
+    'diseno-web': 'Diseño Web',
+    'ux-ui': 'UX / UI'
+  };
 
+  return {
+    ...project,
+    title: project.title || fallbackTitle,
+    subtitle: project.subtitle || categoryNames[project.category] || project.category || 'Proyecto personalizado',
+    tech: project.tech || [],
+    color: project.color || '#b8f552',
+    bgFrom: project.bgFrom || '#0a0a0a',
+    bgTo: project.bgTo || '#161616',
+    year: project.year || new Date(project.createdAt || Date.now()).getFullYear(),
+    role: project.role || 'Proyecto personalizado',
+    description: project.description || 'Proyecto publicado desde el panel de administración.'
+  };
+}
 
-        // Projects Data
-        const projects = [
-            {
-                title: 'FroshFeel',
-                description: 'Prototipo completo de una e-commerce con páginas de productos, carrito, favoritos y sistema de ubicación para ofrecer una experiencia de compra fluida.',
-                images: ['./src/FroshFeel-portada.jpg','./src/fros2.png','./src/fros3.png'],
-                tools: ['Figma', 'Photoshop', 'Illustrator'],
-                link: 'https://www.behance.net/gallery/235600881/FroshFeel-web-design-ecoomerce',
-                linkText: 'Ver en Behance'
-            },
-            {
-                title: 'Mixto',
-                description: 'E-commerce online para restaurante con sistema de compras web y reserva de mesas, brindando una experiencia organizada, rápida y accesible para los usuarios.',
-                images: ['./src/Mixto-Portada.jpg','./src/mix1.png','./src/mix2.png','./src/mix3.png'],
-                tools: ['Figma', 'Wordpress'],
-                link: 'https://www.behance.net/gallery/220909617/Mixto-Proyecto-web-Web-Design',
-                linkText: 'Ver Proyecto'
-            },
-            {
-                title: 'Todo',
-                description: 'Diseño visual de una web para supermercado destacando productos clave para compras online y facilitando una experiencia más clara y eficiente de uso.',
-                images: ['./src/Todo-Portada.jpg','./src/todo1.png','./src/todo2.png','./src/todo3.png'],
-                tools: ['Figma', 'Illustrator', 'Photoshop'],
-                link: 'https://www.behance.net/gallery/237840385/TODO-Web-de-supermercado-en-html-y-css',
-                linkText: 'Ver en Behance'
-            },
-            {
-                title: 'Cambioo',
-                description: 'Prototipo de una app inspirada en Mercado Libre y Amazon, brindando una experiencia de compra más segura y mejor adaptada a tus necesidades.',
-                images: ['./src/Cambio-Portada.jpg','./src/camb1.png','./src/camb2.png'],
-                tools: ['Figma'],
-                link: 'https://www.behance.net/gallery/140718557/Cambioo-App-de-ventas-(diseno-uxui)',
-                linkText: 'Ver en Behance'
-            },
-            {
-                title: 'Class',
-                description: 'Prototipo de una aplicación inspirada en Classroom con comentarios integrados, publicación de contenido y clases grabadas accesibles para todos.',
-                images: ['./src/Class-Portada.jpg','./src/clas1.png','./src/clas2.png','./src/clas3.png'],
-                tools: ['Figma', 'Adobe XD'],
-                link: 'https://www.behance.net/gallery/195365343/Class-App-proyecto-UXUI',
-                linkText: 'Ver en Behance'
-            },
-            {
-                title: 'Plataform',
-                description: 'Revista Platform lanza su edición gamer centrada en Steam, explorando características clave, tutoriales útiles, beneficios destacados y mucho contenido exclusivo adicional más.',
-                images: ['./src/Plataform-Portada.jpg','./src/plata1.png','./src/plata2.png'],
-                tools: ['Illustrator', 'Photoshop', 'indesign'],
-                link: 'https://www.behance.net/gallery/196466261/Plataform-Revista-sobre-Steam',
-                linkText: 'Ver en Behance'
-            },
-            {
-                title: 'AOA Chile tv',
-                description: 'Un rediseño de landing para una agencia audiovisual debe priorizar impacto visual inmediato, mostrando trabajos reales y un mensaje claro con llamado a la acción.',
-                images: ['./src/frame 21.png','./src/aoa1.png','./src/aoa2.png','./src/aoa3.png'],
-                tools: ['Figma', 'Photoshop', 'Wordpress'],
-                link: 'https://www.behance.net/gallery/247261557/AOA-CHILE-TV-Website',
-                linkText: 'Ver en Behance'
-            },
-            {
-                title: 'Manos Caseras Vol. 1',
-                description: 'Un proyecto gastronómico casero que reúne recetas dulces, saladas y proteicas, destacando lo artesanal, nutritivo y accesible para el día a día.',
-                images: ['./src/unnamed.jpg','./src/manos1.png','./src/manos2.png','./src/manos3.png'],
-                tools: ['Indesign', 'Photoshop', 'illustrator'],
-                link: 'https://www.behance.net/gallery/249725335/Manos-Caseras-Vol-1-Diseno-de-Libro-de-Cocina',
-                linkText: 'Ver en Behance'
-            },
-            {
-                title: 'Jcs Electrica',
-                description: 'Un sitio web para un local de electricidad, con herramientas, materiales y accesorios para todo tipo de instalaciones.',
-                images: ['./src/jcselectrica.png','./src/jcselectrica2.png','./src/jcselectrica3.png'],
-                tools: ['Html', 'Css', 'Javascript'],
-                link: 'https://jcselectrica.netlify.app/',
-                linkText: 'Ver website'
-            }
-        ];
+function refreshProjectsFromStorage() {
+  try {
+    const removedProjects = JSON.parse(localStorage.getItem('portfolioRemovedProjects')) || [];
+    const customProjects = JSON.parse(localStorage.getItem('portfolioCustomProjects')) || [];
+    const normalizedCustomProjects = deduplicateProjects(
+      customProjects
+      .map(project => normalizeProject(project, project.title || 'Proyecto personalizado'))
+      .filter((project, index, list) => list.findIndex(candidate => {
+        if (project.id && candidate.id) return project.id === candidate.id;
+        return !project.id && !candidate.id && project.title === candidate.title;
+      }) === index)
+    );
+    const customTitles = new Set(normalizedCustomProjects.map(project => project.title));
 
-        // Pricing Data
-const pricingWeb = [
-    {
-        name: 'Básico',
-        priceUSD: 25,
-        description: 'Ideal para emprendedores',
-        link: 'https://ig.me/m/barrale_design',
-        features: [
-            'Landing Page responsive',
-            'UX/UI básico',
-            'Animaciones de entrada (fade, slide y hover)',
-            'Optimización móvil',
-            'Integración con redes sociales',
-            '2 revisiones',
-            'Entrega en 5 días'
-        ]
-    },
-    {
-        name: 'Estándar',
-        priceUSD: 50,
-        description: 'Perfecto para pequeñas empresas',
-        link: 'https://ig.me/m/barrale_design',
-        features: [
-            'Web de 3 páginas',
-            'Diseño responsive',
-            'UX/UI avanzado',
-            'Animaciones al hacer scroll y de entrada (fade, slide y hover)',
-            'Optimización SEO básica',
-            'Optimización de velocidad',
-            'Optimización de imágenes',
-            'Integración con redes sociales',
-            'Contenido autoadministrable (servicios, proyectos, precios, etc.)',
-            '4 revisiones',
-            'Soporte por 30 días',
-            'Entrega en 10 días'
-        ],
-        featured: true
-    },
-    {
-        name: 'Premium',
-        priceUSD: 75,
-        description: 'Pensado para empresas y marcas',
-        link: 'https://ig.me/m/barrale_design',
-        features: [
-            'Web de 5 páginas',
-            'UX/UI avanzado',
-            'Animaciones premium y microinteracciones',
-            'Optimización SEO',
-            'Optimización de velocidad',
-            'Optimización de imágenes',
-            'Compatibilidad con todos los navegadores',
-            'Contenido autoadministrable (servicios, proyectos, precios, etc.)',
-            'Seguridad SSL (HTTPS)',
-            'Formulario de contacto avanzado',
-            '5 revisiones',
-            'Soporte por 60 días',
-            'Entrega en 12 días'
-        ]
-    },
-    {
-        name: 'E-Commerce',
-        priceUSD: 200,
-        description: 'Tienda online lista para vender',
-        link: 'https://ig.me/m/barrale_design',
-        features: [
-            'E-commerce en WordPress + WooCommerce',
-            'UX/UI avanzado',
-            'Animaciones premium para tienda online',
-            'Catálogo de Hasta 50 productos cargados',
-            'Pasarela de pago integrada',
-            'Panel de gestión completo',
-            'Optimización de velocidad',
-            'Optimización de imágenes',
-            'Compatibilidad con todos los navegadores',
-            'Seguridad SSL (HTTPS)',
-            'Formulario de contacto avanzado',
-            'Diseño responsive premium',
-            '6 revisiones',
-            'Soporte por 90 días',
-            'Entrega en 20 días'
-        ]
-    }
-];
+    projects = sortProjectsByPosition(baseProjects
+      .filter(project => !removedProjects.includes(project.title) && !customTitles.has(project.title))
+      .concat(normalizedCustomProjects));
+  } catch (error) {
+    // Mantiene los proyectos base si el almacenamiento local no es válido.
+  }
+}
 
-const pricingMotion = [
-    {
-        name: 'Edición Básica',
-        priceUSD: 25,
-        description: 'Ideal para creadores de contenido y redes sociales',
-        link: 'https://ig.me/m/barrale_design',
-        features: ['Hasta 1 minuto de duración', 'Cortes precisos', 'pack de 3 videos', 'Subtítulos dinámicos', '2 revisiones']
-    },
-    {
-        name: 'Promocional Pro',
-        priceUSD: 50,
-        description: 'Videos comerciales de alto impacto',
-        link: 'https://ig.me/m/barrale_design',
-        features: ['Hasta 3 minutos', 'Animación de textos', 'Cortes precisos', 'pack de 3 videos', '4 revisiones'],
-        featured: true
-    },
-    {
-        name: 'Identidad Animada',
-        priceUSD: 75,
-        description: 'Branding en movimiento para tu marca',
-        link: 'https://ig.me/m/barrale_design',
-        features: ['Hasta 4 minutos', 'Animación de Logotipo', 'Intros y Outros', 'Lower Thirds', 'Archivos finales .AE']
-    }
-];
-
-        // Render Tools
-        function renderTools() {
-            const toolsGrid = document.getElementById('toolsGrid');
-            tools.forEach(tool => {
-                const card = document.createElement('div');
-                card.className = 'tool-card';
-                card.innerHTML = `
-                    <div class="tool-logo">${tool.svg}</div>
-                    <p>${tool.name}</p>
-                `;
-                toolsGrid.appendChild(card);
-            });
-        }
-
-        function renderProjects() {
-    const projectsGrid = document.getElementById('projectsGrid');
-    projects.forEach(project => {
-        const card = document.createElement('div');
-        card.className = 'project-card';
-
-        // Usar la primera imagen como portada
-        const firstImage = project.images ? project.images[0] : project.image;
-
-        card.innerHTML = `
-            <div class="project-image" style="background-image: url('${firstImage}'); background-size: cover; background-position: center;"></div>
-            <div class="project-content">
-                <h3>${project.title}</h3>
-                <p>${project.description}</p>
-                <div class="project-footer">
-                    <div class="tool-icons">
-                        ${project.tools.map(toolName => {
-                            const tool = tools.find(t => t.name === toolName);
-                            return tool ? `<div class="tool-icon2" title="${toolName}">${tool.svg}</div>` : '';
-                        }).join('')}
-                    </div>
-                    <a href="${project.link}" target="_blank" class="project-link">
-                        ${project.linkText} →
-                    </a>
-                </div>
-            </div>
-        `;
-        projectsGrid.appendChild(card);
+function listenToRemoteProjects() {
+  const q = query(collection(db, PROJECTS_COLLECTION), orderBy('createdAt', 'desc'));
+  onSnapshot(q, (snapshot) => {
+    const firebaseProjects = snapshot.docs.map(docSnap => {
+      const data = docSnap.data();
+      const createdAt = data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : (data.createdAt || new Date().toISOString());
+      return normalizeProject({ ...data, id: docSnap.id, createdAt }, data.title || 'Proyecto nuevo');
     });
+
+    const localProjects = deduplicateProjects(
+      (JSON.parse(localStorage.getItem('portfolioCustomProjects')) || [])
+        .filter(project => !project.id?.startsWith('base-'))
+    );
+    const filteredFirebaseProjects = firebaseProjects.filter(project => !project.id.startsWith('base-'));
+    const mergedProjects = sortProjectsByPosition(deduplicateProjects([...localProjects, ...filteredFirebaseProjects]));
+    localStorage.setItem('portfolioCustomProjects', JSON.stringify(mergedProjects));
+    refreshProjectsFromStorage();
+
+    const metric = document.getElementById('metric-projects');
+    if (metric) metric.innerHTML = '30<span>+</span>';
+
+    if (typeof buildProjectCards === 'function') {
+      buildProjectCards(document.querySelector('.filter-btn.active')?.getAttribute('data-filter') || 'all');
+    }
+
+    if (typeof updateHeroUI === 'function' && projects.length) {
+      heroActive = Math.min(heroActive, projects.length - 1);
+      buildHeroSlides();
+      buildHeroDots();
+      updateHeroUI(heroActive);
+    }
+  }, (error) => {
+    console.warn('No se pudo escuchar proyectos de Firebase:', error);
+    refreshProjectsFromStorage();
+  });
 }
 
-        // Hover preview automático en cards de proyectos
-function addProjectHoverPreview() {
-    const projectCards = document.querySelectorAll('.project-card');
+refreshProjectsFromStorage();
+listenToRemoteProjects();
 
-    projectCards.forEach((card, index) => {
-        const imageDiv = card.querySelector('.project-image');
+const tools = [
+  'Figma', 'Photoshop', 'Illustrator', 'After Effects', 'Premiere Pro',
+  'InDesign', 'Blender', 'Webflow', 'Framer', 'WordPress', 'Elementor',
+  'HTML', 'CSS', 'JavaScript', 'React', 'Bootstrap', 'GitHub', 'Git',
+  'ChatGPT', 'Gemini', 'Claude', 'Affinity', 'CapCut', 'Notion', 'Canva',
+  'Google Analytics', 'Maze', 'Visual Studio Code', 'Vercel', 'Node.js', 'Firebase'
+];
 
-        const previews = projects[index].images || [projects[index].image];
+function renderToolsGrid() {
+  const toolsGrid = document.getElementById('toolsGrid');
+  if (!toolsGrid) return;
 
-        let current = 0;
-        let interval;
+  toolsGrid.innerHTML = tools.map(tool => `
+    <span class="tool-pill">${tool}</span>
+  `).join('');
+}
 
-        card.addEventListener('mouseenter', () => {
-            interval = setInterval(() => {
-                current = (current + 1) % previews.length;
-                imageDiv.style.backgroundImage = `url('${previews[current]}')`;
-            }, 400); // velocidad del cambio
-        });
+const skills = [
+  { category: 'Motion Graphics', items: ['After Effects', 'Premiere Pro', 'Cinema 4D', 'Blender', 'CapCut', 'Affinity'] },
+  { category: 'Diseño Gráfico', items: ['Photoshop', 'Illustrator', 'InDesign', 'Figma', 'Canva', 'Affinity', 'Branding', 'Identidad visual', 'Diseño editorial'] },
+  { category: 'Desarrollo Web', items: ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'Firebase', 'GitHub', 'Vercel', 'WordPress', 'Webflow', 'Framer', 'Visual Studio Code'] },
+  { category: 'UX / UI', items: ['UX Research', 'Wireframes', 'Prototipado', 'Design Systems', 'UI Design', 'Usabilidad', 'Arquitectura de información', 'A/B testing', 'Maze', 'Google Analytics'] },
+  { category: 'IA / Productividad', items: ['ChatGPT', 'Gemini', 'Claude', 'Notion'] }
+];
 
-        card.addEventListener('mouseleave', () => {
+renderToolsGrid();
+const metricProjects = document.getElementById('metric-projects');
+if (metricProjects) metricProjects.innerHTML = '30<span>+</span>';
 
-    clearInterval(interval);
+const arsPerUsd = 1200;
+const currencyOptions = document.querySelectorAll('.currency-option');
+const priceNumbers = document.querySelectorAll('.price-number');
+const priceCurrencies = document.querySelectorAll('.price-currency');
 
-    current = 0;
+function updatePrices(currency) {
+  priceNumbers.forEach(price => {
+    const usdValue = Number(price.dataset.usd);
+    const value = currency === 'ars' ? usdValue * arsPerUsd : usdValue;
+    price.textContent = new Intl.NumberFormat('es-AR', { maximumFractionDigits: 0 }).format(value);
+  });
+  priceCurrencies.forEach(label => { label.textContent = currency.toUpperCase(); });
+  currencyOptions.forEach(option => {
+    const isActive = option.dataset.currency === currency;
+    option.classList.toggle('active', isActive);
+    option.setAttribute('aria-pressed', String(isActive));
+  });
+}
 
-    const firstImage = projects[index].images
-        ? projects[index].images[0]
-        : projects[index].image;
-
-    imageDiv.style.backgroundImage = `url('${firstImage}')`;
-
+currencyOptions.forEach(option => {
+  option.addEventListener('click', () => updatePrices(option.dataset.currency));
 });
-    });
+updatePrices('usd');
+
+/* ── NAVBAR ── */
+const navbar = document.getElementById('navbar');
+const navToggle = document.querySelector('.nav-toggle');
+const navLinks = document.querySelector('.nav-links');
+const navSectionLinks = [...document.querySelectorAll('.nav-links a[href^="#"]')]
+  .filter(link => !link.classList.contains('nav-cta'));
+
+function setMenuState(isOpen) {
+  navbar.classList.toggle('menu-open', isOpen);
+  document.body.classList.toggle('menu-active', isOpen);
+  navToggle.setAttribute('aria-expanded', String(isOpen));
+  navToggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+  navLinks.setAttribute('aria-hidden', String(!isOpen));
 }
 
-let currentPricingCategory = 'web';
+navToggle.addEventListener('click', () => {
+  setMenuState(!navbar.classList.contains('menu-open'));
+});
 
-function toggleCurrency(selectedCurrency) {
-    currentCurrency = selectedCurrency;
-    localStorage.setItem('currency', currentCurrency);
-    
-    // Sincronizar selectores en la interfaz
-    const desktopToggle = document.getElementById('currencyToggle');
-    const mobileToggle = document.getElementById('mobileCurrencyToggle');
-    if (desktopToggle) desktopToggle.value = currentCurrency;
-    if (mobileToggle) mobileToggle.value = currentCurrency;
+navLinks.addEventListener('click', event => {
+  const target = event.target;
+  const link = target instanceof Element ? target.closest('a') : null;
 
-    // Volver a renderizar los precios en la moneda correspondiente
-    renderPricing(currentPricingCategory);
-}
+  if (target === navLinks) {
+    setMenuState(false);
+    return;
+  }
 
-        // Render Pricing
-// Render Pricing
-function renderPricing(category = 'web') {
-    currentPricingCategory = category;
-    const pricingGrid = document.getElementById('pricingGrid');
-    if (!pricingGrid) return;
-    pricingGrid.innerHTML = '';
-    
-    const data = category === 'web' ? pricingWeb : pricingMotion;
-    const clarifications = document.getElementById('pricingClarifications');
-    
-    if (clarifications) {
-        clarifications.style.display = category === 'web' ? 'block' : 'none';
+  if (link) {
+    const href = link.getAttribute('href');
+    if (!href || !href.startsWith('#')) {
+      setMenuState(false);
+      return;
     }
 
-    data.forEach(plan => {
-        const card = document.createElement('div');
-        card.className = `price-card ${plan.featured ? 'featured' : ''}`;
-        const planNameSafe = plan.name.replace(/'/g, "\\'");
+    const section = document.querySelector(href);
+    if (section) {
+      event.preventDefault();
+      setMenuState(false);
+      window.history.pushState(null, '', href);
+      requestAnimationFrame(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    }
+  }
+});
 
-        // Formateo del precio según la moneda elegida
-        let formattedPrice = '';
+document.addEventListener('click', event => {
+  if (!navbar.contains(event.target)) setMenuState(false);
+});
 
-if (currentCurrency === 'ARS') {
-    const priceInARS = plan.priceUSD * EXCHANGE_RATE_ARS;
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && navbar.classList.contains('menu-open')) {
+    setMenuState(false);
+    navToggle.focus();
+  }
+});
 
-    formattedPrice = `
-        <span class="currency-symbol">$</span>
-        <span class="price-number ars">${priceInARS.toLocaleString('es-AR')}</span>
-        <span class="currency-text">ARS</span>
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 720 && navbar.classList.contains('menu-open')) setMenuState(false);
+});
+
+function updateActiveNav() {
+  const currentPosition = window.scrollY + 140;
+  let activeId = 'hero';
+
+  navSectionLinks.forEach(link => {
+    const section = document.querySelector(link.getAttribute('href'));
+    if (section && section.offsetTop <= currentPosition) activeId = section.id;
+  });
+
+  navSectionLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + activeId);
+  });
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  updateActiveNav();
+}, { passive: true });
+updateActiveNav();
+
+/* ── HERO ── */
+let heroActive = 0;
+let heroTransitioning = false;
+let heroTimer = null;
+
+function buildHeroSlides() {
+  const container = document.getElementById('hero-slides');
+  container.innerHTML = '';
+  projects.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'hero-slide' + (i === heroActive ? ' active' : '');
+    div.id = 'hero-slide-' + i;
+    const img = document.createElement('img');
+    img.src = p.image;
+    img.alt = p.title;
+    div.appendChild(img);
+    container.appendChild(div);
+  });
+}
+
+function buildHeroDots() {
+  const container = document.getElementById('hero-dots');
+  container.innerHTML = '';
+  projects.forEach((_, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'hero-dot' + (i === heroActive ? ' active' : '');
+    btn.addEventListener('click', () => heroGoTo(i));
+    container.appendChild(btn);
+  });
+}
+
+function updateHeroUI(idx) {
+  const p = projects[idx];
+
+  document.getElementById('hero-eyebrow').style.color = p.color;
+  document.getElementById('hero-accent').style.color = p.color;
+  document.getElementById('hero-btn').style.background = p.color;
+
+  document.getElementById('hero-project-bar').style.background = p.color;
+  document.getElementById('hero-project-label').style.color = p.color;
+  document.getElementById('hero-project-label').textContent = p.year + ' — ' + p.role;
+
+  const titleEl = document.getElementById('hero-project-title');
+  titleEl.classList.remove('animate');
+  void titleEl.offsetWidth;
+  titleEl.classList.add('animate');
+  titleEl.textContent = p.title;
+
+  const subEl = document.getElementById('hero-project-sub');
+  subEl.classList.remove('animate');
+  void subEl.offsetWidth;
+  subEl.classList.add('animate');
+  subEl.textContent = p.subtitle;
+
+  const pillsEl = document.getElementById('hero-tech-pills');
+  pillsEl.innerHTML = '';
+  p.tech.forEach(t => {
+    const span = document.createElement('span');
+    span.className = 'hero-tech-pill';
+    span.textContent = t;
+    span.style.border = '1px solid ' + p.color + '55';
+    span.style.color = p.color;
+    span.style.background = p.color + '0a';
+    pillsEl.appendChild(span);
+  });
+
+  document.getElementById('hero-counter-active').textContent = String(idx + 1).padStart(2, '0');
+  document.getElementById('hero-counter-active').style.color = p.color;
+  document.getElementById('hero-counter-total').textContent = ' / ' + String(projects.length).padStart(2, '0');
+
+  document.querySelectorAll('.hero-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === idx);
+    d.style.background = i === idx ? p.color : 'rgba(255,255,255,0.2)';
+  });
+
+  const bar = document.getElementById('hero-progress-bar');
+  bar.style.background = p.color;
+  bar.style.animation = 'none';
+  void bar.offsetWidth;
+  bar.style.animation = 'progressBar 5s linear forwards';
+
+  document.getElementById('hero-bg-number').textContent = String(idx + 1).padStart(2, '0');
+  document.getElementById('hero-bg-number').style.webkitTextStroke = '1px ' + p.color + '20';
+
+  syncProjectCards();
+}
+
+function heroGoTo(idx) {
+  if (heroTransitioning || idx === heroActive) return;
+  heroTransitioning = true;
+  clearTimeout(heroTimer);
+  const prev = heroActive;
+  heroActive = idx;
+  document.getElementById('hero-slide-' + prev).classList.remove('active');
+  document.getElementById('hero-slide-' + idx).classList.add('active');
+  updateHeroUI(idx);
+  setTimeout(() => { heroTransitioning = false; startHeroTimer(); }, 900);
+}
+
+function startHeroTimer() {
+  clearTimeout(heroTimer);
+  heroTimer = setTimeout(() => heroGoTo((heroActive + 1) % projects.length), 5000);
+}
+
+buildHeroSlides();
+buildHeroDots();
+if (projects.length) {
+  updateHeroUI(0);
+  startHeroTimer();
+}
+
+setTimeout(() => {
+  ['hero-eyebrow','hero-title','hero-tagline','hero-ctas','hero-project-info','hero-controls'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('loaded');
+  });
+}, 120);
+
+/* ── PROJECTS (FILA DE TARJETAS SINCRONIZADA CON EL INICIO) ── */
+
+// Crea las tarjetas horizontales; cada una guarda su índice real dentro de `projects`
+// para poder mostrarla en el hero sin importar el filtro activo.
+function buildProjectCards(filter) {
+  const row = document.getElementById('projects-row');
+  row.innerHTML = '';
+
+  projects.forEach((p, i) => {
+    if (filter !== 'all' && p.category !== filter) return;
+
+    const card = document.createElement('button');
+    card.className = 'project-card' + (i === heroActive ? ' active' : '');
+    card.dataset.index = String(i);
+    card.style.setProperty('--pcolor', p.color);
+    card.setAttribute('aria-label', 'Ver ' + p.title + ' en el inicio');
+
+    card.innerHTML = `
+      <div class="project-card-media"><img src="${p.image}" alt="${p.title}" /></div>
+      <div class="project-card-overlay"></div>
+      <div class="project-card-info">
+        <div class="project-card-meta">
+          <span class="project-card-index">${String(i + 1).padStart(2, '0')}</span>
+          <span class="project-card-year">${p.year}</span>
+        </div>
+        <h3 class="project-card-title">${p.title}</h3>
+        <p class="project-card-sub">${p.subtitle}</p>
+      </div>
     `;
-} else {
-    formattedPrice = `
-        <span class="currency-symbol">$</span>
-        <span class="price-number usd">${plan.priceUSD}</span>
-        <span class="currency-text">USD</span>
-    `;
+
+    card.addEventListener('click', () => selectProjectInHero(i));
+    row.appendChild(card);
+  });
 }
 
-        card.innerHTML = `
-            ${plan.featured ? '<div class="featured-badge">Más Popular</div>' : ''}
-            <div class="price-header">
-                <div class="price-name">${plan.name}</div>
-                <div class="price-amount">${formattedPrice}</div>
-                <p class="price-description">${plan.description}</p>
-            </div>
-            <ul class="price-features">
-                ${plan.features.map(feature => `<li><span class="check-icon">✓</span><span>${feature}</span></li>`).join('')}
-            </ul>
-            <button type="button" class="btn btn-select-plan" style="width: 100%; text-align:center; ${plan.featured ? '' : 'background: var(--bg-secondary); color: var(--text-primary);'}">
-                Seleccionar Plan
-            </button>
-        `;
-
-        const selectBtn = card.querySelector('.btn-select-plan');
-        if (selectBtn) {
-            selectBtn.addEventListener('click', () => {
-                seleccionarPlan(planNameSafe);
-            });
-        }
-
-        pricingGrid.appendChild(card);
-    });
+// Al apretar una tarjeta, ese proyecto pasa a mostrarse en el inicio y hacemos scroll hacia arriba.
+function selectProjectInHero(idx) {
+  heroGoTo(idx);
+  document.getElementById('hero').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function changePricingCategory(category) {
-    const btnWeb = document.getElementById('btn-web');
-    const btnMotion = document.getElementById('btn-motion');
-
-    if (category === 'web') {
-        btnWeb.classList.add('active');
-        btnMotion.classList.remove('active');
-    } else {
-        btnWeb.classList.remove('active');
-        btnMotion.classList.add('active');
-    }
-    
-    renderPricing(category);
+// Marca como activa la tarjeta que corresponde al proyecto que se ve actualmente en el inicio
+// (se llama tanto al hacer click como en cada avance automático del hero).
+function syncProjectCards() {
+  document.querySelectorAll('.project-card').forEach(card => {
+    card.classList.toggle('active', Number(card.dataset.index) === heroActive);
+  });
 }
 
-window.changePricingCategory = changePricingCategory;
+// Inicialización de la sección Proyectos
+buildProjectCards('all');
+syncProjectCards();
 
-// Modificá tu inicialización del DOM para cargar 'web' por defecto:
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Cargar moneda guardada
-    const savedCurrency = localStorage.getItem('currency') || 'USD';
-    toggleCurrency(savedCurrency);
-
-    // 2. Renderizar componentes
-    renderTools();
-    renderProjects();
-    renderPricing('web'); // Categoría por defecto
-    createParticles();
-    addProjectHoverPreview();
+// Control de botones de filtro
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    buildProjectCards(e.target.getAttribute('data-filter'));
+    document.querySelector('.projects-row-wrap').scrollTo({ left: 0, behavior: 'smooth' });
+  });
 });
 
-        // Create Animated Particles - Estilo Figma Exacto
-        function createParticles() {
-            const container = document.getElementById('particlesContainer');
-            if (!container) return;
+/* ── PROJECTS CAROUSEL ── */
+const projectsRowWrap = document.querySelector('.projects-row-wrap');
+const projectsPrevButton = document.querySelector('.projects-nav-prev');
+const projectsNextButton = document.querySelector('.projects-nav-next');
 
-            // Definir partículas específicas como en Figma
-            const particles = [
-                // Cuadrados con tamaños diferentes
-                { type: 'square', size: 'small', top: '15%', left: '8%', delay: 0, duration: 20 },
-                { type: 'square', size: 'large', top: '65%', right: '12%', delay: 5, duration: 22 },
-                { type: 'square', size: 'medium', top: '45%', left: '85%', delay: 8, duration: 24 },
-                
-                // Solo UN círculo más pequeño, más arriba detrás de las cards
-                { type: 'circle', top: '35%', left: '65%', delay: 0, duration: 18 },
-                
-                // Puntos rojos brillantes
-                { type: 'dot', top: '12%', right: '15%', delay: 0, duration: 12 },
-                { type: 'dot', top: '35%', left: '25%', delay: 2, duration: 10 },
-                { type: 'dot', top: '55%', right: '30%', delay: 4, duration: 14 },
-                { type: 'dot', top: '75%', left: '40%', delay: 1, duration: 11 },
-                { type: 'dot', top: '20%', left: '60%', delay: 6, duration: 13 },
-                { type: 'dot', top: '85%', right: '25%', delay: 3, duration: 15 },
-                { type: 'dot', top: '40%', right: '8%', delay: 7, duration: 12 },
-                { type: 'dot', top: '60%', left: '15%', delay: 5, duration: 11 },
-                
-                // Una sola línea horizontal cerca del título
-                { type: 'line', top: '35%', left: '0', delay: 0, duration: 15 }
-            ];
-
-            particles.forEach(config => {
-                const particle = document.createElement('div');
-                particle.className = `particle ${config.type}`;
-                
-                // Agregar clase de tamaño para cuadrados
-                if (config.type === 'square' && config.size) {
-                    particle.classList.add(`size-${config.size}`);
-                }
-                
-                if (config.top) particle.style.top = config.top;
-                if (config.left) particle.style.left = config.left;
-                if (config.right) particle.style.right = config.right;
-                if (config.bottom) particle.style.bottom = config.bottom;
-                if (config.style) particle.style.cssText += config.style;
-                
-                particle.style.animationDelay = config.delay + 's';
-                particle.style.animationDuration = config.duration + 's';
-                
-                container.appendChild(particle);
-            });
-        }
-
-
-
-        /* =========================
-   3D COVERFLOW ROTATION
-========================= */
-
-const items = document.querySelectorAll('.coverflow-item');
-
-const positions = [
-    'left-3',
-    'left-2',
-    'left-1',
-    'active',
-    'right-1',
-    'right-2',
-    'right-3'
-];
-
-function rotateCoverflow(){
-
-    const current = [];
-
-    items.forEach(item => {
-
-        positions.forEach(pos => {
-
-            if(item.classList.contains(pos)){
-                current.push(pos);
-            }
-
-        });
-
-    });
-
-    current.unshift(current.pop());
-
-    items.forEach((item, index) => {
-
-        positions.forEach(pos => item.classList.remove(pos));
-
-        item.classList.add(current[index]);
-
-    });
-
+function updateProjectsNavigation() {
+  const maxScroll = projectsRowWrap.scrollWidth - projectsRowWrap.clientWidth;
+  projectsPrevButton.disabled = projectsRowWrap.scrollLeft <= 1;
+  projectsNextButton.disabled = projectsRowWrap.scrollLeft >= maxScroll - 1;
 }
 
-setInterval(rotateCoverflow, 2500);
+function moveProjects(direction) {
+  const card = projectsRowWrap.querySelector('.project-card');
+  if (!card) return;
+  projectsRowWrap.scrollBy({ left: direction * (card.offsetWidth + 20), behavior: 'smooth' });
+}
 
+projectsPrevButton.addEventListener('click', () => moveProjects(-1));
+projectsNextButton.addEventListener('click', () => moveProjects(1));
+projectsRowWrap.addEventListener('scroll', updateProjectsNavigation, { passive: true });
+window.addEventListener('resize', updateProjectsNavigation);
+updateProjectsNavigation();
 
+/* ── SKILLS ── */
+const skillsGroups = document.getElementById('skills-groups');
+skills.forEach(group => {
+  const col = document.createElement('div');
+  col.className = 'skill-group';
+  const label = document.createElement('button');
+  label.type = 'button';
+  label.className = 'skill-group-label';
+  label.textContent = group.category;
+  label.setAttribute('aria-expanded', 'false');
+  col.appendChild(label);
+  const items = document.createElement('div');
+  items.className = 'skill-items';
+  group.items.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'skill-item';
+    div.style.transitionDelay = (i * 0.08) + 's';
+    div.textContent = item;
+    items.appendChild(div);
+  });
+  col.appendChild(items);
+  skillsGroups.appendChild(col);
 
-
-
-const buttons = document.querySelectorAll(".category-btn");
-const grids = document.querySelectorAll(".videos-grid");
-
-buttons.forEach(button => {
-
-    button.addEventListener("click", () => {
-
-        // ACTIVE BUTTON
-        buttons.forEach(btn => btn.classList.remove("active"));
-        button.classList.add("active");
-
-        // CATEGORY
-        const category = button.dataset.category;
-
-        // SHOW GRID
-        grids.forEach(grid => {
-
-            grid.classList.remove("active-grid");
-
-            if(grid.dataset.category === category){
-                grid.classList.add("active-grid");
-            }
-
-        });
-
-    });
-
+  label.addEventListener('click', () => {
+    const isOpen = col.classList.toggle('is-open');
+    label.setAttribute('aria-expanded', String(isOpen));
+  });
 });
-
-
-
-
-// ==========================================
-// CREDENCIALES Y LOGICA INTERNA DEL CHAT
-// ==========================================
-import { 
-    getAuth, 
-    signInWithEmailAndPassword, 
-    signOut, 
-    onAuthStateChanged 
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-const auth = getAuth(app); // Inicializamos Auth con tu app de Firebase
-
-// ID único de sesión del visitante anónimo
-let currentChatId = localStorage.getItem('chat_session_id');
-if (!currentChatId) {
-    currentChatId = 'user_' + Math.random().toString(36).substring(2, 11);
-    localStorage.setItem('chat_session_id', currentChatId);
-}
-
-let isAdminLoggedIn = false;
-let adminSelectedChatId = null;
-let unsubscribeMessages = null;
-
-// Observador para mantener el estado de sesión de Firebase de forma segura
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        isAdminLoggedIn = true;
-        // Si se recarga la página y estabas logueado, mantiene la interfaz admin
-        const loginView = document.getElementById('adminLoginView');
-        if (loginView && !loginView.classList.contains('d-none')) {
-            showThreadsList();
-        }
-    } else {
-        isAdminLoggedIn = false;
-        adminSelectedChatId = null;
-    }
-});
-
-// Escuchar el formulario del chat cuando cargue el DOM
-window.addEventListener('DOMContentLoaded', () => {
-    const chatForm = document.getElementById('chatForm');
-    const chatInput = document.getElementById('chatInput');
-
-    if (chatForm) {
-        listenToMessages(currentChatId);
-
-        chatForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const text = chatInput.value.trim();
-            if (!text) return;
-
-            const targetChatId = isAdminLoggedIn ? adminSelectedChatId : currentChatId;
-            if (!targetChatId) {
-                alert("Por favor, selecciona una conversación primero.");
-                return;
-            }
-
-            try {
-                await addDoc(collection(db, "chats", targetChatId, "mensajes"), {
-                    text: text,
-                    sender: isAdminLoggedIn ? "admin" : "user",
-                    createdAt: serverTimestamp()
-                });
-
-                await setDoc(doc(db, "chat_threads", targetChatId), {
-                    chatId: targetChatId,
-                    lastMessage: text,
-                    updatedAt: serverTimestamp()
-                }, { merge: true });
-
-                chatInput.value = '';
-            } catch (error) {
-                console.error("Error al enviar mensaje:", error);
-            }
-        });
-    }
-});
-
-// Escuchar mensajes en tiempo real
-// Escuchar mensajes en tiempo real
-function listenToMessages(chatId) {
-    if (unsubscribeMessages) unsubscribeMessages();
-
-    const chatMessages = document.getElementById('chatMessages');
-    if (!chatMessages) return;
-
-    const q = query(collection(db, "chats", chatId, "mensajes"), orderBy("createdAt", "asc"), limit(50));
-
-    unsubscribeMessages = onSnapshot(q, (snapshot) => {
-        chatMessages.innerHTML = '';
-        snapshot.forEach((doc) => {
-            const data = doc.data();
-            const msgEl = document.createElement('div');
-            
-            msgEl.className = `chat-message ${data.sender}`;
-            
-            // 🚀 CAMBIO CLAVE AQUÍ: Procesamos el texto para detectar links y usar innerHTML de forma segura
-            msgEl.innerHTML = renderizarTextoConEnlaces(data.text);
-
-            if (data.sender === "user") {
-                msgEl.style.backgroundColor = "#ff003c"; 
-                msgEl.style.color = "#ffffff";
-            } else if (data.sender === "admin") {
-                msgEl.style.backgroundColor = "#1e1e24"; 
-                msgEl.style.color = "#ffffff";
-            }
-
-            chatMessages.appendChild(msgEl);
-        });
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    });
-}
-
-// Alternar vistas del chat (Mensajes / Login Admin / Hilos Admin)
-function toggleAdminView() {
-    const loginView = document.getElementById('adminLoginView');
-    const threadsView = document.getElementById('adminThreadsView');
-    const chatBodyView = document.getElementById('chatBodyView');
-    const title = document.getElementById('chatHeaderTitle');
-    const subtitle = document.getElementById('chatHeaderSubtitle');
-
-    if (!loginView || !threadsView || !chatBodyView) return;
-
-    if (isAdminLoggedIn) {
-        if (threadsView.classList.contains('d-none')) {
-            showThreadsList();
-        } else {
-            threadsView.classList.add('d-none');
-            chatBodyView.classList.remove('d-none');
-            title.textContent = adminSelectedChatId ? `Chat: ${adminSelectedChatId}` : "Panel Soporte";
-        }
-        return;
-    }
-
-    if (loginView.classList.contains('d-none')) {
-        chatBodyView.classList.add('d-none');
-        threadsView.classList.add('d-none');
-        loginView.classList.remove('d-none');
-        title.textContent = "Área de Soporte";
-        subtitle.textContent = "Por favor identifícate";
-    } else {
-        loginView.classList.add('d-none');
-        chatBodyView.classList.remove('d-none');
-        title.textContent = "Soporte Barrale Design 💬";
-        subtitle.textContent = "Dejá tu consulta en tiempo real";
-        listenToMessages(currentChatId);
-    }
-}
-
-// Función para prevenir XSS sanitizando texto plano
-function escapeHTML(text) {
-    if (!text) return '';
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-// Loguear al administrador usando Firebase Auth de forma segura
-async function loginAdmin() {
-    const email = document.getElementById('adminUser').value.trim(); // Ahora pasás el mail configurado
-    const pass = document.getElementById('adminPass').value.trim();
-
-    try {
-        await signInWithEmailAndPassword(auth, email, pass);
-        document.getElementById('adminLoginView').classList.add('d-none');
-        showThreadsList();
-    } catch (error) {
-        console.error("Error en login:", error);
-        alert("Credenciales incorrectas o error de conexión.");
-    }
-}
-
-// Mostrar hilos activos en el panel del administrador
-// Mostrar hilos activos en el panel del administrador
-function showThreadsList() {
-    const threadsView = document.getElementById('adminThreadsView');
-    const chatBodyView = document.getElementById('chatBodyView');
-    const threadsList = document.getElementById('threadsList');
-    const title = document.getElementById('chatHeaderTitle');
-    const subtitle = document.getElementById('chatHeaderSubtitle');
-
-    chatBodyView.classList.add('d-none');
-    threadsView.classList.remove('d-none');
-    title.textContent = "Panel de Control Admin";
-    subtitle.textContent = "Selecciona un chat para responder";
-
-    const q = query(collection(db, "chat_threads"), orderBy("updatedAt", "desc"), limit(20));
-    
-    onSnapshot(q, (snapshot) => {
-        threadsList.innerHTML = '';
-        snapshot.forEach((docSnap) => {
-            const data = docSnap.data();
-            const item = document.createElement('div');
-            item.className = 'thread-item';
-            item.style.display = 'flex';
-            item.style.justifyContent = 'space-between';
-            item.style.alignItems = 'center';
-            item.style.padding = '10px';
-            item.style.borderBottom = '1px solid rgba(0,0,0,0.1)';
-            
-            // Sanitizamos el último mensaje para prevenir XSS
-            const safeLastMessage = data.lastMessage ? escapeHTML(data.lastMessage) : 'Nuevo chat iniciado';
-            
-            item.innerHTML = `
-                <div class="thread-info" style="cursor: pointer; flex-grow: 1; min-width: 0; word-break: break-word; overflow-wrap: break-word; padding-right: 10px;">
-                    <strong>ID: ${escapeHTML(data.chatId)}</strong><br>
-                    <small style="display: block; color: rgba(255,255,255,0.8); line-height: 1.3;">${safeLastMessage}</small>
-                </div>
-                <div class="thread-actions" style="display: flex; gap: 6px; flex-shrink: 0;">
-                    <!-- 🧹 BOTÓN PARA LIMPIAR HISTORIAL -->
-                    <button class="btn-clear-messages" data-id="${data.chatId}" style="background: #f1c40f; color: #1e1e24; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 55px; font-weight: bold;">
-                        <span>🧹</span>
-                        <span style="font-size: 0.7rem;">Vaciar</span>
-                    </button>
-                    <!-- 🗑️ BOTÓN DE BORRADO TOTAL -->
-                    <button class="btn-delete-thread" data-id="${data.chatId}" style="background: #ff4d4d; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 55px;">
-                        <span>🗑️</span>
-                        <span style="font-size: 0.7rem; font-weight: bold;">Borrar</span>
-                    </button>
-                </div>
-            `;
-            
-            item.querySelector('.thread-info').onclick = () => {
-                adminSelectedChatId = data.chatId;
-                threadsView.classList.add('d-none');
-                chatBodyView.classList.remove('d-none');
-                title.textContent = `Chat: ${data.chatId}`;
-                subtitle.textContent = "Respondiendo en tiempo real...";
-                listenToMessages(adminSelectedChatId);
-            };
-
-            // 🧹 Lógica de vaciado nativa y limpia usando getDocs
-            item.querySelector('.btn-clear-messages').onclick = async (e) => {
-                e.stopPropagation();
-                
-                if (confirm(`¿Querés vaciar el historial de mensajes del chat ${data.chatId}? Ambos lados quedarán en blanco.`)) {
-                    try {
-                        // Traemos de forma directa todos los mensajes del sub-colección
-                        const mensajesRef = collection(db, "chats", data.chatId, "mensajes");
-                        const querySnapshot = await getDocs(mensajesRef);
-                        
-                        // Recorremos la foto estática y borramos uno por uno
-                        const promises = [];
-                        querySnapshot.forEach((messageDoc) => {
-                            const docParaBorrar = doc(db, "chats", data.chatId, "mensajes", messageDoc.id);
-                            promises.push(deleteDoc(docParaBorrar));
-                        });
-                        
-                        // Esperamos que terminen de borrarse todos en paralelo
-                        await Promise.all(promises);
-
-                        // Reseteamos el preview en la lista general de hilos
-                        await setDoc(doc(db, "chat_threads", data.chatId), {
-                            lastMessage: "Historial vaciado por el administrador.",
-                            updatedAt: serverTimestamp()
-                        }, { merge: true });
-
-                        alert("Historial de chat vaciado con éxito.");
-                    } catch (error) {
-                        console.error("Error al vaciar mensajes: ", error);
-                        alert("Hubo un problema al vaciar los mensajes.");
-                    }
-                }
-            };
-
-            item.querySelector('.btn-delete-thread').onclick = async (e) => {
-                e.stopPropagation();
-                
-                if (confirm(`¿Estás seguro de que querés borrar permanentemente el chat ${data.chatId}?`)) {
-                    try {
-                        await deleteDoc(doc(db, "chat_threads", data.chatId));
-                        if (adminSelectedChatId === data.chatId) {
-                            adminSelectedChatId = null;
-                            const chatMessages = document.getElementById('chatMessages');
-                            if (chatMessages) chatMessages.innerHTML = '';
-                        }
-                        alert("Chat eliminado correctamente.");
-                    } catch (error) {
-                        console.error("Error al eliminar el chat: ", error);
-                        alert("No se pudo eliminar el chat.");
-                    }
-                }
-            };
-
-            threadsList.appendChild(item);
-        });
-
-        if(snapshot.empty) {
-            threadsList.innerHTML = '<p style="font-size:0.8rem;opacity:0.6;padding:10px;">No hay chats activos.</p>';
-        }
-    });
-}
-
-function toggleChat() {
-    const chatContainer = document.getElementById('chatContainer');
-    if (chatContainer) {
-        chatContainer.classList.toggle('active');
-        
-        // Refrescar iconos al abrir
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-
-        if (chatContainer.classList.contains('active')) {
-            const chatMessages = document.getElementById('chatMessages');
-            if (chatMessages) {
-                setTimeout(() => { chatMessages.scrollTop = chatMessages.scrollHeight; }, 50);
-            }
-        }
-    }
-}
-
-// Opcional: Función para cerrar sesión si lo necesitás en el futuro
-async function logoutAdmin() {
-    await signOut(auth);
-    alert("Sesión cerrada.");
-    location.reload();
-}
-
-// ==========================================
-// VINCULACIÓN AL CONTEXTO WINDOW (GLOBAL)
-// ==========================================
-window.toggleTheme = toggleTheme;
-window.toggleMobileMenu = toggleMobileMenu;
-window.scrollToSection = scrollToSection;
-window.toggleChat = toggleChat;
-window.toggleAdminView = toggleAdminView;
-window.loginAdmin = loginAdmin;
-window.logoutAdmin = logoutAdmin;
-
-
-
-// ============================================================
-// FUNCIÓN PARA SELECCIÓN DE PLANES CON ENVÍO AUTOMÁTICO
-// ============================================================
-// ============================================================
-// FUNCIÓN PARA SELECCIÓN DE PLANES CON ENVÍO AUTOMÁTICO
-// ============================================================
-function seleccionarPlan(nombrePlan) {
-    // 1. Abre tu burbuja de chat
-    toggleChat(); 
-    
-    // 2. Busca el input de texto del chat
-    const chatInput = document.getElementById('chatInput');
-    const chatForm = document.getElementById('chatForm');
-    
-    if (chatInput && chatForm) {
-        // 3. Escribe el mensaje automático del usuario
-        chatInput.value = `¡Hola! Me interesa contratar el plan [${nombrePlan}]. ¿Cómo podemos iniciar?`;
-        
-        // 4. Dispara automáticamente el envío a Firebase
-        chatForm.requestSubmit();
-
-        // 5. RESPUESTA AUTOMÁTICA CON EL LINK DE GOOGLE DOCS
-        // Usamos un pequeño delay de 800ms para que se envíe justo después
-        setTimeout(async () => {
-            const targetChatId = isAdminLoggedIn ? adminSelectedChatId : currentChatId;
-            if (!targetChatId) return;
-
-            // Cambiá acá abajo REEMPLAZA_ESTE_LINK por tu enlace real de Google Docs
-            const urlGoogleDocs = "https://forms.gle/oeG9JzHaVYuSsLfA6";
-            const textoRespuesta = `¡Excelente elección! Para conocer más sobre tu empresa o emprendimiento y empezar a trabajar, por favor completa este formulario: ${urlGoogleDocs}`;
-
-            try {
-                // Guardamos el mensaje automático como remitente "admin" para que aparezca del lado izquierdo
-                await addDoc(collection(db, "chats", targetChatId, "mensajes"), {
-                    text: textoRespuesta,
-                    sender: "admin", 
-                    createdAt: serverTimestamp()
-                });
-
-                // Actualizamos el último mensaje en la lista de hilos
-                await setDoc(doc(db, "chat_threads", targetChatId), {
-                    chatId: targetChatId,
-                    lastMessage: textoRespuesta,
-                    updatedAt: serverTimestamp()
-                }, { merge: true });
-
-            } catch (error) {
-                console.error("Error al enviar el link automático:", error);
-            }
-        }, 800);
-    }
-}
-
-// Lo mantenemos global para el HTML
-window.seleccionarPlan = seleccionarPlan;
-
-// Función para transformar texto con links en enlaces cliqueables
-function linkify(text) {
-    const urlPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-    return text.replace(urlPattern, '<a href="$1" target="_blank" rel="noopener noreferrer" style="color: #00bcd4; text-decoration: underline;">$1</a>');
-}
-function renderizarTextoConEnlaces(texto) {
-    // Expresión regular para detectar links (http, https, etc.)
-    const expresionUrl = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-    
-    // Primero convertimos a texto plano seguro para evitar vulnerabilidades XSS
-    let divAuxiliar = document.createElement('div');
-    divAuxiliar.textContent = texto;
-    let textoSeguro = divAuxiliar.innerHTML;
-
-    // Reemplazamos los links por etiquetas <a> estilizadas
-    return textoSeguro.replace(expresionUrl, '<a href="$1" target="_blank" rel="noopener noreferrer" style="color: #00bcd4; text-decoration: underline; font-weight: bold;">$1</a>');
-}
-
-window.toggleCurrency = toggleCurrency;

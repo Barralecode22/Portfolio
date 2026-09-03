@@ -1,300 +1,360 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-    content="Diseñador gráfico, UX/UI y desarrollador web en Córdoba, Argentina. Creo sitios web modernos, tiendas online y landing pages optimizadas para SEO.">
-    <meta name="keywords" content="diseñador web, desarrollo web, UX UI, diseñador gráfico, páginas web, Córdoba, Argentina, freelance">
-    <meta name="author" content="Matías Barrale">
-    <meta property="og:type" content="website">
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://www.googletagmanager.com https://unpkg.com;">
-    <meta property="og:locale" content="es_AR">
-    <meta property="og:image" content="./src/web-preview.png">
-    <meta property="og:url" content="https://barraledesign.netlify.app">
-    
-    <!-- CDN de Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <link rel="icon" href="./src/logo-mati.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="./style.css">
-    <title>Barrale Design</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Barrale Design — diseñador gráfico, UX/UI y desarrollador web en Córdoba, Argentina." />
+  <meta name="theme-color" content="#0b0f19" />
+  <title>Barrale Design</title>
+  <link rel="icon" type="image/svg+xml" href="./src/logo-mati.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="nav">
-        <div class="nav-container">
-            <div class="nav-logo"><img src="./src/LOGOTIPO 1.svg" alt="Barrale Design Logo"></div>
-            
-            <ul class="nav-links">
-                <li><a onclick="scrollToSection('home')">Home</a></li>
-                <li><a onclick="scrollToSection('proyectos')">Proyectos</a></li>
-                <li><a onclick="scrollToSection('sobre-mi')">Sobre Mí</a></li>
-                <li><a onclick="scrollToSection('precios')">Precios</a></li>
-                <li><a href="./videos.html">Videos</a></li>
 
-                <li class="currency-switch-container">
-                    <!-- Selector de Moneda para Escritorio -->
-                    <select id="currencyToggle" class="currency-select" onchange="toggleCurrency(this.value)">
-                        <option value="USD">USD ($)</option>
-                        <option value="ARS">ARS ($)</option>
-                    </select>
-                </li>
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#" class="nav-logo" aria-label="Barrale Design">
+    <img src="./src/logo%20en%20verde.svg" alt="Barrale Design" />
+  </a>
+  <button class="nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="main-menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="nav-links" id="main-menu">
+    <a href="#hero">Inicio</a>
+    <a href="#projects-container">Proyectos</a>
+    <a href="#services">Servicios</a>
+    <a href="#pricing">Precios</a>
+    <a href="#about">Sobre mí</a>
+    <a href="#skills">Habilidades</a>
+    <a href="#contact" class="nav-cta">Trabajemos</a>
+  </div>
+</nav>
 
-                <li>
-                    <label class="theme-switch">
-                        <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
-                        <span class="slider"></span>
-                    </label>
-                </li>
-            </ul>
+<!-- HERO -->
+<section id="hero">
+  <div id="hero-slides"></div>
+  <div class="hero-overlay-left"></div>
+  <div class="hero-overlay-bottom"></div>
 
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Abrir menú">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="4" x2="20" y1="12" y2="12"></line>
-                    <line x1="4" x2="20" y1="6" y2="6"></line>
-                    <line x1="4" x2="20" y1="18" y2="18"></line>
-                </svg>
-            </button>
-        </div>
-        
-        <div class="mobile-nav" id="mobileNav">
-            <a onclick="scrollToSection('home')">Home</a>
-            <a onclick="scrollToSection('proyectos')">Proyectos</a>
-            <a onclick="scrollToSection('sobre-mi')">Sobre Mí</a>
-            <a onclick="scrollToSection('precios')">Precios</a>
-            <a href="./videos.html">Videos</a>
+  <div class="hero-content">
+    <div class="hero-eyebrow" id="hero-eyebrow">Barrale Design — Diseño web y Edición de Video</div>
+    <h1 class="hero-title" id="hero-title">
+      Diseño digital<span class="hero-title-accent" id="hero-accent"> para tu web y redes</span>
+    </h1>
+    <p class="hero-tagline" id="hero-tagline">
+      Diseño gráfico, UX/UI y diseño web para emprendedores que buscan crear su sitio web, resolver un problema digital o editar contenido para redes sociales.
+    </p>
 
-            <select id="mobileCurrencyToggle" class="currency-select" onchange="toggleCurrency(this.value)">
-                <option value="USD">USD ($)</option>
-                <option value="ARS">ARS ($)</option>
-            </select>
+    <div class="hero-ctas" id="hero-ctas">
+      <a href="#projects-container" class="btn-primary" id="hero-btn">Ver proyectos ↓</a>
+      <a href="#contact" class="btn-ghost">Hablemos</a>
+    </div>
+  </div>
 
-            <div>
-                <label class="theme-switch">
-                    <input type="checkbox" id="mobileThemeToggle" onchange="toggleTheme()">
-                    <span class="slider"></span>
-                </label>
-            </div>
-        </div>
-    </nav>
+  <div class="hero-project-info" id="hero-project-info">
+    <div class="hero-project-bar" id="hero-project-bar"></div>
+    <div class="hero-project-label" id="hero-project-label"></div>
+    <div class="hero-project-title" id="hero-project-title"></div>
+    <div class="hero-project-sub" id="hero-project-sub"></div>
+    <div class="hero-tech-pills" id="hero-tech-pills"></div>
+  </div>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-background">
-            <div class="gradient-blob blob-1"></div>
-            <div class="gradient-blob blob-2"></div>
-            <div class="gradient-blob blob-3"></div>
-            <div class="particles-container" id="particlesContainer"></div>
-        </div>
+  <div class="hero-controls" id="hero-controls">
+    <div class="hero-counter">
+      <span class="hero-counter-active" id="hero-counter-active">01</span>
+      <span id="hero-counter-total"> / 00</span>
+    </div>
+    <div class="hero-dots" id="hero-dots"></div>
+    <div class="hero-progress-track">
+      <div class="hero-progress-bar" id="hero-progress-bar"></div>
+    </div>
+  </div>
 
-        <div class="hero-content">
-            <div class="hero-badge">
-                <span class="status-dot"></span>
-                Disponible para proyectos
-            </div>
+  <div class="hero-bg-number" id="hero-bg-number">01</div>
+</section>
 
-            <h1>Diseñador & Desarrollador Web</h1>
-            <p class="hero-subtitle">Proyectos digitales y editorial para emprendedores y empresas</p>
-            <p class="hero-description">Diseñador gráfico y desarrollador web especializado en diseño digital. Creo soluciones claras que conectan con las necesidades de tu negocio o audiencia.</p>
-
-            <div class="tools-section">
-                <p class="tools-title">Herramientas que utilizo</p>
-                <div class="tools-grid" id="toolsGrid"></div>
-            </div>
-
-            <a href="javascript:void(0)" class="btn" onclick="toggleChat()">
-                Trabajemos Juntos <i data-lucide="arrow-right" style="margin-left: 6px;"></i>
-            </a>
-
-            <div class="hero-stats">
-                <div class="hero-stat">
-                    <span class="hero-stat-value">15+</span>
-                    <span class="hero-stat-label">Proyectos Completados</span>
-                </div>
-                <div class="hero-stat">
-                    <span class="hero-stat-value">7+</span>
-                    <span class="hero-stat-label">Clientes Felices</span>
-                </div>
-                <div class="hero-stat">
-                    <span class="hero-stat-value">3+</span>
-                    <span class="hero-stat-label">Años de Experiencia</span>
-                </div>
-                <div class="hero-stat">
-                    <span class="hero-stat-value">14 días</span>
-                    <span class="hero-stat-label">Tiempo promedio de entrega</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="proyectos" class="section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Proyectos Destacados</h2>
-                <p>Una selección de mis mejores proyectos en diseño web, identidad visual, desarrollo digital y diseño UX/UI.</p>
-            </div>
-
-            <div class="projects-grid" id="projectsGrid"></div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="sobre-mi" class="section bg-alt">
-        <div class="container">
-            <div class="about-grid">
-                <div class="about-content">
-                    <h2>Sobre Mí</h2>
-                    <p>Soy un diseñador creativo apasionado por crear soluciones visuales que conectan con las personas. Con más de 5 años de experiencia en el diseño digital, he trabajado con clientes de diversos sectores ayudándoles a comunicar su mensaje de forma efectiva.</p>
-                    <p>Mi enfoque combina creatividad, estrategia y tecnología, complementando todas mis herramientas y conocimientos para lograr resultados sólidos y eficientes. Desde identidades de marca completas hasta diseño web, páginas dinámicas y desarrollo, me especializo en crear soluciones destacadas.</p>
-                    <p>Además, me mantengo en constante aprendizaje para incorporar nuevas tendencias, herramientas y metodologías que mejoren cada proyecto. Mi objetivo es ofrecer un diseño que no solo sea estético, sino que también aporte valor, claridad y una experiencia funcional en cada entrega.</p>
-                </div>
-
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-value">15+</div>
-                        <p class="stat-label">Proyectos Completados</p>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">7+</div>
-                        <p class="stat-label">Clientes Satisfechos</p>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">3+</div>
-                        <p class="stat-label">Años de Experiencia</p>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">20+</div>
-                        <p class="stat-label">Herramientas</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section id="precios" class="section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Planes y Precios</h2>
-                <p>Elige el plan que mejor se adapte a tus necesidades.</p>
-            </div>
-
-            <div class="pricing-toggle-container">
-                <button class="pricing-toggle-btn active" id="btn-web" onclick="changePricingCategory('web')">Desarrollo Web</button>
-                <button class="pricing-toggle-btn" id="btn-motion" onclick="changePricingCategory('motion')">Motion Graphics</button>
-            </div>
-
-            <div class="pricing-grid" id="pricingGrid"></div>
-
-            <div class="pricing-clarifications" id="pricingClarifications" style="margin-top: 3rem;">
-                <p><i data-lucide="alert-triangle" style="color: #eab308; margin-right: 6px;"></i> <strong>Información importante sobre los planes de Desarrollo Web:</strong></p>
-                <ul>
-                    <li>El <strong>hosting es gratuito durante el primer mes</strong>. A partir del segundo mes, tiene un costo de <strong>10 USD por mes</strong> para mantener la página web en funcionamiento.</li>
-                    <li>El servicio de <strong>soporte técnico</strong> es opcional y tiene un costo de <strong>5 USD por mes</strong>. El soporte comienza a cobrarse <strong>a partir del segundo mes o una vez alcanzado el límite de cambios incluidos</strong>. El plan de soporte incluye <strong>hasta 3 cambios por mes</strong>.</li>
-                    <li>Durante el primer mes puedes contratar un <strong>dominio personalizado</strong>. Si decides hacerlo, el costo es de <strong>5 USD por mes</strong>. En caso contrario, el sitio utilizará un subdominio hasta que adquieras el dominio personalizado.</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-left">
-                <div class="footer-logo"><img src="./src/LOGOTIPO 1.svg" alt="Barrale Design Logo"></div>
-                <p class="footer-tagline">Diseñador & Desarrollador Creativo</p>
-                <p class="footer-text">
-                    ¿Tienes un proyecto en mente?<br>
-                    Escríbeme a <a href="mailto:matiasbarrale22@gmail.com" class="footer-email">matiasbarrale22@gmail.com</a>
-                </p>
-            </div>
-            
-            <div class="footer-right">
-                <p class="footer-social-label">Conecta conmigo</p>
-                <div class="footer-social">
-                    <a href="https://www.instagram.com/barrale_design/" target="_blank" rel="noopener noreferrer" class="social-link" title="Instagram">
-                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                        </svg>
-                    </a>
-                    
-                    <a href="https://www.behance.net/matiasbarrale1" target="_blank" rel="noopener noreferrer" class="social-link" title="Behance">
-                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14h-8.027c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988h-6.466v-14.967h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zm-3.466-8.988h3.584c2.508 0 2.906-3-.312-3h-3.272v3zm3.391 3h-3.391v3.016h3.341c3.055 0 2.868-3.016.05-3.016z"/>
-                        </svg>
-                    </a>
-                    
-                    <a href="https://www.linkedin.com/in/matias-barrale-025a05234/" target="_blank" rel="noopener noreferrer" class="social-link" title="LinkedIn">
-                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                        </svg>
-                    </a>
-                    
-                    <a href="mailto:matiasbarrale22@gmail.com" class="social-link" title="Email">
-                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.779l5.513-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>&copy; 2026 Barrale Design. Todos los derechos reservados.</p>
-        </div>
-    </footer>
-    
-    <!-- Floating Chat Widget -->
-    <div class="chat-floating-container" id="chatContainer">
-        <div class="chat-window">
-            <div class="chat-window-header">
-                <div>
-                    <h3 id="chatHeaderTitle">Soporte Barrale Design <i data-lucide="message-square" class="chat-icon"></i></h3>
-                    <p id="chatHeaderSubtitle">Dejá tu consulta en tiempo real</p>
-                </div>
-                <button type="button" class="admin-toggle-btn" onclick="toggleAdminView()" title="Acceso Admin">
-                    ⚙️
-                </button>
-            </div>
-            
-            <div class="chat-admin-login d-none" id="adminLoginView">
-                <h4>Ingreso Administrador</h4>
-                <input type="email" id="adminUser" placeholder="Correo electrónico">
-                <input type="password" id="adminPass" placeholder="Contraseña">
-                <button class="btn-primary-chat" onclick="loginAdmin()">Ingresar</button>
-            </div>
-
-            <div class="chat-admin-threads d-none" id="adminThreadsView">
-                <h4>Conversaciones activas:</h4>
-                <div class="threads-list" id="threadsList"></div>
-            </div>
-
-            <div class="chat-body-view" id="chatBodyView">
-                <div class="chat-messages" id="chatMessages"></div>
-                <form class="chat-form" id="chatForm">
-                    <input type="text" id="chatInput" placeholder="Escribe un mensaje..." required maxlength="250" autocomplete="off">
-                    <button type="submit" class="chat-submit-btn" aria-label="Enviar mensaje">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="22" y1="2" x2="11" y2="13"></line>
-                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                        </svg>
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <button class="chat-bubble" onclick="toggleChat()" aria-label="Abrir chat">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path>
-            </svg>
-        </button>
+<!-- PROJECTS -->
+<section id="projects-container">
+  <div class="work-inner">
+    <div class="work-header">
+      <div>
+        <div class="section-eyebrow">Proyectos</div>
+        <h2 class="work-heading">Trabajos <span class="work-heading-muted">recientes.</span></h2>
+        <p class="work-hint" id="work-hint">Tocá un proyecto para verlo al inicio.</p>
+      </div>
+      <div class="projects-filter-bar" aria-label="Elegir área del proyecto">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="motion-graphics">Motion Graphic</button>
+        <button class="filter-btn" data-filter="diseno-grafico">Diseño Gráfico</button>
+        <button class="filter-btn" data-filter="diseno-web">Diseño Web</button>
+        <button class="filter-btn" data-filter="ux-ui">UX / UI</button>
+      </div>
     </div>
 
-<!-- Tu módulo principal -->
-<script type="module" src="./script.js"></script>
+    <div class="projects-carousel">
+      <button class="projects-nav projects-nav-prev" type="button" aria-label="Ver proyectos anteriores" title="Proyectos anteriores">←</button>
+      <div class="projects-row-wrap">
+        <div class="projects-row" id="projects-row"></div>
+      </div>
+      <button class="projects-nav projects-nav-next" type="button" aria-label="Ver más proyectos" title="Ver más proyectos">→</button>
+    </div>
+  </div>
+</section>
 
-</body>
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-inner">
+    <div class="services-intro">
+      <div class="section-eyebrow">Servicios</div>
+      <h2 class="services-heading">Ideas que toman <span>forma.</span></h2>
+      <p class="services-description">Encamino tu proyecto hacia una solucion certera de tu vision.</p>
+    </div>
+
+    <div class="services-list">
+      <article class="service-card">
+        <span class="service-number">01</span>
+        <h3>Diseño web</h3>
+        <p>Sitios optimizados para la experiencia de tu cliente o para vender tus servicios y productos.</p>
+        <span class="service-arrow">↗</span>
+      </article>
+      <article class="service-card">
+        <span class="service-number">02</span>
+        <h3>UX / UI</h3>
+        <p>Diseño de interfaces intuitivas en base a tu publico objetivo y necesidades.</p>
+        <span class="service-arrow">↗</span>
+      </article>
+      <article class="service-card">
+        <span class="service-number">03</span>
+        <h3>Diseño gráfico</h3>
+        <p>Identidades visual en tu marca, diseño editorial, Conceptos claros que ayudan a destacar tu negocio visualmente.</p>
+        <span class="service-arrow">↗</span>
+      </article>
+      <article class="service-card">
+        <span class="service-number">04</span>
+        <h3>Motion Graphic</h3>
+        <p>Edición de videos con animaciones dinamicas para llamar la atencion de tus publico en redes sociales.</p>
+        <span class="service-arrow">↗</span>
+      </article>
+    </div>
+
+    <div class="service-stats" aria-label="Experiencia profesional">
+      <div class="service-stat">
+        <strong id="metric-projects">30<span>+</span></strong>
+        <span>Proyectos realizados</span>
+      </div>
+      <div class="service-stat">
+        <strong>12<span>+</span></strong>
+        <span>Clientes satisfechos</span>
+      </div>
+      <div class="service-stat">
+        <strong>3<span>+</span></strong>
+        <span>Años creando</span>
+      </div>
+      <div class="service-stat">
+        <strong>100<span>%</span></strong>
+        <span>Compromiso en cada entrega</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="pricing-inner">
+    <div class="pricing-intro">
+      <div>
+        <div class="section-eyebrow">Precios</div>
+        <h2 class="pricing-heading">Elegí el plan <span>ideal para tu proyecto.</span></h2>
+      </div>
+      <p class="pricing-description">Todos los planes se pueden adaptar a las necesidades y objetivos de tu marca.</p>
+    </div>
+
+    <div class="currency-switch" role="group" aria-label="Moneda de precios">
+      <span class="currency-label">Moneda</span>
+      <button class="currency-option active" type="button" data-currency="usd">USD</button>
+      <button class="currency-option" type="button" data-currency="ars">ARS</button>
+    </div>
+
+    <div class="pricing-grid">
+      <article class="price-card">
+        <span class="price-label">Básico</span>
+        <h3 class="price-plan-title"><span class="price-currency">USD</span> <span class="price-number" data-usd="25">25</span><small> por proyecto</small></h3>
+        <p class="price-description">Ideal para emprendedores</p>
+        <ul class="price-features">
+          <li>Landing Page</li>
+          <li>UX/UI básico</li>
+          <li>Animaciones de entrada (fade, slide y hover)</li>
+          <li>Diseño responsive</li>
+          <li>Integración con redes sociales</li>
+          <li>2 revisiones</li>
+          <li>Entrega en 5 días</li>
+          <li>cPanel para autogestión</li>
+          <li class="feature-disabled">SEO básico</li>
+          <li class="feature-disabled">Optimización de velocidad</li>
+          <li class="feature-disabled">Optimización de imágenes</li>
+          <li class="feature-disabled">Soporte por 30 días</li>
+        </ul>
+        <a href="https://ig.me/m/barrale_design" class="price-cta" target="_blank" rel="noreferrer">Empezar <span>→</span></a>
+      </article>
+
+      <article class="price-card price-card-featured">
+        <span class="featured-badge">Más elegido</span>
+        <span class="price-label">Estándar</span>
+        <h3 class="price-plan-title"><span class="price-currency">USD</span> <span class="price-number" data-usd="50">50</span><small> por proyecto</small></h3>
+        <p class="price-description">Perfecto para pequeñas empresas</p>
+        <ul class="price-features">
+          <li>Web de 3 páginas</li>
+          <li>Diseño responsive</li>
+          <li>UX/UI avanzado</li>
+          <li>Animaciones al hacer scroll y de entrada (fade, slide y hover)</li>
+          <li>SEO básico</li>
+          <li>Optimización de velocidad</li>
+          <li>Optimización de imágenes</li>
+          <li>Integración con redes sociales</li>
+          <li>cPanel para autogestión</li>
+          <li>4 revisiones</li>
+          <li>Soporte por 30 días</li>
+          <li>Entrega en 10 días</li>
+        </ul>
+        <a href="https://ig.me/m/barrale_design" class="price-cta" target="_blank" rel="noreferrer">Empezar <span>→</span></a>
+      </article>
+
+      <article class="price-card">
+        <span class="price-label">E-Commerce</span>
+        <h3 class="price-plan-title"><span class="price-currency">USD</span> <span class="price-number" data-usd="150">150</span><small> por proyecto</small></h3>
+        <p class="price-description">Tienda online lista para vender</p>
+        <ul class="price-features">
+          <li>E-commerce en WordPress + WooCommerce</li>
+          <li>UX/UI avanzado</li>
+          <li>Animaciones premium para tienda online</li>
+          <li>Catálogo de Hasta 50 productos cargados</li>
+          <li>Pasarela de pago integrada</li>
+          <li>Panel de gestión completo</li>
+          <li>Optimización de velocidad</li>
+          <li>Optimización de imágenes</li>
+          <li>Compatibilidad con todos los navegadores</li>
+          <li>Seguridad SSL (HTTPS)</li>
+          <li>Formulario de contacto avanzado</li>
+          <li>Diseño responsive premium</li>
+          <li>6 revisiones</li>
+          <li>Soporte por 90 días</li>
+          <li>Entrega en 20 días</li>
+        </ul>
+        <a href="https://ig.me/m/barrale_design" class="price-cta" target="_blank" rel="noreferrer">Hablar <span>→</span></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div>
+    <div class="section-eyebrow">Sobre mí</div>
+    <h2 class="about-title" id="about-title">
+      Diseño con estrategia, <span class="about-title-muted">código con intención.</span>
+    </h2>
+    <p class="about-p" id="about-p1">
+      Soy Matías Barrale, diseñador gráfico y desarrollador web enfocado en crear marcas y experiencias digitales que se entienden rápido, se sienten bien y funcionan con claridad.
+    </p>
+    <p class="about-p" id="about-p2">
+      Trabajo en proyectos donde el diseño no es solo estética: es estrategia, comunicación, claridad visual y una experiencia que realmente ayuda a crecer. Desde branding y diseño de interfaces hasta sitios web completos, acompaño a marcas y negocios a transformar su presencia digital.
+    </p>
+    <p class="about-p" id="about-p3">
+      Actualmente estoy disponible para proyectos freelance, colaboraciones y trabajos a distancia desde Argentina, con foco en diseño visual, UX/UI y desarrollo web.
+    </p>
+  </div>
+  <div>
+    <div class="about-photo" id="about-photo">
+      <img src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=800&h=600&fit=crop&auto=format" alt="Developer workspace" />
+      <div class="about-photo-gradient"></div>
+    </div>
+    <div class="about-facts" id="about-facts">
+      <div class="about-fact">
+        <span class="about-fact-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21s6-5.5 6-11a6 6 0 1 0-12 0c0 5.5 6 11 6 11Z"/>
+            <circle cx="12" cy="10" r="2.5"/>
+          </svg>
+        </span>
+        Córdoba, Argentina
+      </div>
+      <div class="about-fact">
+        <span class="about-fact-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="8"/>
+            <path d="M12 8v4l3 2"/>
+          </svg>
+        </span>
+        Disponible ahora
+      </div>
+      <div class="about-fact">
+        <span class="about-fact-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 9 9-5 9 5-9 5-9-5Z"/>
+            <path d="M7 11.2V15c2.8 2.1 7.2 2.1 10 0v-3.8"/>
+            <path d="M21 9v6"/>
+          </svg>
+        </span>
+        Diseñador gráfico, diseñador web, editor de videos
+      </div>
+      <div class="about-fact">
+        <span class="about-fact-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="8"/>
+            <path d="M3 12h18"/>
+            <path d="M12 3a15 15 0 0 1 0 18"/>
+            <path d="M12 3a15 15 0 0 0 0 18"/>
+          </svg>
+        </span>
+        Trabajo remoto
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="skills-inner">
+    <div>
+        <div class="section-eyebrow">Habilidades</div>
+        <h2 class="skills-heading">Mis herramientas <span class="skills-heading-muted">de trabajo.</span></h2>
+    </div>
+    <div class="skills-groups" id="skills-groups"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-glow"></div>
+  <div class="contact-inner">
+    <div class="section-eyebrow" style="text-align:center;">Hablemos</div>
+    <h2 class="contact-title" id="contact-title">
+      ¿Tenés un proyecto <span class="contact-title-accent">en mente?</span>
+    </h2>
+    <p class="contact-p" id="contact-p">
+      Siempre estoy abierto a conversaciones de tu proyecto y colaboraciones que tengan un gran valor. Escribime.
+    </p>
+    <div class="contact-links" id="contact-links">
+      <a href="mailto:matiasbarrale22@gmail.com" class="btn-contact-email">matiasbarrale22@gmail.com</a>
+      <a href="https://github.com/matiasbarrale" class="btn-contact-social">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/matiasbarrale/" class="btn-contact-social">LinkedIn ↗</a>
+      <a href="https://www.tiktok.com/@matiasbarrale2?lang=es" class="btn-contact-social">Tiktok ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Barrale Design<span>.</span></span>
+  <span class="footer-copy">© 2026 Barrale Design. Todos los derechos reservados.</span>
+  <a class="back-to-top" href="#hero" aria-label="Volver al inicio" title="Volver al inicio">↑</a>
+</footer>
+
+<script type="module" src="./script.js"></script>
 </body>
 </html>
