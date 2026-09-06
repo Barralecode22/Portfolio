@@ -542,10 +542,12 @@ function buildProjectCards(filter) {
   projects.forEach((p, i) => {
     if (filter !== 'all' && p.category !== filter) return;
 
-    const card = document.createElement('button');
+    const card = document.createElement('article');
     card.className = 'project-card' + (i === heroActive ? ' active' : '');
     card.dataset.index = String(i);
     card.style.setProperty('--pcolor', p.color);
+    card.setAttribute('role', 'button');
+    card.tabIndex = 0;
     card.setAttribute('aria-label', 'Ver ' + p.title + ' en el inicio');
 
     card.innerHTML = `
@@ -561,7 +563,25 @@ function buildProjectCards(filter) {
       </div>
     `;
 
+    if (p.link) {
+      const projectLink = document.createElement('a');
+      projectLink.className = 'project-card-link';
+      projectLink.href = p.link;
+      projectLink.target = '_blank';
+      projectLink.rel = 'noopener noreferrer';
+      projectLink.textContent = 'Ver proyecto ↗';
+      projectLink.setAttribute('aria-label', `Abrir ${p.title}`);
+      projectLink.addEventListener('click', event => event.stopPropagation());
+      card.querySelector('.project-card-info').appendChild(projectLink);
+    }
+
     card.addEventListener('click', () => selectProjectInHero(i));
+    card.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        selectProjectInHero(i);
+      }
+    });
     row.appendChild(card);
   });
 }
