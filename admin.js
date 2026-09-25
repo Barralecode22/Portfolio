@@ -333,9 +333,14 @@ function listenToFirebaseProjects() {
       createdAt: docSnap.data().createdAt?.toDate ? docSnap.data().createdAt.toDate().toISOString() : (docSnap.data().createdAt || new Date().toISOString())
     }));
 
-    const localProjects = readStorage(PROJECTS_KEY, []).filter(project => !project.id?.startsWith('base-'));
+    // Solo conservamos del cache local los proyectos que nunca se sincronizaron con Firestore
+    // (sin id). Cualquier proyecto con id ya sincronizado se toma directo de Firebase,
+    // así los borrados y ediciones se reflejan siempre, incluso en otro navegador/dispositivo.
+    const localOnlyProjects = readStorage(PROJECTS_KEY, [])
+      .filter(project => !project.id?.startsWith('base-'))
+      .filter(project => !project.id);
     const mergedByKey = new Map();
-    [...localProjects, ...firebaseProjects].forEach(project => {
+    [...localOnlyProjects, ...firebaseProjects].forEach(project => {
       const key = project.title?.trim().toLowerCase() || project.id;
       mergedByKey.set(key, project);
     });
