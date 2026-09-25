@@ -171,7 +171,8 @@ body {
   gap: 8px;
 }
 
-.preview-container img {
+.preview-container img,
+.preview-container video {
   max-width: 100%;
   max-height: 220px;
   border-radius: 6px;
@@ -217,6 +218,71 @@ body {
 
 .admin-section {
   min-width: 0;
+}
+
+.leads-section {
+  margin-bottom: 34px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #e8eaed;
+}
+
+.leads-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.lead-admin-card {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid #e2e5e8;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.lead-admin-card:hover { border-color: #b8cdf8; }
+
+.lead-admin-card strong {
+  color: #222;
+  font-size: 0.95rem;
+}
+
+.lead-admin-card p {
+  color: #555;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.lead-admin-card .lead-plan {
+  color: #245fbd;
+  font-weight: 700;
+}
+
+.lead-admin-meta {
+  color: #888;
+  font-size: 0.75rem;
+}
+
+.lead-admin-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.lead-delete {
+  border: 0;
+  background: transparent;
+  color: #d93025;
+  cursor: pointer;
+  font-size: 0.78rem;
+  text-decoration: underline;
+}
+
+.empty-leads {
+  color: #777;
+  font-size: 0.88rem;
 }
 
 .admin-form-section {

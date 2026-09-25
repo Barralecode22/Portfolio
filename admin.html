@@ -30,6 +30,15 @@
       <button type="button" id="logout-btn" class="btn-logout">Cerrar sesión</button>
     </header>
 
+    <section class="admin-section leads-section">
+      <div class="section-heading">
+        <span class="section-kicker">Consultas</span>
+        <h2>Contactos interesados</h2>
+        <span id="lead-count" class="project-count">0 contactos</span>
+      </div>
+      <div id="leads-list" class="leads-list" aria-live="polite"></div>
+    </section>
+
     <div class="admin-layout">
       <section class="admin-section">
         <div class="section-heading">
@@ -78,6 +87,19 @@
           <img id="image-preview" src="" alt="Vista previa">
           <button type="button" id="remove-img-btn" class="btn-remove">Quitar imagen</button>
         </div>
+      </div>
+
+      <div class="form-group">
+        <label>Video del proyecto (Opcional, para Motion Graphic)</label>
+        <div class="drop-zone" id="video-drop-zone">
+          <span class="drop-zone-prompt">Arrastra un video aquí o haz clic para subir</span>
+          <input type="file" id="video-input" accept="video/*" class="drop-zone-input">
+        </div>
+        <div id="video-preview-container" class="preview-container hidden">
+          <video id="video-preview" controls playsinline></video>
+          <button type="button" id="remove-video-btn" class="btn-remove">Quitar video</button>
+        </div>
+        <small style="color:#888; font-size:0.78rem; line-height:1.4;">El archivo se mostrará en el inicio dentro de un mockup de celular apaisado en vez de la imagen.</small>
       </div>
 
       <div class="form-group">
