@@ -29,9 +29,12 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
 const PROJECTS_COLLECTION = 'portfolioProjects';
+const LEADS_COLLECTION = 'portfolioLeads';
 const PROJECT_ORDER_KEY = 'portfolioProjectOrder';
 const EXCHANGE_RATE_ARS = 1200;
 let currentCurrency = localStorage.getItem('currency') || 'USD';
+let currentLanguage = localStorage.getItem('portfolioLanguage') || 'es';
+let portfolioLanguageMap = null;
 
 console.log('¡Firebase conectado!');
 
@@ -252,15 +255,12 @@ function listenToRemoteProjects() {
       return normalizeProject({ ...data, id: docSnap.id, createdAt }, data.title || 'Proyecto nuevo');
     });
 
-    // Solo conservamos del cache local los proyectos que nunca se sincronizaron con Firestore
-    // (sin id). Cualquier proyecto con id ya sincronizado se toma directo de Firebase,
-    // así los borrados y ediciones en Firestore se reflejan siempre en el sitio público.
-    const localOnlyProjects = deduplicateProjects(
+    const localProjects = deduplicateProjects(
       (JSON.parse(localStorage.getItem('portfolioCustomProjects')) || [])
-        .filter(project => !project.id)
+        .filter(project => !project.id?.startsWith('base-'))
     );
     const filteredFirebaseProjects = firebaseProjects.filter(project => !project.id.startsWith('base-'));
-    const mergedProjects = sortProjectsByPosition(deduplicateProjects([...localOnlyProjects, ...filteredFirebaseProjects]));
+    const mergedProjects = sortProjectsByPosition(deduplicateProjects([...localProjects, ...filteredFirebaseProjects]));
     localStorage.setItem('portfolioCustomProjects', JSON.stringify(mergedProjects));
     refreshProjectsFromStorage();
 
@@ -277,6 +277,8 @@ function listenToRemoteProjects() {
       buildHeroDots();
       updateHeroUI(heroActive);
     }
+
+    if (typeof window.refreshPortfolioLanguage === 'function') window.refreshPortfolioLanguage();
   }, (error) => {
     console.warn('No se pudo escuchar proyectos de Firebase:', error);
     refreshProjectsFromStorage();
@@ -339,6 +341,105 @@ currencyOptions.forEach(option => {
 });
 updatePrices('usd');
 
+/* ── PRICING TABS (Diseño Web / Video) ── */
+const pricingTabs = document.querySelectorAll('.pricing-tab');
+const pricingGridWeb = document.getElementById('pricing-grid-web');
+const pricingGridVideo = document.getElementById('pricing-grid-video');
+
+pricingTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    pricingTabs.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+
+    const isVideo = tab.dataset.service === 'video';
+    pricingGridWeb.classList.toggle('hidden', isVideo);
+    pricingGridVideo.classList.toggle('hidden', !isVideo);
+  });
+});
+
+/* ── PRICING LEADS ── */
+const leadModal = document.getElementById('lead-modal');
+const leadForm = document.getElementById('lead-form');
+const leadSelectedPlan = document.getElementById('lead-selected-plan');
+const leadStatus = document.getElementById('lead-form-status');
+const leadSubmit = leadForm?.querySelector('button[type="submit"]');
+let selectedLead = null;
+
+function closeLeadModal() {
+  if (!leadModal) return;
+  leadModal.hidden = true;
+  leadModal.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('modal-open');
+}
+
+function openLeadModal(card) {
+  if (!leadModal || !leadForm) return;
+
+  const plan = card.querySelector('.price-label')?.textContent.trim() || 'Plan';
+  const price = card.querySelector('.price-number')?.textContent.trim() || '';
+  const currency = card.querySelector('.price-currency')?.textContent.trim() || 'USD';
+  selectedLead = { plan, price, currency };
+  leadForm.reset();
+  leadSelectedPlan.textContent = `${plan} - ${currency} ${price}`;
+  leadStatus.textContent = '';
+  leadSubmit.disabled = false;
+  leadModal.hidden = false;
+  leadModal.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('modal-open');
+  document.getElementById('lead-contact')?.focus();
+}
+
+document.querySelectorAll('.price-cta').forEach(button => {
+  button.addEventListener('click', event => {
+    event.preventDefault();
+    openLeadModal(button.closest('.price-card'));
+  });
+});
+
+document.querySelectorAll('[data-lead-close]').forEach(button => {
+  button.addEventListener('click', closeLeadModal);
+});
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && leadModal && !leadModal.hidden) closeLeadModal();
+});
+
+leadForm?.addEventListener('submit', async event => {
+  event.preventDefault();
+  if (!selectedLead || !leadSubmit) return;
+
+  const name = document.getElementById('lead-name').value.trim();
+  const method = document.getElementById('lead-method').value;
+  const contact = document.getElementById('lead-contact').value.trim();
+  if (!contact) return;
+
+  leadSubmit.disabled = true;
+  leadStatus.textContent = localizedText('Enviando...');
+
+  try {
+    await addDoc(collection(db, LEADS_COLLECTION), {
+      name,
+      method,
+      contact,
+      plan: selectedLead.plan,
+      price: selectedLead.price,
+      currency: selectedLead.currency,
+      language: currentLanguage,
+      createdAt: serverTimestamp()
+    });
+    leadStatus.textContent = localizedText('¡Mensaje enviado! Me voy a contactar pronto.');
+    setTimeout(closeLeadModal, 1200);
+  } catch (error) {
+    console.error('No se pudo guardar el contacto:', error);
+    leadStatus.textContent = localizedText('No se pudo enviar. Probá nuevamente.');
+    leadSubmit.disabled = false;
+  }
+});
+
 /* ── NAVBAR ── */
 const navbar = document.getElementById('navbar');
 const navToggle = document.querySelector('.nav-toggle');
@@ -350,7 +451,7 @@ function setMenuState(isOpen) {
   navbar.classList.toggle('menu-open', isOpen);
   document.body.classList.toggle('menu-active', isOpen);
   navToggle.setAttribute('aria-expanded', String(isOpen));
-  navToggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+  navToggle.setAttribute('aria-label', localizedText(isOpen ? 'Cerrar menú' : 'Abrir menú'));
   navLinks.setAttribute('aria-hidden', String(!isOpen));
 }
 
@@ -431,11 +532,45 @@ function buildHeroSlides() {
     const div = document.createElement('div');
     div.className = 'hero-slide' + (i === heroActive ? ' active' : '');
     div.id = 'hero-slide-' + i;
-    const img = document.createElement('img');
-    img.src = p.image;
-    img.alt = p.title;
-    div.appendChild(img);
+
+    if (p.video) {
+      div.classList.add('hero-slide-video');
+      div.innerHTML = `
+        <div class="hero-spotlight"></div>
+        <div class="hero-floor-light"></div>
+        <div class="phone-stage">
+          <div class="phone-glow" style="--pcolor:${p.color}"></div>
+          <div class="phone-mockup">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <video src="${p.video}" autoplay muted loop playsinline></video>
+              <div class="phone-screen-sheen"></div>
+            </div>
+          </div>
+          <div class="phone-floor-shadow"></div>
+        </div>
+      `;
+    } else {
+      const img = document.createElement('img');
+      img.src = p.image;
+      img.alt = p.title;
+      div.appendChild(img);
+    }
+
     container.appendChild(div);
+  });
+}
+
+function syncHeroVideos() {
+  document.querySelectorAll('#hero-slides .hero-slide').forEach((slide, index) => {
+    const video = slide.querySelector('video');
+    if (!video) return;
+
+    if (index === heroActive && slide.classList.contains('active')) {
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
   });
 }
 
@@ -459,7 +594,7 @@ function updateHeroUI(idx) {
 
   document.getElementById('hero-project-bar').style.background = p.color;
   document.getElementById('hero-project-label').style.color = p.color;
-  document.getElementById('hero-project-label').textContent = p.year + ' — ' + p.role;
+  document.getElementById('hero-project-label').textContent = p.year + ' — ' + localizedText(p.role);
 
   const titleEl = document.getElementById('hero-project-title');
   titleEl.classList.remove('animate');
@@ -471,7 +606,7 @@ function updateHeroUI(idx) {
   subEl.classList.remove('animate');
   void subEl.offsetWidth;
   subEl.classList.add('animate');
-  subEl.textContent = p.subtitle;
+  subEl.textContent = localizedText(p.subtitle);
 
   const pillsEl = document.getElementById('hero-tech-pills');
   pillsEl.innerHTML = '';
@@ -511,6 +646,7 @@ function heroGoTo(idx) {
   heroActive = idx;
   document.getElementById('hero-slide-' + prev).classList.remove('active');
   document.getElementById('hero-slide-' + idx).classList.add('active');
+  syncHeroVideos();
   updateHeroUI(idx);
   setTimeout(() => { heroTransitioning = false; startHeroTimer(); }, 900);
 }
@@ -523,6 +659,7 @@ function startHeroTimer() {
 buildHeroSlides();
 buildHeroDots();
 if (projects.length) {
+  syncHeroVideos();
   updateHeroUI(0);
   startHeroTimer();
 }
@@ -551,7 +688,7 @@ function buildProjectCards(filter) {
     card.style.setProperty('--pcolor', p.color);
     card.setAttribute('role', 'button');
     card.tabIndex = 0;
-    card.setAttribute('aria-label', 'Ver ' + p.title + ' en el inicio');
+    card.setAttribute('aria-label', localizedText('Ver') + ' ' + p.title + ' ' + localizedText('en el inicio'));
 
     card.innerHTML = `
       <div class="project-card-media"><img src="${p.image}" alt="${p.title}" /></div>
@@ -562,7 +699,7 @@ function buildProjectCards(filter) {
           <span class="project-card-year">${p.year}</span>
         </div>
         <h3 class="project-card-title">${p.title}</h3>
-        <p class="project-card-sub">${p.subtitle}</p>
+        <p class="project-card-sub">${localizedText(p.subtitle)}</p>
       </div>
     `;
 
@@ -572,8 +709,8 @@ function buildProjectCards(filter) {
       projectLink.href = p.link;
       projectLink.target = '_blank';
       projectLink.rel = 'noopener noreferrer';
-      projectLink.textContent = 'Ver proyecto ↗';
-      projectLink.setAttribute('aria-label', `Abrir ${p.title}`);
+      projectLink.textContent = localizedText('Ver proyecto ↗');
+      projectLink.setAttribute('aria-label', `${localizedText('Abrir')} ${p.title}`);
       projectLink.addEventListener('click', event => event.stopPropagation());
       card.querySelector('.project-card-info').appendChild(projectLink);
     }
@@ -612,10 +749,20 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', (e) => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     e.target.classList.add('active');
-    buildProjectCards(e.target.getAttribute('data-filter'));
+    const filter = e.target.getAttribute('data-filter');
+    buildProjectCards(filter);
+    document.getElementById('projects-row').classList.toggle('mode-vertical', filter === 'motion-graphics');
     document.querySelector('.projects-row-wrap').scrollTo({ left: 0, behavior: 'smooth' });
+    updateProjectsNavigationSoon();
   });
 });
+
+// Después de cambiar de tamaño las tarjetas (modo vertical), recalculamos la navegación del carrusel.
+function updateProjectsNavigationSoon() {
+  requestAnimationFrame(() => {
+    if (typeof updateProjectsNavigation === 'function') updateProjectsNavigation();
+  });
+}
 
 /* ── PROJECTS CAROUSEL ── */
 const projectsRowWrap = document.querySelector('.projects-row-wrap');
@@ -668,3 +815,184 @@ skills.forEach(group => {
     label.setAttribute('aria-expanded', String(isOpen));
   });
 });
+
+  const languagePairs = [
+    ['Inicio', 'Home'],
+    ['Proyectos', 'Projects'],
+    ['Servicios', 'Services'],
+    ['Precios', 'Pricing'],
+    ['Sobre mí', 'About me'],
+    ['Habilidades', 'Skills'],
+    ['Trabajemos', "Let's work together"],
+    ['Abrir menú', 'Open menu'],
+    ['Cerrar menú', 'Close menu'],
+    ['Barrale Design — Diseño web y Edición de Video', 'Barrale Design — Web Design and Video Editing'],
+    ['Diseño digital', 'Digital design'],
+    ['para tu web y redes', 'for your website and social media'],
+    ['Diseño gráfico, UX/UI y diseño web para emprendedores que buscan crear su sitio web, resolver un problema digital o editar contenido para redes sociales.', 'Graphic design, UX/UI and web design for entrepreneurs who want to build their website, solve a digital problem or edit content for social media.'],
+    ['Ver proyectos ↓', 'View projects ↓'],
+    ['Hablemos', "Let's talk"],
+    ['Proyectos', 'Projects'],
+    ['Trabajos', 'Recent'],
+    ['recientes.', 'work.'],
+    ['Tocá un proyecto para verlo al inicio.', 'Select a project to view it in the hero.'],
+    ['Todos', 'All'],
+    ['Diseño Web', 'Web Design'],
+    ['Diseño Gráfico', 'Graphic Design'],
+    ['Motion Graphic', 'Motion Graphics'],
+    ['Ver proyectos anteriores', 'Previous projects'],
+    ['Ver más proyectos', 'More projects'],
+    ['Volver al inicio', 'Back to top'],
+    ['Ver', 'View'],
+    ['en el inicio', 'in the hero'],
+    ['Abrir', 'Open'],
+    ['Servicios', 'Services'],
+    ['Ideas que toman ', 'Ideas that take '],
+    ['forma.', 'shape.'],
+    ['Encamino tu proyecto hacia una solucion certera de tu vision.', 'I guide your project toward a clear solution for your vision.'],
+    ['Diseño web', 'Web design'],
+    ['Sitios optimizados para la experiencia de tu cliente o para vender tus servicios y productos.', 'Websites optimized for your customers experience or to sell your services and products.'],
+    ['Diseño de interfaces intuitivas en base a tu publico objetivo y necesidades.', 'Intuitive interface design based on your target audience and needs.'],
+    ['Identidades visual en tu marca, diseño editorial, Conceptos claros que ayudan a destacar tu negocio visualmente.', 'Visual identities for your brand, editorial design and clear concepts that help your business stand out.'],
+    ['Edición de videos con animaciones dinamicas para llamar la atencion de tus publico en redes sociales.', 'Video editing with dynamic animations to capture your audiences attention on social media.'],
+    ['Proyectos realizados', 'Completed projects'],
+    ['Clientes satisfechos', 'Happy clients'],
+    ['Años creando', 'Years creating'],
+    ['Compromiso en cada entrega', 'Commitment in every delivery'],
+    ['Precios', 'Pricing'],
+    ['Elegí el plan ', 'Choose the plan '],
+    ['ideal para tu proyecto.', 'that fits your project.'],
+    ['Todos los planes se pueden adaptar a las necesidades y objetivos de tu marca.', 'All plans can be adapted to your brands needs and goals.'],
+    ['Edición de Video', 'Video Editing'],
+    ['Moneda', 'Currency'],
+    ['Básico', 'Basic'],
+    ['por proyecto', 'per project'],
+    ['Ideal para emprendedores', 'Ideal for entrepreneurs'],
+    ['Landing Page', 'Landing page'],
+    ['UX/UI básico', 'Basic UX/UI'],
+    ['Animaciones de entrada (fade, slide y hover)', 'Entrance animations (fade, slide and hover)'],
+    ['Diseño responsive', 'Responsive design'],
+    ['Integración con redes sociales', 'Social media integration'],
+    ['2 revisiones', '2 revisions'],
+    ['revisiones', 'revisions'],
+    ['Entrega en 5 días', 'Delivery in 5 days'],
+    ['cPanel para autogestión', 'cPanel for self-management'],
+    ['SEO básico', 'Basic SEO'],
+    ['Optimización de velocidad', 'Speed optimization'],
+    ['Optimización de imágenes', 'Image optimization'],
+    ['Soporte por 30 días', '30-day support'],
+    ['Más elegido', 'Most popular'],
+    ['Estándar', 'Standard'],
+    ['Perfecto para pequeñas empresas', 'Perfect for small businesses'],
+    ['Web de 3 páginas', '3-page website'],
+    ['UX/UI avanzado', 'Advanced UX/UI'],
+    ['Animaciones al hacer scroll y de entrada (fade, slide y hover)', 'Scroll and entrance animations (fade, slide and hover)'],
+    ['4 revisiones', '4 revisions'],
+    ['Entrega en 10 días', 'Delivery in 10 days'],
+    ['E-Commerce', 'E-Commerce'],
+    ['por video', 'per video'],
+    ['Tienda online lista para vender', 'Online store ready to sell'],
+    ['Catálogo de Hasta 50 productos cargados', 'Catalog with up to 50 products loaded'],
+    ['Pasarela de pago integrada', 'Integrated payment gateway'],
+    ['Panel de gestión completo', 'Complete management panel'],
+    ['Diseño responsive premium', 'Premium responsive design'],
+    ['Compatibilidad con todos los navegadores', 'Compatible with all browsers'],
+    ['Formulario de contacto avanzado', 'Advanced contact form'],
+    ['6 revisiones', '6 revisions'],
+    ['Soporte por 90 días', '90-day support'],
+    ['Entrega en 20 días', 'Delivery in 20 days'],
+    ['Hablar', 'Get in touch'],
+    ['Reel Simple', 'Simple Reel'],
+    ['Ideal para contenido frecuente de redes', 'Ideal for frequent social media content'],
+    ['Video de hasta 60 segundos', 'Video up to 60 seconds'],
+    ['Corte y ritmo de edición', 'Cuts and editing pace'],
+    ['Subtítulos', 'Subtitles'],
+    ['Música con derechos', 'Licensed music'],
+    ['Formato vertical (Reels/TikTok/Shorts)', 'Vertical format (Reels/TikTok/Shorts)'],
+    ['Entrega en 3 días', 'Delivery in 3 days'],
+    ['Motion graphics animado', 'Animated motion graphics'],
+    ['Corrección de color avanzada', 'Advanced color correction'],
+    ['Reel Pro', 'Pro Reel'],
+    ['Motion graphic para destacar tu marca', 'Motion graphics to make your brand stand out'],
+    ['Video de hasta 90 segundos', 'Video up to 90 seconds'],
+    ['Motion graphics y animaciones custom', 'Custom motion graphics and animations'],
+    ['Exportado para feed, story y reel', 'Exported for feed, story and reel'],
+    ['Archivos del proyecto', 'Project files'],
+    ['Entrega en 4 días', 'Delivery in 4 days'],
+    ['Paquete Mensual', 'Monthly Package'],
+    ['por mes', 'per month'],
+    ['Contenido constante para tus redes', 'Consistent content for your social media'],
+    ['8 videos editados por mes', '8 edited videos per month'],
+    ['Motion graphics avanzado', 'Advanced motion graphics'],
+    ['Calendario de entregas semanal', 'Weekly delivery schedule'],
+    ['3 revisiones por video', '3 revisions per video'],
+    ['Sobre mí', 'About me'],
+    ['Diseño con estrategia, ', 'Design with strategy, '],
+    ['código con intención.', 'code with intention.'],
+    ['Soy Matías Barrale, diseñador gráfico y desarrollador web enfocado en crear marcas y experiencias digitales que se entienden rápido, se sienten bien y funcionan con claridad.', 'I am Matias Barrale, a graphic designer and web developer focused on creating brands and digital experiences that are clear, feel right and work well.'],
+    ['Trabajo en proyectos donde el diseño no es solo estética: es estrategia, comunicación, claridad visual y una experiencia que realmente ayuda a crecer. Desde branding y diseño de interfaces hasta sitios web completos, acompaño a marcas y negocios a transformar su presencia digital.', 'I work on projects where design is more than aesthetics: it is strategy, communication, visual clarity and an experience that truly helps businesses grow. From branding and interface design to complete websites, I help brands and businesses transform their digital presence.'],
+    ['Actualmente estoy disponible para proyectos freelance, colaboraciones y trabajos a distancia desde Argentina, con foco en diseño visual, UX/UI y desarrollo web.', 'I am currently available for freelance projects, collaborations and remote work from Argentina, focused on visual design, UX/UI and web development.'],
+    ['Disponible ahora', 'Available now'],
+    ['Diseñador gráfico, diseñador web, editor de videos', 'Graphic designer, web designer, video editor'],
+    ['Trabajo remoto', 'Remote work'],
+    ['Habilidades', 'Skills'],
+    ['Mis herramientas ', 'My work '],
+    ['de trabajo.', 'tools.'],
+    ['Hablemos', "Let's talk"],
+    ['¿Tenés un proyecto ', 'Do you have a project '],
+    ['en mente?', 'in mind?'],
+    ['Siempre estoy abierto a conversaciones de tu proyecto y colaboraciones que tengan un gran valor. Escribime.', 'I am always open to discussing your project and meaningful collaborations. Send me a message.'],
+    ['© 2026 Barrale Design. Todos los derechos reservados.', '© 2026 Barrale Design. All rights reserved.'],
+    ['Ver proyecto ↗', 'View project ↗']
+  ];
+
+  portfolioLanguageMap = Object.fromEntries(languagePairs.flatMap(([spanish, english]) => [
+    [spanish, { es: spanish, en: english }],
+    [english, { es: spanish, en: english }]
+  ]));
+
+  function localizedText(value) {
+    return portfolioLanguageMap?.[value]?.[currentLanguage] || value;
+  }
+
+  function translatePage(language) {
+    document.documentElement.lang = language;
+    document.title = language === 'en' ? 'Barrale Design — Digital design' : 'Barrale Design';
+
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) {
+      if (node.parentElement?.closest('.project-card-title, #hero-project-title')) continue;
+      const value = node.nodeValue.trim();
+      const translation = portfolioLanguageMap?.[value];
+      if (!translation) continue;
+      node.nodeValue = node.nodeValue.replace(value, translation[language]);
+    }
+
+    const languageToggle = document.getElementById('language-toggle');
+    if (languageToggle) {
+      languageToggle.textContent = language === 'en' ? 'ES' : 'EN';
+      languageToggle.setAttribute('aria-label', language === 'en' ? 'Switch to Spanish' : 'Cambiar a inglés');
+    }
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.setAttribute('aria-label', link.textContent.trim());
+    });
+  }
+
+  document.querySelectorAll('[aria-label], [title]').forEach(element => {
+    ['aria-label', 'title'].forEach(attribute => {
+      const value = element.getAttribute(attribute);
+      if (value) element.setAttribute(attribute, localizedText(value));
+    });
+  });
+
+  const languageToggle = document.getElementById('language-toggle');
+  languageToggle?.addEventListener('click', () => {
+    currentLanguage = currentLanguage === 'es' ? 'en' : 'es';
+    localStorage.setItem('portfolioLanguage', currentLanguage);
+    translatePage(currentLanguage);
+  });
+
+  window.refreshPortfolioLanguage = () => translatePage(currentLanguage);
+  translatePage(currentLanguage);

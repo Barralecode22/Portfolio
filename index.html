@@ -6,10 +6,12 @@
   <meta name="description" content="Barrale Design — diseñador gráfico, UX/UI y desarrollador web en Córdoba, Argentina." />
   <meta name="theme-color" content="#0b0f19" />
   <title>Barrale Design</title>
-  <link rel="icon" type="image/svg+xml" href="./src/logo-mati.svg" />
+  <link rel="icon" type="image/svg+xml" sizes="any" href="./src/logo-mati.svg?v=2" />
+  <link rel="shortcut icon" type="image/svg+xml" href="./src/logo-mati.svg?v=2" />
+  <link rel="apple-touch-icon" href="./src/logo-mati.svg?v=2" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -32,6 +34,7 @@
     <a href="#about">Sobre mí</a>
     <a href="#skills">Habilidades</a>
     <a href="#contact" class="nav-cta">Trabajemos</a>
+    <button class="nav-language" id="language-toggle" type="button" aria-label="Cambiar a inglés">EN</button>
   </div>
 </nav>
 
@@ -44,7 +47,7 @@
   <div class="hero-content">
     <div class="hero-eyebrow" id="hero-eyebrow">Barrale Design — Diseño web y Edición de Video</div>
     <h1 class="hero-title" id="hero-title">
-      Diseño digital<span class="hero-title-accent" id="hero-accent"> para tu web y redes</span>
+      Diseño digital<br><span class="hero-title-accent" id="hero-accent">para tu web y redes</span>
     </h1>
     <p class="hero-tagline" id="hero-tagline">
       Diseño gráfico, UX/UI y diseño web para emprendedores que buscan crear su sitio web, resolver un problema digital o editar contenido para redes sociales.
@@ -173,13 +176,18 @@
       <p class="pricing-description">Todos los planes se pueden adaptar a las necesidades y objetivos de tu marca.</p>
     </div>
 
+    <div class="pricing-tabs" role="tablist" aria-label="Tipo de servicio">
+      <button class="pricing-tab active" type="button" data-service="web" role="tab" aria-selected="true">Diseño Web</button>
+      <button class="pricing-tab" type="button" data-service="video" role="tab" aria-selected="false">Edición de Video</button>
+    </div>
+
     <div class="currency-switch" role="group" aria-label="Moneda de precios">
       <span class="currency-label">Moneda</span>
       <button class="currency-option active" type="button" data-currency="usd">USD</button>
       <button class="currency-option" type="button" data-currency="ars">ARS</button>
     </div>
 
-    <div class="pricing-grid">
+    <div class="pricing-grid" id="pricing-grid-web">
       <article class="price-card">
         <span class="price-label">Básico</span>
         <h3 class="price-plan-title"><span class="price-currency">USD</span> <span class="price-number" data-usd="25">25</span><small> por proyecto</small></h3>
@@ -243,6 +251,60 @@
           <li>6 revisiones</li>
           <li>Soporte por 90 días</li>
           <li>Entrega en 20 días</li>
+        </ul>
+        <a href="https://ig.me/m/barrale_design" class="price-cta" target="_blank" rel="noreferrer">Hablar <span>→</span></a>
+      </article>
+    </div>
+
+    <div class="pricing-grid hidden" id="pricing-grid-video">
+      <article class="price-card">
+        <span class="price-label">Reel Simple</span>
+        <h3 class="price-plan-title"><span class="price-currency">USD</span> <span class="price-number" data-usd="8">8</span><small> por video</small></h3>
+        <p class="price-description">Ideal para contenido frecuente de redes</p>
+        <ul class="price-features">
+          <li>Video de hasta 60 segundos</li>
+          <li>Corte y ritmo de edición</li>
+          <li>Subtítulos</li>
+          <li>Música con derechos</li>
+          <li>Formato vertical (Reels/TikTok/Shorts)</li>
+          <li>1 revisión</li>
+          <li>Entrega en 3 días</li>
+          <li class="feature-disabled">Motion graphics animado</li>
+          <li class="feature-disabled">Corrección de color avanzada</li>
+        </ul>
+        <a href="https://ig.me/m/barrale_design" class="price-cta" target="_blank" rel="noreferrer">Empezar <span>→</span></a>
+      </article>
+
+      <article class="price-card price-card-featured">
+        <span class="featured-badge">Más elegido</span>
+        <span class="price-label">Reel Pro</span>
+        <h3 class="price-plan-title"><span class="price-currency">USD</span> <span class="price-number" data-usd="35">35</span><small> por video</small></h3>
+        <p class="price-description">Motion graphic para destacar tu marca</p>
+        <ul class="price-features">
+          <li>Video de hasta 90 segundos</li>
+          <li>Motion graphics y animaciones custom</li>
+          <li>Subtítulos animados</li>
+          <li>Música con derechos</li>
+          <li>Exportado para feed, story y reel</li>
+          <li>Archivos del proyecto</li>
+          <li>2 revisiones</li>
+          <li>Entrega en 4 días</li>
+        </ul>
+        <a href="https://ig.me/m/barrale_design" class="price-cta" target="_blank" rel="noreferrer">Empezar <span>→</span></a>
+      </article>
+
+      <article class="price-card">
+        <span class="price-label">Paquete Mensual</span>
+        <h3 class="price-plan-title"><span class="price-currency">USD</span> <span class="price-number" data-usd="55">55</span><small> por mes</small></h3>
+        <p class="price-description">Contenido constante para tus redes</p>
+        <ul class="price-features">
+          <li>8 videos editados por mes</li>
+          <li>Motion graphics avanzado</li>
+          <li>Calendario de entregas semanal</li>
+          <li>Subtítulos animados</li>
+          <li>Corrección de color</li>
+          <li>Música con derechos</li>
+          <li>3 revisiones por video</li>
         </ul>
         <a href="https://ig.me/m/barrale_design" class="price-cta" target="_blank" rel="noreferrer">Hablar <span>→</span></a>
       </article>
@@ -353,6 +415,30 @@
   <span class="footer-copy">© 2026 Barrale Design. Todos los derechos reservados.</span>
   <a class="back-to-top" href="#hero" aria-label="Volver al inicio" title="Volver al inicio">↑</a>
 </footer>
+
+<div class="lead-modal" id="lead-modal" hidden aria-hidden="true">
+  <div class="lead-modal-backdrop" data-lead-close></div>
+  <section class="lead-modal-card" role="dialog" aria-modal="true" aria-labelledby="lead-modal-title">
+    <button class="lead-modal-close" type="button" aria-label="Cerrar formulario" data-lead-close>×</button>
+    <div class="section-eyebrow">Contacto</div>
+    <h2 id="lead-modal-title">Hablemos de tu proyecto</h2>
+    <p class="lead-modal-plan">Plan elegido: <strong id="lead-selected-plan"></strong></p>
+    <form id="lead-form">
+      <label for="lead-name">Nombre <span>(opcional)</span></label>
+      <input id="lead-name" name="name" type="text" autocomplete="name" placeholder="Tu nombre">
+      <label for="lead-method">Método de contacto</label>
+      <select id="lead-method" name="method">
+        <option value="email">Email</option>
+        <option value="whatsapp">WhatsApp</option>
+        <option value="instagram">Instagram</option>
+      </select>
+      <label for="lead-contact">Email o usuario</label>
+      <input id="lead-contact" name="contact" type="text" required autocomplete="email" placeholder="tu@email.com">
+      <button class="btn-primary lead-submit" type="submit">Enviar consulta <span>→</span></button>
+      <p class="lead-form-status" id="lead-form-status" role="status"></p>
+    </form>
+  </section>
+</div>
 
 <script type="module" src="./script.js"></script>
 </body>
