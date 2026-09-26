@@ -41,8 +41,6 @@ const categoryNames = {
 
 let editingProjectId = null;
 let currentImageData = null;
-// currentVideoData es el video en base64 (data URL), igual que currentImageData con las fotos.
-let currentVideoData = null;
 
 const firebaseConfig = {
   apiKey: "AIzaSyAuGvpVGinoycXN0N52yisDX1WvWYxUygE",
@@ -172,14 +170,12 @@ async function syncBaseProjectsToFirebase() {
 function startEditingProject(project) {
   editingProjectId = project.id;
   currentImageData = project.image || null;
-  currentVideoData = project.video || null;
 
   document.getElementById('title').value = project.title || '';
   document.getElementById('category').value = project.category || '';
   document.getElementById('description').value = project.description || '';
   document.getElementById('link').value = project.link || '';
 
-  const imageInput = document.getElementById('image-input');
   const previewContainer = document.getElementById('image-preview-container');
   const imagePreview = document.getElementById('image-preview');
   const dropZone = document.getElementById('drop-zone');
@@ -194,20 +190,6 @@ function startEditingProject(project) {
     dropZone.classList.remove('hidden');
   }
 
-  const videoPreviewContainer = document.getElementById('video-preview-container');
-  const videoPreview = document.getElementById('video-preview');
-  const videoDropZone = document.getElementById('video-drop-zone');
-  if (currentVideoData) {
-    videoPreview.src = currentVideoData;
-    videoPreviewContainer.classList.remove('hidden');
-    videoDropZone.classList.add('hidden');
-  } else {
-    videoPreview.removeAttribute('src');
-    videoPreview.load();
-    videoPreviewContainer.classList.add('hidden');
-    videoDropZone.classList.remove('hidden');
-  }
-
   document.getElementById('form-kicker').textContent = 'Contenido existente';
   document.getElementById('form-title').textContent = 'Editar proyecto';
   document.getElementById('submit-project-btn').textContent = 'Guardar cambios';
@@ -218,7 +200,6 @@ function startEditingProject(project) {
 function resetEditingForm() {
   editingProjectId = null;
   currentImageData = null;
-  currentVideoData = null;
   document.getElementById('form-kicker').textContent = 'Nuevo contenido';
   document.getElementById('form-title').textContent = 'Subir proyecto';
   document.getElementById('submit-project-btn').textContent = 'Publicar Proyecto';
@@ -255,23 +236,6 @@ function compressImage(file, { maxWidth = 1600, maxHeight = 1200, quality = 0.78
       img.src = reader.result;
     };
     reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
-    reader.readAsDataURL(file);
-  });
-}
-
-// Lee el video como base64 (data URL), igual que se hace con la imagen.
-// Sin compresión: por eso solo sirven videos cortos/livianos (límite real: 1MB por
-// documento de Firestore).
-function readVideo(file) {
-  return new Promise((resolve, reject) => {
-    if (!file || !file.type.startsWith('video/')) {
-      resolve(null);
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject(new Error('No se pudo leer el video.'));
     reader.readAsDataURL(file);
   });
 }
@@ -398,11 +362,6 @@ function initializeAdmin() {
   const previewContainer = document.getElementById('image-preview-container');
   const imagePreview = document.getElementById('image-preview');
   const removeImgBtn = document.getElementById('remove-img-btn');
-  const videoInput = document.getElementById('video-input');
-  const videoDropZone = document.getElementById('video-drop-zone');
-  const videoPreviewContainer = document.getElementById('video-preview-container');
-  const videoPreview = document.getElementById('video-preview');
-  const removeVideoBtn = document.getElementById('remove-video-btn');
   const syncBaseProjectsButton = document.getElementById('sync-base-projects-btn');
 
   const handleImageFile = async (file) => {
@@ -440,43 +399,9 @@ function initializeAdmin() {
     dropZone.classList.remove('hidden');
   });
 
-  const handleVideoFile = async (file) => {
-    if (!file || !file.type.startsWith('video/')) return;
-
-    try {
-      currentVideoData = await readVideo(file);
-      videoPreview.src = currentVideoData;
-      videoPreviewContainer.classList.remove('hidden');
-      videoDropZone.classList.add('hidden');
-    } catch (error) {
-      console.error('Error al procesar el video:', error);
-      alert('No se pudo procesar el video. Probá con otro archivo.');
-    }
-  };
-
-  ['dragover', 'dragleave', 'drop'].forEach(eventName => {
-    videoDropZone.addEventListener(eventName, event => event.preventDefault());
-  });
-  videoDropZone.addEventListener('dragover', () => videoDropZone.classList.add('dragover'));
-  ['dragleave', 'drop'].forEach(eventName => {
-    videoDropZone.addEventListener(eventName, () => videoDropZone.classList.remove('dragover'));
-  });
-  videoDropZone.addEventListener('drop', event => handleVideoFile(event.dataTransfer.files[0]));
-  videoInput.addEventListener('change', event => handleVideoFile(event.target.files[0]));
-
-  removeVideoBtn.addEventListener('click', () => {
-    currentVideoData = null;
-    videoInput.value = '';
-    videoPreview.removeAttribute('src');
-    videoPreview.load();
-    videoPreviewContainer.classList.add('hidden');
-    videoDropZone.classList.remove('hidden');
-  });
-
   document.getElementById('cancel-edit-btn').addEventListener('click', () => {
     form.reset();
     removeImgBtn.click();
-    removeVideoBtn.click();
     resetEditingForm();
   });
 
@@ -499,21 +424,19 @@ function initializeAdmin() {
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const isEditing = Boolean(editingProjectId);
-    const id = editingProjectId || `custom-${Date.now()}`;
-
     const newProject = {
       title: document.getElementById('title').value.trim(),
       category: document.getElementById('category').value,
       description: document.getElementById('description').value.trim(),
       image: currentImageData || 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=1800&h=1000&fit=crop&auto=format',
-      video: currentVideoData || '',
       link: document.getElementById('link').value.trim(),
       createdAt: new Date().toISOString(),
       position: getProjects().length
     };
 
     const customProjects = readStorage(PROJECTS_KEY, []);
+    const isEditing = Boolean(editingProjectId);
+    const id = editingProjectId || `custom-${Date.now()}`;
 
     try {
       let updatedLocalProjects;
@@ -534,7 +457,7 @@ function initializeAdmin() {
 
       const saved = saveProjects(updatedLocalProjects, readStorage(REMOVED_PROJECTS_KEY, []));
       if (!saved) {
-        alert('La imagen o el video superan el límite de almacenamiento del navegador. Probá con un archivo más liviano o de menor resolución.');
+        alert('La imagen supera el límite de almacenamiento del navegador. Probá subir una foto más pequeña o con menos resolución.');
         return;
       }
     } catch (error) {
@@ -547,7 +470,7 @@ function initializeAdmin() {
         ];
       const saved = saveProjects(updatedLocalProjects, readStorage(REMOVED_PROJECTS_KEY, []));
       if (!saved) {
-        alert('La imagen o el video superan el límite de almacenamiento del navegador. Probá con un archivo más liviano o de menor resolución.');
+        alert('La imagen supera el límite de almacenamiento del navegador. Probá subir una foto más pequeña o con menos resolución.');
         return;
       }
     }
@@ -556,7 +479,6 @@ function initializeAdmin() {
     alert(isEditing ? '¡Proyecto actualizado exitosamente!' : '¡Proyecto cargado exitosamente!');
     form.reset();
     removeImgBtn.click();
-    removeVideoBtn.click();
     resetEditingForm();
   });
 
