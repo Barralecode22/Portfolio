@@ -431,10 +431,26 @@ function buildHeroSlides() {
     const div = document.createElement('div');
     div.className = 'hero-slide' + (i === heroActive ? ' active' : '');
     div.id = 'hero-slide-' + i;
-    const img = document.createElement('img');
-    img.src = p.image;
-    img.alt = p.title;
-    div.appendChild(img);
+
+    if (p.video) {
+      div.classList.add('has-video');
+      const mockup = document.createElement('div');
+      mockup.className = 'phone-mockup';
+      const video = document.createElement('video');
+      video.src = p.video;
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      mockup.appendChild(video);
+      div.appendChild(mockup);
+    } else {
+      const img = document.createElement('img');
+      img.src = p.image;
+      img.alt = p.title;
+      div.appendChild(img);
+    }
+
     container.appendChild(div);
   });
 }

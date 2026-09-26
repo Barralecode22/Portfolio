@@ -13,6 +13,13 @@ import {
   query,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
 const PROJECTS_KEY = 'portfolioCustomProjects';
 const REMOVED_PROJECTS_KEY = 'portfolioRemovedProjects';
@@ -41,6 +48,12 @@ const categoryNames = {
 
 let editingProjectId = null;
 let currentImageData = null;
+// currentVideoData puede ser: null (sin video), un string (URL ya subida a Storage)
+// o un objeto File (video recién elegido, pendiente de subir al guardar).
+let currentVideoData = null;
+// URL del video que tenía el proyecto ANTES de editar, para poder borrarlo de Storage
+// si se reemplaza o se quita.
+let previousVideoUrl = null;
 
 const firebaseConfig = {
   apiKey: "AIzaSyAuGvpVGinoycXN0N52yisDX1WvWYxUygE",
@@ -55,6 +68,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 function getAuthErrorMessage(error) {
   const messages = {
@@ -170,12 +184,15 @@ async function syncBaseProjectsToFirebase() {
 function startEditingProject(project) {
   editingProjectId = project.id;
   currentImageData = project.image || null;
+  currentVideoData = project.video || null;
+  previousVideoUrl = project.video || null;
 
   document.getElementById('title').value = project.title || '';
   document.getElementById('category').value = project.category || '';
   document.getElementById('description').value = project.description || '';
   document.getElementById('link').value = project.link || '';
 
+  const imageInput = document.getElementById('image-input');
   const previewContainer = document.getElementById('image-preview-container');
   const imagePreview = document.getElementById('image-preview');
   const dropZone = document.getElementById('drop-zone');
@@ -190,6 +207,20 @@ function startEditingProject(project) {
     dropZone.classList.remove('hidden');
   }
 
+  const videoPreviewContainer = document.getElementById('video-preview-container');
+  const videoPreview = document.getElementById('video-preview');
+  const videoDropZone = document.getElementById('video-drop-zone');
+  if (currentVideoData) {
+    videoPreview.src = currentVideoData;
+    videoPreviewContainer.classList.remove('hidden');
+    videoDropZone.classList.add('hidden');
+  } else {
+    videoPreview.removeAttribute('src');
+    videoPreview.load();
+    videoPreviewContainer.classList.add('hidden');
+    videoDropZone.classList.remove('hidden');
+  }
+
   document.getElementById('form-kicker').textContent = 'Contenido existente';
   document.getElementById('form-title').textContent = 'Editar proyecto';
   document.getElementById('submit-project-btn').textContent = 'Guardar cambios';
@@ -200,6 +231,8 @@ function startEditingProject(project) {
 function resetEditingForm() {
   editingProjectId = null;
   currentImageData = null;
+  currentVideoData = null;
+  previousVideoUrl = null;
   document.getElementById('form-kicker').textContent = 'Nuevo contenido';
   document.getElementById('form-title').textContent = 'Subir proyecto';
   document.getElementById('submit-project-btn').textContent = 'Publicar Proyecto';
@@ -237,6 +270,34 @@ function compressImage(file, { maxWidth = 1600, maxHeight = 1200, quality = 0.78
     };
     reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
     reader.readAsDataURL(file);
+  });
+}
+
+// Sube el video a Firebase Storage (no a Firestore: un video en base64 supera fácil
+// el límite de 1MB por documento). Devuelve la URL pública de descarga.
+function uploadVideoToStorage(file, projectId, onProgress) {
+  return new Promise((resolve, reject) => {
+    const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+    const path = `project-videos/${projectId}-${Date.now()}-${safeName}`;
+    const storageRef = ref(storage, path);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      'state_changed',
+      snapshot => {
+        const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+        if (onProgress) onProgress(progress);
+      },
+      reject,
+      async () => {
+        try {
+          const url = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(url);
+        } catch (error) {
+          reject(error);
+        }
+      }
+    );
   });
 }
 
@@ -362,6 +423,11 @@ function initializeAdmin() {
   const previewContainer = document.getElementById('image-preview-container');
   const imagePreview = document.getElementById('image-preview');
   const removeImgBtn = document.getElementById('remove-img-btn');
+  const videoInput = document.getElementById('video-input');
+  const videoDropZone = document.getElementById('video-drop-zone');
+  const videoPreviewContainer = document.getElementById('video-preview-container');
+  const videoPreview = document.getElementById('video-preview');
+  const removeVideoBtn = document.getElementById('remove-video-btn');
   const syncBaseProjectsButton = document.getElementById('sync-base-projects-btn');
 
   const handleImageFile = async (file) => {
@@ -399,9 +465,41 @@ function initializeAdmin() {
     dropZone.classList.remove('hidden');
   });
 
+  // El video NO se sube acá: solo lo guardamos como File pendiente y mostramos
+  // una vista previa local (blob). La subida real a Storage pasa recién al enviar
+  // el formulario, para no subirlo dos veces si el usuario sigue editando otros campos.
+  const handleVideoFile = (file) => {
+    if (!file || !file.type.startsWith('video/')) return;
+
+    currentVideoData = file;
+    videoPreview.src = URL.createObjectURL(file);
+    videoPreviewContainer.classList.remove('hidden');
+    videoDropZone.classList.add('hidden');
+  };
+
+  ['dragover', 'dragleave', 'drop'].forEach(eventName => {
+    videoDropZone.addEventListener(eventName, event => event.preventDefault());
+  });
+  videoDropZone.addEventListener('dragover', () => videoDropZone.classList.add('dragover'));
+  ['dragleave', 'drop'].forEach(eventName => {
+    videoDropZone.addEventListener(eventName, () => videoDropZone.classList.remove('dragover'));
+  });
+  videoDropZone.addEventListener('drop', event => handleVideoFile(event.dataTransfer.files[0]));
+  videoInput.addEventListener('change', event => handleVideoFile(event.target.files[0]));
+
+  removeVideoBtn.addEventListener('click', () => {
+    currentVideoData = null;
+    videoInput.value = '';
+    videoPreview.removeAttribute('src');
+    videoPreview.load();
+    videoPreviewContainer.classList.add('hidden');
+    videoDropZone.classList.remove('hidden');
+  });
+
   document.getElementById('cancel-edit-btn').addEventListener('click', () => {
     form.reset();
     removeImgBtn.click();
+    removeVideoBtn.click();
     resetEditingForm();
   });
 
@@ -424,19 +522,52 @@ function initializeAdmin() {
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
+    const submitButton = document.getElementById('submit-project-btn');
+    const isEditing = Boolean(editingProjectId);
+    const id = editingProjectId || `custom-${Date.now()}`;
+    const originalSubmitLabel = isEditing ? 'Guardar cambios' : 'Publicar Proyecto';
+
+    // Paso 1: si hay un video nuevo (File), subirlo primero a Storage.
+    // Si currentVideoData ya es un string, es una URL existente que no cambió.
+    let videoUrl = '';
+    submitButton.disabled = true;
+    try {
+      if (currentVideoData instanceof File) {
+        videoUrl = await uploadVideoToStorage(currentVideoData, id, progress => {
+          submitButton.textContent = `Subiendo video... ${progress}%`;
+        });
+      } else if (typeof currentVideoData === 'string') {
+        videoUrl = currentVideoData;
+      }
+    } catch (error) {
+      console.error('No se pudo subir el video a Storage:', error);
+      alert('No se pudo subir el video. Probá con un archivo más liviano, revisá tu conexión o las reglas de seguridad de Storage.');
+      submitButton.disabled = false;
+      submitButton.textContent = originalSubmitLabel;
+      return;
+    }
+
+    // Si el video cambió o se quitó, borramos (best-effort) el que estaba antes en Storage.
+    if (previousVideoUrl && previousVideoUrl !== videoUrl && previousVideoUrl.startsWith('http')) {
+      try {
+        await deleteObject(ref(storage, previousVideoUrl));
+      } catch (error) {
+        console.warn('No se pudo borrar el video anterior de Storage (puede que ya no exista).', error);
+      }
+    }
+
     const newProject = {
       title: document.getElementById('title').value.trim(),
       category: document.getElementById('category').value,
       description: document.getElementById('description').value.trim(),
       image: currentImageData || 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=1800&h=1000&fit=crop&auto=format',
+      video: videoUrl,
       link: document.getElementById('link').value.trim(),
       createdAt: new Date().toISOString(),
       position: getProjects().length
     };
 
     const customProjects = readStorage(PROJECTS_KEY, []);
-    const isEditing = Boolean(editingProjectId);
-    const id = editingProjectId || `custom-${Date.now()}`;
 
     try {
       let updatedLocalProjects;
@@ -458,6 +589,8 @@ function initializeAdmin() {
       const saved = saveProjects(updatedLocalProjects, readStorage(REMOVED_PROJECTS_KEY, []));
       if (!saved) {
         alert('La imagen supera el límite de almacenamiento del navegador. Probá subir una foto más pequeña o con menos resolución.');
+        submitButton.disabled = false;
+        submitButton.textContent = originalSubmitLabel;
         return;
       }
     } catch (error) {
@@ -471,6 +604,8 @@ function initializeAdmin() {
       const saved = saveProjects(updatedLocalProjects, readStorage(REMOVED_PROJECTS_KEY, []));
       if (!saved) {
         alert('La imagen supera el límite de almacenamiento del navegador. Probá subir una foto más pequeña o con menos resolución.');
+        submitButton.disabled = false;
+        submitButton.textContent = originalSubmitLabel;
         return;
       }
     }
@@ -479,7 +614,9 @@ function initializeAdmin() {
     alert(isEditing ? '¡Proyecto actualizado exitosamente!' : '¡Proyecto cargado exitosamente!');
     form.reset();
     removeImgBtn.click();
+    removeVideoBtn.click();
     resetEditingForm();
+    submitButton.disabled = false;
   });
 
   listenToFirebaseProjects();
