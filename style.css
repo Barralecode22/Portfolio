@@ -158,7 +158,8 @@ body.modal-open { overflow: hidden; }
 
 /* Slide de video: celular parado, inclinado en perspectiva, con luz cenital sobre fondo oscuro */
 .hero-slide-video {
-  position: relative;
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
