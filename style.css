@@ -6,8 +6,8 @@
   --muted: #e0e0e0;
   --border: #1e1e1e;
   --surface: #111111;
-  --mono: 'JetBrains Mono', monospace;
-  --sans: 'Roboto', system-ui, sans-serif;
+  --mono: 'Archivo', system-ui, sans-serif;
+  --sans: 'Archivo', system-ui, sans-serif;
 }
 
 html { scroll-behavior: smooth; background: var(--canvas); }
