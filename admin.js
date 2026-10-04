@@ -225,7 +225,7 @@ function resetEditingForm() {
   document.getElementById('cancel-edit-btn').classList.add('hidden');
 }
 
-function compressImage(file, { maxWidth = 1200, maxHeight = 900, quality = 0.65 } = {}) {
+function compressImage(file, { maxWidth = 1200, maxHeight = 900, quality = 0.82 } = {}) {
   return new Promise((resolve, reject) => {
     if (!file || !file.type.startsWith('image/')) {
       resolve(null);
