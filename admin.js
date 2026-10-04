@@ -225,29 +225,38 @@ function resetEditingForm() {
   document.getElementById('cancel-edit-btn').classList.add('hidden');
 }
 
-function compressImage(file, { maxWidth = 1200, maxHeight = 900, quality = 0.82 } = {}) {
+function compressImage(file, { targetWidth = 1920, targetHeight = 1080, quality = 0.92 } = {}) {
   return new Promise((resolve, reject) => {
     if (!file || !file.type.startsWith('image/')) {
       resolve(null);
       return;
     }
 
+    const mimeType = file.type === 'image/png' ? 'image/png' : file.type === 'image/webp' ? 'image/webp' : 'image/jpeg';
+
     const reader = new FileReader();
     reader.onload = () => {
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement('canvas');
-        const scale = Math.min(maxWidth / img.width, maxHeight / img.height, 1);
-        const targetWidth = Math.max(1, Math.round(img.width * scale));
-        const targetHeight = Math.max(1, Math.round(img.height * scale));
-
         canvas.width = targetWidth;
         canvas.height = targetHeight;
 
         const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, targetWidth, targetHeight);
 
-        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        const scale = Math.min(targetWidth / img.width, targetHeight / img.height);
+        const drawWidth = img.width * scale;
+        const drawHeight = img.height * scale;
+        const offsetX = (targetWidth - drawWidth) / 2;
+        const offsetY = (targetHeight - drawHeight) / 2;
+
+        ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+
+        const dataUrl = mimeType === 'image/png' || mimeType === 'image/webp'
+          ? canvas.toDataURL(mimeType, quality)
+          : canvas.toDataURL('image/jpeg', quality);
 
         resolve(dataUrl);
       };
