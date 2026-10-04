@@ -690,8 +690,12 @@ function buildProjectCards(filter) {
     card.tabIndex = 0;
     card.setAttribute('aria-label', localizedText('Ver') + ' ' + p.title + ' ' + localizedText('en el inicio'));
 
+    const mediaMarkup = p.video
+      ? `<video src="${p.video}" autoplay muted loop playsinline preload="metadata"></video>`
+      : `<img src="${p.image}" alt="${p.title}" />`;
+
     card.innerHTML = `
-      <div class="project-card-media"><img src="${p.image}" alt="${p.title}" /></div>
+      <div class="project-card-media ${p.video ? 'has-video' : ''}">${mediaMarkup}</div>
       <div class="project-card-overlay"></div>
       <div class="project-card-info">
         <div class="project-card-meta">
@@ -702,6 +706,15 @@ function buildProjectCards(filter) {
         <p class="project-card-sub">${localizedText(p.subtitle)}</p>
       </div>
     `;
+
+    if (p.video) {
+      const video = card.querySelector('.project-card-media video');
+      if (video) {
+        video.addEventListener('loadeddata', () => {
+          video.play().catch(() => {});
+        });
+      }
+    }
 
     if (p.link) {
       const projectLink = document.createElement('a');

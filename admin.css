@@ -360,13 +360,60 @@ body {
   box-shadow: 0 3px 12px rgba(0, 70, 180, 0.08);
 }
 
-.project-admin-image {
+.project-admin-media {
+  position: relative;
   width: 68px;
   height: 58px;
   border-radius: 5px;
+  overflow: hidden;
   background-color: #edf1f5;
   background-position: center;
   background-size: cover;
+  box-shadow: inset 0 0 0 1px rgba(17, 24, 39, 0.06);
+}
+
+.project-admin-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(11, 14, 20, 0.08), rgba(11, 14, 20, 0.22));
+  pointer-events: none;
+}
+
+.project-admin-media.is-video::before {
+  content: "▶";
+  position: absolute;
+  right: 7px;
+  bottom: 7px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(10, 12, 18, 0.64);
+  color: #fff;
+  font-size: 0.56rem;
+  line-height: 1;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.project-admin-image {
+  width: 100%;
+  height: 100%;
+  background-color: #edf1f5;
+  background-position: center;
+  background-size: cover;
+}
+
+.project-admin-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+  filter: saturate(1.15) contrast(1.05);
 }
 
 .project-admin-details {
@@ -465,7 +512,7 @@ body {
   .login-card { padding: 26px 20px; }
   .btn-logout { position: static; margin-top: 12px; }
   .project-admin-card { grid-template-columns: 56px minmax(0, 1fr); }
-  .project-admin-image { width: 56px; height: 52px; }
+  .project-admin-media { width: 56px; height: 52px; }
   .project-admin-actions { grid-column: 1 / -1; justify-content: flex-start; }
   .form-actions { align-items: stretch; flex-direction: column; }
 }

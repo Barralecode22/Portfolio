@@ -297,9 +297,31 @@ function renderProjects(projects = getProjects()) {
     const item = document.createElement('article');
     item.className = 'project-admin-card';
 
-    const image = document.createElement('div');
-    image.className = 'project-admin-image';
-    if (project.image) image.style.backgroundImage = `url("${project.image}")`;
+    const media = document.createElement('div');
+    media.className = 'project-admin-media';
+
+    if (project.video) {
+      media.classList.add('is-video');
+      const video = document.createElement('video');
+      video.className = 'project-admin-video';
+      video.src = project.video;
+      video.muted = true;
+      video.playsInline = true;
+      video.loop = true;
+      video.autoplay = true;
+      video.preload = 'metadata';
+      video.addEventListener('canplay', () => {
+        const startTime = Math.min(0.2, video.duration ? video.duration * 0.15 : 0.2);
+        if (Number.isFinite(startTime)) {
+          video.currentTime = startTime;
+        }
+        video.play().catch(() => {});
+      });
+      media.appendChild(video);
+    } else if (project.image) {
+      media.classList.add('project-admin-image');
+      media.style.backgroundImage = `url("${project.image}")`;
+    }
 
     const details = document.createElement('div');
     details.className = 'project-admin-details';
@@ -360,7 +382,7 @@ function renderProjects(projects = getProjects()) {
     }
 
     actions.appendChild(deleteButton);
-    item.append(image, details, actions);
+    item.append(media, details, actions);
     list.appendChild(item);
   });
 }
