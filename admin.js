@@ -46,6 +46,7 @@ let currentVideoData = null;
 let editingProject = null;
 let imageChangedWhileEditing = false;
 let videoChangedWhileEditing = false;
+const pendingProjectUpdates = new Map();
 
 const firebaseConfig = {
   apiKey: "AIzaSyAuGvpVGinoycXN0N52yisDX1WvWYxUygE",
@@ -518,6 +519,7 @@ function listenToFirebaseProjects() {
     const firebaseProjects = snapshot.docs.filter(docSnap => !docSnap.id.startsWith('base-')).map(docSnap => ({
       id: docSnap.id,
       ...docSnap.data(),
+      ...pendingProjectUpdates.get(docSnap.id),
       createdAt: docSnap.data().createdAt?.toDate ? docSnap.data().createdAt.toDate().toISOString() : (docSnap.data().createdAt || new Date().toISOString())
     }));
 
@@ -674,41 +676,55 @@ function initializeAdmin() {
     };
     let savedLocallyOnly = false;
 
-    try {
-      let updatedLocalProjects;
-      if (isEditing) {
+    if (isEditing) {
+      const updatedLocalProjects = customProjects.map(item => item.id === id
+        ? { ...item, ...editUpdates, id }
+        : item);
+      if (!saveProjects(updatedLocalProjects, readStorage(REMOVED_PROJECTS_KEY, []))) {
+        alert('El archivo supera el límite de almacenamiento. Probá subir un video más pequeño o con menos resolución.');
+        return;
+      }
+
+      pendingProjectUpdates.set(id, editUpdates);
+      renderProjects();
+      try {
         await updateDoc(doc(db, PROJECTS_COLLECTION, id), editUpdates);
-        updatedLocalProjects = customProjects.map(item => item.id === id ? { ...item, ...editUpdates, id } : item);
-      } else {
+        pendingProjectUpdates.delete(id);
+      } catch (error) {
+        pendingProjectUpdates.delete(id);
+        console.error('No se pudieron sincronizar los cambios con Firebase.', error);
+        updateFirebaseStatus('Cambios guardados localmente; no se pudieron sincronizar con Firebase.', 'error');
+        savedLocallyOnly = true;
+      }
+    } else {
+      try {
         const docRef = await addDoc(collection(db, PROJECTS_COLLECTION), {
           ...newProject,
           createdAt: serverTimestamp(),
           id
         });
-        updatedLocalProjects = [
+        const updatedLocalProjects = [
           ...customProjects.filter(item => item.title?.trim().toLowerCase() !== newProject.title.toLowerCase()),
           { ...newProject, id: docRef.id }
         ];
-      }
 
-      const saved = saveProjects(updatedLocalProjects, readStorage(REMOVED_PROJECTS_KEY, []));
-      if (!saved) {
-        alert('El archivo supera el límite de almacenamiento. Probá subir un video más pequeño o con menos resolución.');
-        return;
-      }
-    } catch (error) {
-      console.warn('No se pudo guardar en Firestore, se usa almacenamiento local.', error);
-      savedLocallyOnly = true;
-      const updatedLocalProjects = isEditing
-        ? customProjects.map(item => item.id === id ? { ...item, ...editUpdates, id } : item)
-        : [
+        const saved = saveProjects(updatedLocalProjects, readStorage(REMOVED_PROJECTS_KEY, []));
+        if (!saved) {
+          alert('El archivo supera el límite de almacenamiento. Probá subir un video más pequeño o con menos resolución.');
+          return;
+        }
+      } catch (error) {
+        console.warn('No se pudo guardar en Firestore, se usa almacenamiento local.', error);
+        savedLocallyOnly = true;
+        const updatedLocalProjects = [
           ...customProjects.filter(item => item.title?.trim().toLowerCase() !== newProject.title.toLowerCase()),
           { ...newProject, id }
         ];
-      const saved = saveProjects(updatedLocalProjects, readStorage(REMOVED_PROJECTS_KEY, []));
-      if (!saved) {
-        alert('El archivo supera el límite de almacenamiento. Probá subir un video más pequeño o con menos resolución.');
-        return;
+        const saved = saveProjects(updatedLocalProjects, readStorage(REMOVED_PROJECTS_KEY, []));
+        if (!saved) {
+          alert('El archivo supera el límite de almacenamiento. Probá subir un video más pequeño o con menos resolución.');
+          return;
+        }
       }
     }
 

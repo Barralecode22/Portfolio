@@ -308,7 +308,7 @@ function renderToolsGrid() {
 const skills = [
   { category: 'Motion Graphics', items: ['After Effects', 'Premiere Pro', 'Cinema 4D', 'Blender', 'CapCut', 'Affinity'] },
   { category: 'Diseño Gráfico', items: ['Photoshop', 'Illustrator', 'InDesign', 'Figma', 'Canva', 'Affinity', 'Branding', 'Identidad visual', 'Diseño editorial'] },
-  { category: 'Desarrollo Web', items: ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'Firebase', 'GitHub', 'Vercel', 'WordPress', 'Webflow', 'Framer', 'Visual Studio Code'] },
+  { category: 'Desarrollo Web', items: ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'Firebase', 'GitHub', 'Vercel', 'WordPress', 'Webflow', 'Framer', 'Visual Studio Code', 'Unity'] },
   { category: 'UX / UI', items: ['UX Research', 'Wireframes', 'Prototipado', 'Design Systems', 'UI Design', 'Usabilidad', 'Arquitectura de información', 'A/B testing', 'Maze', 'Google Analytics'] },
   { category: 'IA / Productividad', items: ['ChatGPT', 'Gemini', 'Claude', 'Notion'] }
 ];
