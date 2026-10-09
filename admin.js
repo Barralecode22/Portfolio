@@ -400,7 +400,11 @@ function renderProjects(projects = getProjects()) {
           firebaseProjectIds.delete(project.id);
         }
       } catch (error) {
-        console.warn('No se pudo eliminar desde Firestore, usando almacenamiento local.', error);
+        console.error('No se pudo eliminar el proyecto desde Firestore.', error);
+        const errorCode = error.code ? ` (${error.code})` : '';
+        updateFirebaseStatus(`No se pudo eliminar el proyecto de Firebase${errorCode}.`, 'error');
+        alert('No se pudo eliminar el proyecto de Firebase. Revisá la conexión y los permisos, e intentá nuevamente.');
+        return;
       }
 
       const customProjects = readStorage(PROJECTS_KEY, []).filter(item => item.id !== project.id);
@@ -525,9 +529,9 @@ function listenToFirebaseProjects() {
     firebaseProjectIds.clear();
     snapshot.docs.forEach(docSnap => firebaseProjectIds.add(docSnap.id));
     const firebaseProjects = snapshot.docs.filter(docSnap => !docSnap.id.startsWith('base-')).map(docSnap => ({
-      id: docSnap.id,
       ...docSnap.data(),
       ...pendingProjectUpdates.get(docSnap.id),
+      id: docSnap.id,
       createdAt: docSnap.data().createdAt?.toDate ? docSnap.data().createdAt.toDate().toISOString() : (docSnap.data().createdAt || new Date().toISOString())
     }));
 
