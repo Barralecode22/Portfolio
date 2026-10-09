@@ -19,6 +19,7 @@ const REMOVED_PROJECTS_KEY = 'portfolioRemovedProjects';
 const PROJECT_ORDER_KEY = 'portfolioProjectOrder';
 const PROJECTS_COLLECTION = 'portfolioProjects';
 const LEADS_COLLECTION = 'portfolioLeads';
+const firebaseProjectIds = new Set();
 
 const baseProjects = [
   ['Wavelength', 'diseno-web', 'https://images.unsplash.com/photo-1720962158813-29b66b8e23e1?w=1800&h=1000&fit=crop&auto=format'],
@@ -127,13 +128,15 @@ async function saveProjectOrder(projects) {
   localStorage.setItem(PROJECT_ORDER_KEY, JSON.stringify(projects.map(projectKey)));
   renderProjects(projects);
   try {
-    await Promise.all(projects.map((item, index) => {
-      if (!item.id) return Promise.resolve();
-      return updateDoc(doc(db, PROJECTS_COLLECTION, item.id), { position: index });
-    }));
+    await Promise.all(projects
+      .filter(item => item.id && firebaseProjectIds.has(item.id))
+      .map(item => updateDoc(doc(db, PROJECTS_COLLECTION, item.id), {
+        position: projects.findIndex(project => projectKey(project) === projectKey(item))
+      })));
   } catch (error) {
     console.error('No se pudo guardar el orden en Firebase; se conserva localmente.', error);
-    updateFirebaseStatus('Orden guardado localmente; no se pudo sincronizar con Firebase.', 'error');
+    const errorCode = error.code ? ` (${error.code})` : '';
+    updateFirebaseStatus(`Orden guardado localmente; Firebase rechazó la sincronización${errorCode}.`, 'error');
   }
 }
 
@@ -168,9 +171,11 @@ async function syncBaseProjectsToFirebase() {
     const { id, ...data } = project;
     if (id) {
       await setDoc(doc(db, PROJECTS_COLLECTION, id), data, { merge: true });
+      firebaseProjectIds.add(id);
       return project;
     }
     const docRef = await addDoc(collection(db, PROJECTS_COLLECTION), data);
+    firebaseProjectIds.add(docRef.id);
     return { ...project, id: docRef.id };
   }));
   saveProjects(syncedProjects, readStorage(REMOVED_PROJECTS_KEY, []));
@@ -392,6 +397,7 @@ function renderProjects(projects = getProjects()) {
       try {
         if (project.id) {
           await deleteDoc(doc(db, PROJECTS_COLLECTION, project.id));
+          firebaseProjectIds.delete(project.id);
         }
       } catch (error) {
         console.warn('No se pudo eliminar desde Firestore, usando almacenamiento local.', error);
@@ -516,6 +522,8 @@ function listenToFirebaseProjects() {
   const q = query(collection(db, PROJECTS_COLLECTION), orderBy('createdAt', 'desc'));
   onSnapshot(q, (snapshot) => {
     updateFirebaseStatus('Firebase conectado', 'connected');
+    firebaseProjectIds.clear();
+    snapshot.docs.forEach(docSnap => firebaseProjectIds.add(docSnap.id));
     const firebaseProjects = snapshot.docs.filter(docSnap => !docSnap.id.startsWith('base-')).map(docSnap => ({
       id: docSnap.id,
       ...docSnap.data(),
@@ -703,6 +711,7 @@ function initializeAdmin() {
           createdAt: serverTimestamp(),
           id
         });
+        firebaseProjectIds.add(docRef.id);
         const updatedLocalProjects = [
           ...customProjects.filter(item => item.title?.trim().toLowerCase() !== newProject.title.toLowerCase()),
           { ...newProject, id: docRef.id }
