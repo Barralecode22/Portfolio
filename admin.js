@@ -672,7 +672,7 @@ function initializeAdmin() {
     const id = editingProjectId || `custom-${Date.now()}`;
     const newProject = {
       ...projectFields,
-      image: currentImageData || 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=1200&h=700&fit=crop&auto=format&q=65',
+      image: currentImageData || '',
       video: currentVideoData || '',
       createdAt: new Date().toISOString(),
       position: getProjects().length

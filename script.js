@@ -563,11 +563,13 @@ function buildHeroSlides() {
           <div class="phone-floor-shadow"></div>
         </div>
       `;
-    } else {
+    } else if (p.image) {
       const img = document.createElement('img');
       img.src = p.image;
       img.alt = p.title;
       div.appendChild(img);
+    } else {
+      div.classList.add('hero-slide-empty');
     }
 
     container.appendChild(div);
@@ -705,10 +707,10 @@ function buildProjectCards(filter) {
 
     const mediaMarkup = p.video
       ? `<video src="${p.video}" autoplay muted loop playsinline preload="metadata"></video>`
-      : `<img src="${p.image}" alt="${p.title}" />`;
+      : p.image ? `<img src="${p.image}" alt="${p.title}" />` : '';
 
     card.innerHTML = `
-      <div class="project-card-media ${p.video ? 'has-video' : ''}">${mediaMarkup}</div>
+      <div class="project-card-media ${p.video ? 'has-video' : p.image ? '' : 'no-image'}">${mediaMarkup}</div>
       <div class="project-card-overlay"></div>
       <div class="project-card-info">
         <div class="project-card-meta">
