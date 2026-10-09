@@ -43,6 +43,9 @@ const categoryNames = {
 let editingProjectId = null;
 let currentImageData = null;
 let currentVideoData = null;
+let editingProject = null;
+let imageChangedWhileEditing = false;
+let videoChangedWhileEditing = false;
 
 const firebaseConfig = {
   apiKey: "AIzaSyAuGvpVGinoycXN0N52yisDX1WvWYxUygE",
@@ -116,8 +119,11 @@ async function moveProject(project, direction) {
   if (currentIndex < 0 || targetIndex < 0 || targetIndex >= projects.length) return;
 
   [projects[currentIndex], projects[targetIndex]] = [projects[targetIndex], projects[currentIndex]];
-  localStorage.setItem(PROJECT_ORDER_KEY, JSON.stringify(projects.map(projectKey)));
+  await saveProjectOrder(projects);
+}
 
+async function saveProjectOrder(projects) {
+  localStorage.setItem(PROJECT_ORDER_KEY, JSON.stringify(projects.map(projectKey)));
   renderProjects(projects);
   try {
     await Promise.all(projects.map((item, index) => {
@@ -125,7 +131,8 @@ async function moveProject(project, direction) {
       return updateDoc(doc(db, PROJECTS_COLLECTION, item.id), { position: index });
     }));
   } catch (error) {
-    console.warn('No se pudo guardar el orden en Firebase; se conserva localmente.', error);
+    console.error('No se pudo guardar el orden en Firebase; se conserva localmente.', error);
+    updateFirebaseStatus('Orden guardado localmente; no se pudo sincronizar con Firebase.', 'error');
   }
 }
 
@@ -171,6 +178,9 @@ async function syncBaseProjectsToFirebase() {
 
 function startEditingProject(project) {
   editingProjectId = project.id;
+  editingProject = project;
+  imageChangedWhileEditing = false;
+  videoChangedWhileEditing = false;
   currentImageData = project.image || null;
   const imageInput = document.getElementById('image-input');
 
@@ -217,8 +227,11 @@ function startEditingProject(project) {
 
 function resetEditingForm() {
   editingProjectId = null;
+  editingProject = null;
   currentImageData = null;
   currentVideoData = null;
+  imageChangedWhileEditing = false;
+  videoChangedWhileEditing = false;
   document.getElementById('form-kicker').textContent = 'Nuevo contenido';
   document.getElementById('form-title').textContent = 'Subir proyecto';
   document.getElementById('submit-project-btn').textContent = 'Publicar Proyecto';
@@ -296,6 +309,47 @@ function renderProjects(projects = getProjects()) {
   projects.forEach(project => {
     const item = document.createElement('article');
     item.className = 'project-admin-card';
+    item.draggable = true;
+    item.dataset.projectKey = projectKey(project);
+    item.addEventListener('dragstart', event => {
+      event.dataTransfer.setData('text/plain', item.dataset.projectKey);
+      event.dataTransfer.effectAllowed = 'move';
+      item.classList.add('is-dragging');
+    });
+    item.addEventListener('dragend', () => {
+      item.classList.remove('is-dragging');
+      list.querySelectorAll('.drop-before, .drop-after').forEach(card => {
+        card.classList.remove('drop-before', 'drop-after');
+      });
+    });
+    item.addEventListener('dragover', event => {
+      event.preventDefault();
+      const bounds = item.getBoundingClientRect();
+      const isAfter = event.clientY > bounds.top + bounds.height / 2;
+      item.classList.toggle('drop-before', !isAfter);
+      item.classList.toggle('drop-after', isAfter);
+    });
+    item.addEventListener('dragleave', event => {
+      if (!item.contains(event.relatedTarget)) {
+        item.classList.remove('drop-before', 'drop-after');
+      }
+    });
+    item.addEventListener('drop', async event => {
+      event.preventDefault();
+      const draggedKey = event.dataTransfer.getData('text/plain');
+      const draggedIndex = projects.findIndex(candidate => projectKey(candidate) === draggedKey);
+      const targetIndex = projects.findIndex(candidate => projectKey(candidate) === item.dataset.projectKey);
+      if (draggedIndex < 0 || targetIndex < 0 || draggedIndex === targetIndex) return;
+
+      const bounds = item.getBoundingClientRect();
+      const insertAfter = event.clientY > bounds.top + bounds.height / 2;
+      const reorderedProjects = [...projects];
+      const [draggedProject] = reorderedProjects.splice(draggedIndex, 1);
+      let destinationIndex = targetIndex + (insertAfter ? 1 : 0);
+      if (draggedIndex < destinationIndex) destinationIndex -= 1;
+      reorderedProjects.splice(destinationIndex, 0, draggedProject);
+      await saveProjectOrder(reorderedProjects);
+    });
 
     const media = document.createElement('div');
     media.className = 'project-admin-media';
@@ -506,6 +560,7 @@ function initializeAdmin() {
       if (!compressedImage) return;
 
       currentImageData = compressedImage;
+      if (editingProjectId) imageChangedWhileEditing = true;
       imagePreview.src = currentImageData;
       previewContainer.classList.remove('hidden');
       dropZone.classList.add('hidden');
@@ -527,6 +582,7 @@ function initializeAdmin() {
 
   removeImgBtn.addEventListener('click', () => {
     currentImageData = null;
+    if (editingProjectId) imageChangedWhileEditing = true;
     imageInput.value = '';
     imagePreview.src = '';
     previewContainer.classList.add('hidden');
@@ -538,6 +594,7 @@ function initializeAdmin() {
 
     try {
       currentVideoData = await readVideo(file);
+      if (editingProjectId) videoChangedWhileEditing = true;
       videoPreview.src = currentVideoData;
       videoPreviewContainer.classList.remove('hidden');
       videoDropZone.classList.add('hidden');
@@ -559,6 +616,7 @@ function initializeAdmin() {
 
   removeVideoBtn.addEventListener('click', () => {
     currentVideoData = null;
+    if (editingProjectId) videoChangedWhileEditing = true;
     videoInput.value = '';
     videoPreview.removeAttribute('src');
     videoPreview.load();
@@ -592,26 +650,35 @@ function initializeAdmin() {
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const newProject = {
+    const projectFields = {
       title: document.getElementById('title').value.trim(),
       category: document.getElementById('category').value,
       description: document.getElementById('description').value.trim(),
-      image: currentImageData || 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=1800&h=1000&fit=crop&auto=format',
-      video: currentVideoData || '',
-      link: document.getElementById('link').value.trim(),
-      createdAt: new Date().toISOString(),
-      position: getProjects().length
+      link: document.getElementById('link').value.trim()
     };
 
     const customProjects = readStorage(PROJECTS_KEY, []);
     const isEditing = Boolean(editingProjectId);
     const id = editingProjectId || `custom-${Date.now()}`;
+    const newProject = {
+      ...projectFields,
+      image: currentImageData || 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=1800&h=1000&fit=crop&auto=format',
+      video: currentVideoData || '',
+      createdAt: new Date().toISOString(),
+      position: getProjects().length
+    };
+    const editUpdates = {
+      ...projectFields,
+      ...(imageChangedWhileEditing ? { image: currentImageData || '' } : {}),
+      ...(videoChangedWhileEditing ? { video: currentVideoData || '' } : {})
+    };
+    let savedLocallyOnly = false;
 
     try {
       let updatedLocalProjects;
       if (isEditing) {
-        await updateDoc(doc(db, PROJECTS_COLLECTION, id), newProject);
-        updatedLocalProjects = customProjects.map(item => item.id === id ? { ...item, ...newProject, id } : item);
+        await updateDoc(doc(db, PROJECTS_COLLECTION, id), editUpdates);
+        updatedLocalProjects = customProjects.map(item => item.id === id ? { ...item, ...editUpdates, id } : item);
       } else {
         const docRef = await addDoc(collection(db, PROJECTS_COLLECTION), {
           ...newProject,
@@ -631,8 +698,9 @@ function initializeAdmin() {
       }
     } catch (error) {
       console.warn('No se pudo guardar en Firestore, se usa almacenamiento local.', error);
+      savedLocallyOnly = true;
       const updatedLocalProjects = isEditing
-        ? customProjects.map(item => item.id === id ? { ...item, ...newProject, id } : item)
+        ? customProjects.map(item => item.id === id ? { ...item, ...editUpdates, id } : item)
         : [
           ...customProjects.filter(item => item.title?.trim().toLowerCase() !== newProject.title.toLowerCase()),
           { ...newProject, id }
@@ -645,7 +713,9 @@ function initializeAdmin() {
     }
 
     renderProjects();
-    alert(isEditing ? '¡Proyecto actualizado exitosamente!' : '¡Proyecto cargado exitosamente!');
+    alert(savedLocallyOnly
+      ? 'Los cambios se guardaron en este navegador, pero no se pudieron sincronizar con Firebase.'
+      : isEditing ? '¡Proyecto actualizado exitosamente!' : '¡Proyecto cargado exitosamente!');
     form.reset();
     removeImgBtn.click();
     removeVideoBtn.click();

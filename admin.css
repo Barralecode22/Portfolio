@@ -326,6 +326,12 @@ body {
   padding-right: 6px;
 }
 
+.project-order-hint {
+  margin: -4px 0 12px;
+  color: #777;
+  font-size: 0.8rem;
+}
+
 .btn-sync {
   width: 100%;
   margin-bottom: 14px;
@@ -352,8 +358,14 @@ body {
   border: 1px solid #e2e5e8;
   border-radius: 8px;
   background: #fff;
+  cursor: grab;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
+
+.project-admin-card:active { cursor: grabbing; }
+.project-admin-card.is-dragging { opacity: 0.45; }
+.project-admin-card.drop-before { border-top: 3px solid #0066ff; }
+.project-admin-card.drop-after { border-bottom: 3px solid #0066ff; }
 
 .project-admin-card:hover {
   border-color: #b8cdf8;
