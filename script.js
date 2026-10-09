@@ -202,6 +202,18 @@ function sortProjectsByPosition(projectList) {
   });
 }
 
+function optimizeUnsplashImage(image) {
+  if (typeof image !== 'string' || !image.startsWith('https://images.unsplash.com/')) return image;
+
+  const url = new URL(image);
+  url.searchParams.set('w', '1200');
+  url.searchParams.set('h', '700');
+  url.searchParams.set('q', '65');
+  url.searchParams.set('fit', 'crop');
+  url.searchParams.set('auto', 'format');
+  return url.toString();
+}
+
 function normalizeProject(project, fallbackTitle = 'Proyecto personalizado') {
   const categoryNames = {
     'motion-graphics': 'Motion Graphic',
@@ -212,6 +224,7 @@ function normalizeProject(project, fallbackTitle = 'Proyecto personalizado') {
 
   return {
     ...project,
+    image: optimizeUnsplashImage(project.image),
     title: project.title || fallbackTitle,
     subtitle: project.subtitle || categoryNames[project.category] || project.category || 'Proyecto personalizado',
     tech: project.tech || [],

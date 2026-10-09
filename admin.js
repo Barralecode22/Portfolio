@@ -22,16 +22,16 @@ const LEADS_COLLECTION = 'portfolioLeads';
 const firebaseProjectIds = new Set();
 
 const baseProjects = [
-  ['Wavelength', 'diseno-web', 'https://images.unsplash.com/photo-1720962158813-29b66b8e23e1?w=1800&h=1000&fit=crop&auto=format'],
-  ['Arkive', 'ux-ui', 'https://images.unsplash.com/photo-1520583457224-aee11bad5112?w=1800&h=1000&fit=crop&auto=format'],
-  ['Kinetic Brand', 'motion-graphics', 'https://images.unsplash.com/photo-1599837565318-67429bde7162?w=1800&h=1000&fit=crop&auto=format'],
-  ['Studio Identity', 'diseno-grafico', 'https://images.unsplash.com/photo-1650661926447-9efb2610f64c?w=1800&h=1000&fit=crop&auto=format'],
-  ['Noma Market', 'diseno-web', 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1800&h=1000&fit=crop&auto=format'],
-  ['Lumen Health', 'ux-ui', 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=1800&h=1000&fit=crop&auto=format'],
-  ['Echoes Festival', 'diseno-grafico', 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1800&h=1000&fit=crop&auto=format'],
-  ['Orbit Finance', 'ux-ui', 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1800&h=1000&fit=crop&auto=format'],
-  ['Forma Objects', 'motion-graphics', 'https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?w=1800&h=1000&fit=crop&auto=format'],
-  ['Casa Norte', 'diseno-web', 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1800&h=1000&fit=crop&auto=format']
+  ['Wavelength', 'diseno-web', 'https://images.unsplash.com/photo-1720962158813-29b66b8e23e1?w=1200&h=700&fit=crop&auto=format&q=65'],
+  ['Arkive', 'ux-ui', 'https://images.unsplash.com/photo-1520583457224-aee11bad5112?w=1200&h=700&fit=crop&auto=format&q=65'],
+  ['Kinetic Brand', 'motion-graphics', 'https://images.unsplash.com/photo-1599837565318-67429bde7162?w=1200&h=700&fit=crop&auto=format&q=65'],
+  ['Studio Identity', 'diseno-grafico', 'https://images.unsplash.com/photo-1650661926447-9efb2610f64c?w=1200&h=700&fit=crop&auto=format&q=65'],
+  ['Noma Market', 'diseno-web', 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=700&fit=crop&auto=format&q=65'],
+  ['Lumen Health', 'ux-ui', 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=1200&h=700&fit=crop&auto=format&q=65'],
+  ['Echoes Festival', 'diseno-grafico', 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1200&h=700&fit=crop&auto=format&q=65'],
+  ['Orbit Finance', 'ux-ui', 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1200&h=700&fit=crop&auto=format&q=65'],
+  ['Forma Objects', 'motion-graphics', 'https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?w=1200&h=700&fit=crop&auto=format&q=65'],
+  ['Casa Norte', 'diseno-web', 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&h=700&fit=crop&auto=format&q=65']
 ].map(([title, category, image]) => ({ title, category, image, base: true }));
 
 const categoryNames = {
@@ -244,7 +244,7 @@ function resetEditingForm() {
   document.getElementById('cancel-edit-btn').classList.add('hidden');
 }
 
-function compressImage(file, { targetWidth = 1920, targetHeight = 1080, quality = 0.92 } = {}) {
+function compressImage(file, { targetWidth = 1440, targetHeight = 810, quality = 0.8 } = {}) {
   return new Promise((resolve, reject) => {
     if (!file || !file.type.startsWith('image/')) {
       resolve(null);
@@ -672,7 +672,7 @@ function initializeAdmin() {
     const id = editingProjectId || `custom-${Date.now()}`;
     const newProject = {
       ...projectFields,
-      image: currentImageData || 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=1800&h=1000&fit=crop&auto=format',
+      image: currentImageData || 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=1200&h=700&fit=crop&auto=format&q=65',
       video: currentVideoData || '',
       createdAt: new Date().toISOString(),
       position: getProjects().length
